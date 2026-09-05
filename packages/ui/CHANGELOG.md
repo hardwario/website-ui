@@ -1,5 +1,15 @@
 # @hubpav/hwio-ui
 
+## 0.1.3
+
+### Patch Changes
+
+- e035e63: HWioHeader: the desktop nav never wraps (nowrap, tighter item spacing).
+- d66fd46: HWioLanguageSwitcher: pills show the language code (label as title/aria-label); dropdown items show code and name.
+  - @hubpav/hwio-brand@0.1.3
+  - @hubpav/hwio-web-runtime@0.1.3
+  - @hubpav/hwio-web-worker@0.1.3
+
 ## 0.1.2
 
 ### Patch Changes
