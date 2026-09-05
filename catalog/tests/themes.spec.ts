@@ -15,7 +15,7 @@ test('consent banner shows on a fresh visit and hides after accept', async ({ pa
   await page.goto('/hwio/consent/');
   const banner = page.locator('[data-hwio-consent]');
   await expect(banner).toBeVisible();
-  await page.getByRole('button', { name: 'Accept all' }).first().click();
+  await banner.locator('[data-hwio-consent-accept]').click();
   await expect(banner).toBeHidden();
   const cookie = (await page.context().cookies()).find((c) => c.name === 'hwio_cookie_consent');
   expect(cookie).toBeTruthy();

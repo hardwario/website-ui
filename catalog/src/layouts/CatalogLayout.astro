@@ -17,8 +17,8 @@ const canonical = new URL(Astro.url.pathname, 'https://ui.hardwario.com').href;
     <header class="border-b border-base-300 bg-base-100" data-hwio-font-exempt>
       <div class="container flex flex-wrap items-center gap-4 py-3 text-sm">
         <a href="/" class="font-semibold">HWio catalog</a>
-        <nav aria-label="Themes" class="join">
-          {THEMES.map((t) => <a href={`/${t}/${fixture ? fixture + '/' : ''}`} class:list={['btn btn-xs join-item', t === theme ? 'btn-primary' : 'btn-ghost']} aria-current={t === theme ? 'page' : undefined}>{t}</a>)}
+        <nav aria-label="Themes" class="flex flex-wrap gap-1">
+          {THEMES.map((t) => <a href={`/${t}/${fixture ? fixture + '/' : ''}`} class:list={['btn btn-xs', t === theme ? 'btn-primary' : 'btn-ghost']} aria-current={t === theme ? 'page' : undefined}>{t}</a>)}
         </nav>
         <span class="ml-auto opacity-60">{title}</span>
       </div>
