@@ -1,0 +1,92 @@
+---
+/**
+ * Sticky site header: logo slot, primary nav (flat links; mega-menu content via `mega:<key>` slots),
+ * CTAs, language switcher, theme toggle, and a DaisyUI drawer for small screens.
+ */
+import type { HWioCta, HWioLinkItem } from '../types';
+import HWioButton from './HWioButton.astro';
+import HWioIcon from './HWioIcon.astro';
+import HWioLanguageSwitcher from './HWioLanguageSwitcher.astro';
+import HWioThemeToggle from './HWioThemeToggle.astro';
+
+interface NavItem extends HWioLinkItem { mega?: string }
+interface Props {
+  nav: NavItem[];
+  ctas?: HWioCta[];
+  languages?: { code: string; label: string; href: string; current?: boolean }[];
+  showThemeToggle?: boolean;
+  scrollspy?: boolean;
+  labels: { nav: string; menu: string; close: string; theme?: string; languages?: string };
+  id?: string;
+  class?: string;
+}
+const { nav, ctas = [], languages = [], showThemeToggle = true, scrollspy = false, labels, id = 'hwio-nav-drawer', class: className = '' } = Astro.props;
+const CTA_VARIANT = { primary: 'primary', secondary: 'secondary', ghost: 'ghost' } as const;
+---
+<header class:list={['sticky top-0 z-50 border-b border-base-300 bg-base-100/90 backdrop-blur supports-[backdrop-filter]:bg-base-100/80', className]} data-hwio-font-exempt>
+  <div class="container flex h-16 items-center gap-4 lg:h-[72px]">
+    <div class="shrink-0">
+      <slot name="logo" />
+    </div>
+
+    <nav class="hidden flex-1 justify-center lg:flex" aria-label={labels.nav} data-hwio-scrollspy={scrollspy ? 'true' : undefined}>
+      <ul class="menu menu-horizontal gap-1 px-1">
+        {nav.map((item) => (
+          <li>
+            {item.mega ? (
+              <details>
+                <summary class="font-medium">{item.label}</summary>
+                <div class="dropdown-content bg-base-100 rounded-box z-50 mt-2 p-4 shadow-lg border border-base-300">
+                  <slot name={`mega:${item.mega}`} />
+                </div>
+              </details>
+            ) : (
+              <a href={item.href} class="font-medium" aria-current={item.current ? 'page' : undefined} data-track={item.track?.id} data-track-location={item.track?.location ?? 'header'}>{item.label}</a>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="ml-auto flex items-center gap-2">
+      {showThemeToggle && <HWioThemeToggle label={labels.theme ?? 'Theme'} />}
+      {languages.length > 1 && <HWioLanguageSwitcher items={languages} label={labels.languages ?? 'Language'} />}
+      <div class="hidden items-center gap-2 lg:flex">
+        {ctas.map((cta) => (
+          <HWioButton href={cta.href} external={cta.external} variant={CTA_VARIANT[cta.variant ?? 'primary']} size="sm" track={cta.track ?? { id: 'header-cta', location: 'header' }}>{cta.label}</HWioButton>
+        ))}
+      </div>
+      <div class="drawer drawer-end w-auto lg:hidden">
+        <input id={id} type="checkbox" class="drawer-toggle" />
+        <div class="drawer-content">
+          <label for={id} class="btn btn-ghost btn-square drawer-button" aria-label={labels.menu} aria-controls={`${id}-panel`} aria-expanded="false" tabindex="0" role="button">
+            <HWioIcon name="menu" size="lg" />
+          </label>
+        </div>
+        <div class="drawer-side z-[60]">
+          <label for={id} aria-label={labels.close} class="drawer-overlay"></label>
+          <div id={`${id}-panel`} class="menu min-h-full w-80 max-w-[85vw] gap-2 bg-base-100 p-6 text-base-content">
+            <div class="flex justify-end">
+              <label for={id} class="btn btn-ghost btn-square btn-sm" aria-label={labels.close} tabindex="0" role="button"><HWioIcon name="close" /></label>
+            </div>
+            <ul class="menu w-full text-base">
+              {nav.map((item) => (
+                <li><a href={item.href} aria-current={item.current ? 'page' : undefined} data-track={item.track?.id} data-track-location="mobile-menu">{item.label}</a></li>
+              ))}
+            </ul>
+            <div class="mt-4 flex flex-col gap-2">
+              {ctas.map((cta) => (
+                <HWioButton href={cta.href} external={cta.external} variant={CTA_VARIANT[cta.variant ?? 'primary']} track={{ id: cta.track?.id ?? 'header-cta', location: 'mobile-menu' }}>{cta.label}</HWioButton>
+              ))}
+            </div>
+            {languages.length > 1 && <div class="mt-4"><HWioLanguageSwitcher items={languages} label={labels.languages ?? 'Language'} variant="pills" /></div>}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<script>
+  import { hwioNavRuntime } from '@hubpav/hwio-web-runtime/nav';
+  hwioNavRuntime();
+</script>

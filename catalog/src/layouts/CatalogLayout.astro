@@ -1,0 +1,28 @@
+---
+import '../styles/global.css';
+import HWioSeoHead from '@hubpav/hwio-ui/components/HWioSeoHead.astro';
+import { hwioHtmlAttrs } from '@hubpav/hwio-ui/html';
+import { THEMES, type CatalogTheme } from '../themes';
+interface Props { title: string; theme: CatalogTheme; description?: string; fixture?: string }
+const { title, theme, description = 'HARDWARIO design system catalog', fixture } = Astro.props;
+const attrs = hwioHtmlAttrs({ lang: 'en', consentVersion: '2026-09-05', themes: { light: 'hwio', dark: 'hwio-dark' }, pinTheme: true, font: { family: 'Inter', sample: 'HARDWARIO Book meeting Visit Store', sampleExt: 'Řešení Vývojáři Navštívit Odwiedź Rozwiązania' } });
+const canonical = new URL(Astro.url.pathname, 'https://ui.hardwario.com').href;
+---
+<!doctype html>
+<html {...attrs}>
+  <head>
+    <HWioSeoHead siteName="HWio catalog" siteUrl="https://ui.hardwario.com" title={title} description={description} canonical={canonical} locale="en" ogImage={{ url: '/brand/hardwario-logo.svg' }} noindex fonts={['/fonts/inter-latin.woff2', '/fonts/inter-latin-ext.woff2']} favicons={{ svg: '/brand/favicon.svg' }} />
+  </head>
+  <body class="min-h-screen bg-base-100 text-base-content">
+    <header class="border-b border-base-300 bg-base-100" data-hwio-font-exempt>
+      <div class="container flex flex-wrap items-center gap-4 py-3 text-sm">
+        <a href="/" class="font-semibold">HWio catalog</a>
+        <nav aria-label="Themes" class="join">
+          {THEMES.map((t) => <a href={`/${t}/${fixture ? fixture + '/' : ''}`} class:list={['btn btn-xs join-item', t === theme ? 'btn-primary' : 'btn-ghost']} aria-current={t === theme ? 'page' : undefined}>{t}</a>)}
+        </nav>
+        <span class="ml-auto opacity-60">{title}</span>
+      </div>
+    </header>
+    <slot />
+  </body>
+</html>

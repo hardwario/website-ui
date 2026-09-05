@@ -1,0 +1,10 @@
+---
+/** Lazy explicit Cloudflare Turnstile widget; place inside a <form>. The site key is public by design. */
+interface Props { siteKey: string }
+const { siteKey } = Astro.props;
+---
+<div class="cf-turnstile" data-sitekey={siteKey}></div>
+<script>
+  import { hwioTurnstileRuntime } from '@hubpav/hwio-web-runtime/turnstile';
+  hwioTurnstileRuntime();
+</script>

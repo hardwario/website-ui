@@ -1,0 +1,5 @@
+---
+import HWioLogoStrip from '@hubpav/hwio-ui/components/HWioLogoStrip.astro';
+const logo = (alt: string) => ({ src: '/brand/hardwario-logo.svg', alt, href: 'https://www.hardwario.com', width: 275, height: 60 });
+---
+<HWioLogoStrip label="Trusted by teams at" logos={['Škoda', 'Vodafone', 'KSB', 'E.ON', 'Skanska', 'CCPA IFRAMIX', 'ProXimos'].map(logo)} />

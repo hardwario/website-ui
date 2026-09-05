@@ -1,0 +1,37 @@
+{
+  "name": "@hubpav/hwio-brand",
+  "version": "0.0.0",
+  "description": "HARDWARIO brand source of truth: palette, theme roles, fonts, logos and the sites registry, generated into CSS and JSON for any stack.",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hardwario/website-ui.git",
+    "directory": "packages/brand"
+  },
+  "files": [
+    "dist",
+    "src",
+    "fonts",
+    "logos",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/sites.d.ts",
+      "default": "./dist/sites.js"
+    },
+    "./brand.json": "./src/brand.json",
+    "./tokens.json": "./dist/tokens.json",
+    "./vars.css": "./dist/vars.css",
+    "./docusaurus.css": "./dist/docusaurus.css",
+    "./fonts/*": "./dist/fonts/*",
+    "./logos/*": "./logos/*",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test test/"
+  },
+  "sideEffects": false
+}

@@ -1,0 +1,55 @@
+/* Generated from brand.json by @hubpav/hwio-ui (scripts/build-themes.mjs). Theme "er3o". */
+@plugin "daisyui/theme" {
+  name: "er3o";
+  default: false;
+  prefersdark: false;
+  color-scheme: light;
+  --color-base-100: #ffffff;
+  --color-base-200: #f9fafb;
+  --color-base-300: #f3f4f6;
+  --color-base-content: #333333;
+  --color-primary: #14A0C0;
+  --color-primary-content: #ffffff;
+  --color-secondary: #01CC9B;
+  --color-secondary-content: #061920;
+  --color-accent: #0C6678;
+  --color-accent-content: #ffffff;
+  --color-neutral: #252532;
+  --color-neutral-content: #ffffff;
+  --color-info: #19768B;
+  --color-info-content: #ffffff;
+  --color-success: #15803d;
+  --color-success-content: #ffffff;
+  --color-warning: #b45309;
+  --color-warning-content: #ffffff;
+  --color-error: #dc2626;
+  --color-error-content: #ffffff;
+  --radius-selector: 2rem;
+  --radius-field: 2rem;
+  --radius-box: 1.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.28125rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+[data-theme="er3o"] {
+  --hwio-font-sans: 'Poppins', 'Poppins Fallback', ui-sans-serif, system-ui, sans-serif;
+  --hwio-container: 1275px;
+  --hwio-container-pad: 27px;
+  --er3o-gradient-from: #01CC9B;
+  --er3o-gradient-to: #14A0C0;
+}
+
+/* ENEROOO carries its gradient as a theme rule: DaisyUI slots are single colours. */
+[data-theme="er3o"] .btn-primary {
+  background-image: linear-gradient(90deg, var(--er3o-gradient-from), var(--er3o-gradient-to));
+  border-color: transparent;
+}
+[data-theme="er3o"] .er3o-gradient-text {
+  background-image: linear-gradient(90deg, var(--er3o-gradient-from), var(--er3o-gradient-to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}

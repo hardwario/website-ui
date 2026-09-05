@@ -1,0 +1,27 @@
+---
+import HWioIcon from './HWioIcon.astro';
+interface Item { code: string; label: string; href: string; current?: boolean }
+interface Props { items: Item[]; label: string; variant?: 'pills' | 'dropdown'; class?: string }
+const { items, label, variant = 'dropdown', class: className = '' } = Astro.props;
+const current = items.find((i) => i.current);
+---
+{variant === 'pills' ? (
+  <nav aria-label={label} class:list={['join', className]}>
+    {items.map((i) => (
+      <a href={i.href} hreflang={i.code} lang={i.code} class:list={['btn btn-sm join-item', i.current ? 'btn-primary' : 'btn-ghost']} aria-current={i.current ? 'page' : undefined}>{i.label}</a>
+    ))}
+  </nav>
+) : (
+  <details class:list={['dropdown dropdown-end', className]}>
+    <summary class="btn btn-ghost btn-sm gap-1" aria-label={label}>
+      <HWioIcon name="globe" size="sm" />
+      <span class="uppercase">{current?.code ?? items[0]?.code}</span>
+      <HWioIcon name="chevron-down" size="sm" />
+    </summary>
+    <ul class="menu dropdown-content bg-base-100 rounded-box z-50 mt-2 w-44 p-2 shadow-lg border border-base-300" aria-label={label}>
+      {items.map((i) => (
+        <li><a href={i.href} hreflang={i.code} lang={i.code} class:list={[i.current ? 'menu-active' : '']} aria-current={i.current ? 'page' : undefined}>{i.label}</a></li>
+      ))}
+    </ul>
+  </details>
+)}

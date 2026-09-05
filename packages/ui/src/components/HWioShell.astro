@@ -1,0 +1,20 @@
+---
+/** Body skeleton: skip link, header, optional breadcrumb, <main id="main-content">, footer, consent. Also mounts CTA tracking. */
+import HWioSkipLink from './HWioSkipLink.astro';
+interface Props { skipLabel: string; class?: string }
+const { skipLabel, class: className = '' } = Astro.props;
+---
+<div class:list={['min-h-screen flex flex-col bg-base-100 text-base-content', className]}>
+  <HWioSkipLink label={skipLabel} />
+  <slot name="header" />
+  <slot name="breadcrumb" />
+  <main id="main-content" class="flex-1">
+    <slot />
+  </main>
+  <slot name="footer" />
+  <slot name="consent" />
+</div>
+<script>
+  import { hwioTrackRuntime } from '@hubpav/hwio-web-runtime/track';
+  hwioTrackRuntime();
+</script>

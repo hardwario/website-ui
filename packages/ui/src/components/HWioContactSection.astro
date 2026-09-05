@@ -1,0 +1,37 @@
+---
+/** Contact block: copy and a contact person on the left, the HubSpot form on the right. */
+import type { HWioTone } from '../types';
+import HWioIcon from './HWioIcon.astro';
+import HWioSection from './HWioSection.astro';
+import HWioSectionHeader from './HWioSectionHeader.astro';
+interface Props {
+  id?: string;
+  eyebrow?: string;
+  title: string;
+  lead?: string;
+  person?: { name: string; role?: string; email?: string; phone?: string; phoneHref?: string; image?: { src: string; alt: string; width: number; height: number } };
+  tone?: HWioTone;
+  class?: string;
+}
+const { id = 'contact', eyebrow, title, lead, person, tone = 'alt', class: className = '' } = Astro.props;
+---
+<HWioSection id={id} tone={tone} class={className}>
+  <div class="grid gap-12 lg:grid-cols-[2fr_3fr]">
+    <div>
+      <HWioSectionHeader eyebrow={eyebrow} title={title} lead={lead} align="left" />
+      {person && (
+        <div class="mt-8 flex items-center gap-4">
+          {person.image && <img src={person.image.src} alt={person.image.alt} width={person.image.width} height={person.image.height} class="size-16 rounded-full object-cover" loading="lazy" />}
+          <div class="text-sm">
+            <p class="font-semibold">{person.name}</p>
+            {person.role && <p class="opacity-80">{person.role}</p>}
+            {person.email && <a href={`mailto:${person.email}`} class="link link-hover inline-flex items-center gap-1"><HWioIcon name="mail" size="sm" />{person.email}</a>}
+            {person.phone && <a href={person.phoneHref ?? `tel:${person.phone.replace(/\s+/g, '')}`} class="link link-hover ml-3 inline-flex items-center gap-1"><HWioIcon name="phone" size="sm" />{person.phone}</a>}
+          </div>
+        </div>
+      )}
+      <slot name="aside" />
+    </div>
+    <div class="card card-border bg-base-100"><div class="card-body"><slot /></div></div>
+  </div>
+</HWioSection>

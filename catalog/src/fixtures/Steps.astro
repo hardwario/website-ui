@@ -1,0 +1,14 @@
+---
+import HWioSection from '@hubpav/hwio-ui/components/HWioSection.astro';
+import HWioSectionHeader from '@hubpav/hwio-ui/components/HWioSectionHeader.astro';
+import HWioProcessSteps from '@hubpav/hwio-ui/components/HWioProcessSteps.astro';
+---
+<HWioSection id="process">
+  <HWioSectionHeader title="How a project runs" align="left" />
+  <HWioProcessSteps class="mt-10" items={[
+    { title: 'Brief and feasibility', text: 'We read your brief, check the physics and the supply chain, and answer in writing.' },
+    { title: 'Architecture', text: 'Elektronika, firmware a cloud navržené společně, s rozhraními popsanými před první deskou.' },
+    { title: 'Prototype and test', text: 'Funktionsmuster, Klimakammer, Messprotokolle und ein gemeinsamer Review.' },
+    { title: 'Production handover', text: 'Production package, test sequences declared in ATS Foundation, documented handover.' },
+  ]} />
+</HWioSection>

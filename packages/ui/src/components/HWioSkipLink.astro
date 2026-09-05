@@ -1,0 +1,5 @@
+---
+interface Props { label: string; target?: string }
+const { label, target = '#main-content' } = Astro.props;
+---
+<a href={target} class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] btn btn-primary btn-sm">{label}</a>

@@ -1,0 +1,12 @@
+---
+import type { HWioCta } from '../types';
+import HWioButton from './HWioButton.astro';
+interface Props { code?: string; title: string; text?: string; cta: HWioCta }
+const { code = '404', title, text, cta } = Astro.props;
+---
+<section class="container flex min-h-[60vh] flex-col items-center justify-center py-24 text-center">
+  <p class="hwio-eyebrow mb-4">{code}</p>
+  <h1>{title}</h1>
+  {text && <p class="hwio-lead mt-4 max-w-xl">{text}</p>}
+  <div class="mt-8"><HWioButton href={cta.href} variant="primary" arrow track={cta.track}>{cta.label}</HWioButton></div>
+</section>

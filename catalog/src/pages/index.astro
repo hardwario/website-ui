@@ -1,0 +1,20 @@
+---
+import CatalogLayout from '../layouts/CatalogLayout.astro';
+import { THEMES } from '../themes';
+import { FIXTURES } from '../fixtures/index';
+---
+<CatalogLayout title="Components × themes" theme="hwio">
+  <main class="container py-12">
+    <h1 class="mb-4">HWio component catalog</h1>
+    <p class="hwio-lead mb-10 max-w-2xl">Every shared component of <code>@hubpav/hwio-ui</code> rendered under every theme from <code>@hubpav/hwio-brand</code>. One page per theme is the visual-regression target; one page per component is the review surface.</p>
+    <div class="overflow-x-auto">
+      <table class="table">
+        <thead><tr><th>Component</th>{THEMES.map((t) => <th>{t}</th>)}</tr></thead>
+        <tbody>
+          <tr><th>All on one page</th>{THEMES.map((t) => <td><a class="link" href={`/${t}/`}>view</a></td>)}</tr>
+          {FIXTURES.map((f) => <tr><th>{f.title}</th>{THEMES.map((t) => <td><a class="link" href={`/${t}/${f.slug}/`}>view</a></td>)}</tr>)}
+        </tbody>
+      </table>
+    </div>
+  </main>
+</CatalogLayout>

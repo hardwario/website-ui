@@ -1,0 +1,83 @@
+---
+/**
+ * Everything in <head> for a site page. Sites keep a thin BaseLayout that renders
+ * <html {...hwioHtmlAttrs(...)}><head><HWioSeoHead …/></head><body><HWioShell …/></body></html>.
+ * Copy-free: title, description, alternates, JSON-LD and the OG image all come from the site.
+ */
+import { consentDefaults, themeBootstrap } from '@hubpav/hwio-web-runtime/inline';
+import type { HWioAlternate } from '../types';
+import HWioFontGate from './HWioFontGate.astro';
+
+interface Props {
+  siteName: string;
+  siteUrl: string;
+  title: string;
+  /** Appended as " | <siteName>" unless the title already contains it. */
+  suffix?: boolean;
+  description: string;
+  canonical: string;
+  locale: string;
+  ogLocale?: string;
+  alternates?: HWioAlternate[];
+  ogImage: { url: string; width?: number; height?: number; alt?: string };
+  pageType?: 'website' | 'article' | 'product' | 'profile';
+  article?: { publishedTime?: string; modifiedTime?: string; authors?: string[]; section?: string; tags?: string[] };
+  noindex?: boolean;
+  jsonLd?: object[];
+  preloadImage?: string;
+  twitterSite?: string;
+  favicons?: { svg?: string; png32?: string; apple?: string };
+  /** Font files to preload and gate on (null disables the gate). */
+  fonts?: string[] | null;
+  /** Emit Consent Mode v2 denied defaults (sites with GTM). */
+  consentMode?: boolean;
+  themeColor?: string;
+}
+const {
+  siteName, siteUrl, title, suffix = true, description, canonical, locale, ogLocale, alternates = [], ogImage,
+  pageType = 'website', article, noindex = false, jsonLd = [], preloadImage, twitterSite,
+  favicons = { svg: '/favicon.svg', png32: '/favicon-32x32.png', apple: '/apple-touch-icon.png' },
+  fonts = null, consentMode = false, themeColor,
+} = Astro.props;
+const fullTitle = suffix && !title.includes(siteName) ? `${title} | ${siteName}` : title;
+const abs = (u: string) => (u.startsWith('http') ? u : `${siteUrl}${u}`);
+---
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+{fonts && <HWioFontGate files={fonts} />}
+<script is:inline set:html={themeBootstrap.code} />
+{consentMode && <script is:inline set:html={consentDefaults.code} />}
+<meta name="generator" content={Astro.generator} />
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+{themeColor && <meta name="theme-color" content={themeColor} />}
+{favicons.svg && <link rel="icon" type="image/svg+xml" href={favicons.svg} />}
+{favicons.png32 && <link rel="icon" type="image/png" sizes="32x32" href={favicons.png32} />}
+{favicons.apple && <link rel="apple-touch-icon" sizes="180x180" href={favicons.apple} />}
+{!noindex && alternates.map((a) => <link rel="alternate" hreflang={a.lang} href={a.href} />)}
+<meta property="og:type" content={pageType} />
+<meta property="og:url" content={canonical} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={abs(ogImage.url)} />
+{ogImage.width && <meta property="og:image:width" content={String(ogImage.width)} />}
+{ogImage.height && <meta property="og:image:height" content={String(ogImage.height)} />}
+<meta property="og:image:alt" content={ogImage.alt ?? title} />
+<meta property="og:site_name" content={siteName} />
+{ogLocale && <meta property="og:locale" content={ogLocale} />}
+{pageType === 'article' && article?.publishedTime && <meta property="article:published_time" content={article.publishedTime} />}
+{pageType === 'article' && article?.modifiedTime && <meta property="article:modified_time" content={article.modifiedTime} />}
+{pageType === 'article' && article?.section && <meta property="article:section" content={article.section} />}
+{pageType === 'article' && article?.authors?.map((a) => <meta property="article:author" content={a} />)}
+{pageType === 'article' && article?.tags?.map((t) => <meta property="article:tag" content={t} />)}
+<meta name="twitter:card" content="summary_large_image" />
+{twitterSite && <meta name="twitter:site" content={twitterSite} />}
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={abs(ogImage.url)} />
+<meta name="twitter:image:alt" content={ogImage.alt ?? title} />
+{preloadImage && <link rel="preload" href={preloadImage} as="image" fetchpriority="high" />}
+{jsonLd.map((ld) => <script is:inline type="application/ld+json" set:html={JSON.stringify(ld)} />)}
+<slot />

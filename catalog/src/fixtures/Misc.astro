@@ -1,0 +1,6 @@
+---
+import HWioBreadcrumbs from '@hubpav/hwio-ui/components/HWioBreadcrumbs.astro';
+import HWioNotFound from '@hubpav/hwio-ui/components/HWioNotFound.astro';
+---
+<HWioBreadcrumbs label="Breadcrumb" jsonLd={false} items={[{ label: 'Home', href: '/' }, { label: 'Products', href: '/products/' }, { label: 'CHESTER Clime', href: '/products/chester-clime/' }]} />
+<HWioNotFound title="Page not found" text="The page may have moved. The search on the docs site knows every current URL." cta={{ label: 'Go to homepage', href: '/' }} />

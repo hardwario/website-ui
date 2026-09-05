@@ -1,0 +1,9 @@
+---
+import HWioFeatureCard from './HWioFeatureCard.astro';
+interface Props { items: { title: string; text: string; icon?: string; href?: string }[]; columns?: 2 | 3 | 4; class?: string }
+const COLS = { 2: 'grid gap-6 md:grid-cols-2', 3: 'grid gap-6 md:grid-cols-2 lg:grid-cols-3', 4: 'grid gap-6 md:grid-cols-2 lg:grid-cols-4' } as const;
+const { items, columns = 3, class: className = '' } = Astro.props;
+---
+<div class:list={[COLS[columns], className]}>
+  {items.map((item) => <HWioFeatureCard {...item} />)}
+</div>

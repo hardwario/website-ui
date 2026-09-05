@@ -1,0 +1,12 @@
+---
+import HWioHeroSplit from '@hubpav/hwio-ui/components/HWioHeroSplit.astro';
+---
+<HWioHeroSplit
+  eyebrow="HARDWARIO Engineering"
+  title="Připojené produkty vyvinuté podle vašeho zadání"
+  lead="Elektronika, firmware, cloud a výroba v jednom týmu. Výsledné IP projektu patří vám; hranice pozadí a předchozí technologie definuje smlouva."
+  actions={[{ label: 'Book meeting', href: '#contact', track: { id: 'hero-book', location: 'hero' } }, { label: 'Request review', href: '#review', variant: 'secondary' }]}
+  checklist={['Time and material or fixed price', 'Volume commitment terms', 'Customer-owned project IP']}
+>
+  <div slot="media" class="aspect-[4/3] w-full rounded-box bg-base-200 border border-base-300 grid place-items-center text-sm opacity-60">media slot (1200 × 900)</div>
+</HWioHeroSplit>

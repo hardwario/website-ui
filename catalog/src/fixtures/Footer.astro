@@ -1,0 +1,22 @@
+---
+import HWioFooter from '@hubpav/hwio-ui/components/HWioFooter.astro';
+import { hwioFooterSites, hwioSocialX, social, branches } from '@hubpav/hwio-brand';
+const countries: Record<string, string> = { cz: 'Czech Republic', us: 'United States', uk: 'United Kingdom' };
+---
+<HWioFooter
+  social={[{ icon: 'linkedin', label: 'LinkedIn', href: social.linkedin as string }, { icon: 'x', label: 'X (Twitter)', href: hwioSocialX('en') }, { icon: 'instagram', label: 'Instagram', href: social.instagram as string }, { icon: 'youtube', label: 'YouTube', href: social.youtube as string }, { icon: 'github', label: 'GitHub', href: social.github as string }]}
+  branches={{ title: 'Branches', items: branches.map((b) => ({ name: b.name, country: countries[b.country], mapUrl: b.mapUrl })) }}
+  columns={[
+    { title: 'Navigation', links: [{ label: 'Platform', href: '#' }, { label: 'Solutions', href: '#' }, { label: 'Resources', href: '#' }, { label: 'Visit Store', href: 'https://www.hardwario.store/', external: true }] },
+    { title: 'Connect', links: [{ label: 'LinkedIn', href: social.linkedin as string, external: true }, { label: 'GitHub', href: social.github as string, external: true }, { label: 'Forum', href: social.forum as string, external: true }] },
+    { title: 'Company', links: [{ label: 'Support', href: '#' }, { label: 'Contact', href: '#' }, { label: 'About', href: '#' }, { label: 'Investors', href: '#' }] },
+  ]}
+  legal={[{ label: 'Privacy policy', href: '#' }, { label: 'Terms', href: '#' }, { label: 'Cookie policy', href: '#' }]}
+  cookieSettingsLabel="Cookie settings"
+  sites={{ items: hwioFooterSites({ self: 'studio', locale: 'en' }), label: 'HARDWARIO websites' }}
+  copyright={`Copyright © ${new Date().getFullYear()} HARDWARIO a.s.`}
+  tagline="Designed and built in Europe"
+>
+  <a slot="logo" href="/" aria-label="HARDWARIO"><img src="/brand/hardwario-mark-white.svg" alt="" width="48" height="60" class="h-24 w-auto" /></a>
+  <p slot="legal-title" class="mb-4 font-medium">Legal</p>
+</HWioFooter>

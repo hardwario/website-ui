@@ -1,0 +1,24 @@
+---
+/** Number strip on DaisyUI `stats`; counts up on first view unless `animate` is false or motion is reduced. */
+import type { HWioTone } from '../types';
+import HWioSection from './HWioSection.astro';
+interface Props { id?: string; items: { value: number; suffix?: string; label: string; description?: string }[]; animate?: boolean; tone?: HWioTone; class?: string }
+const { id, items, animate = true, tone = 'alt', class: className = '' } = Astro.props;
+---
+<HWioSection id={id} tone={tone} spacing="compact" class={className}>
+  <div class="stats stats-vertical w-full bg-transparent sm:stats-horizontal">
+    {items.map((s) => (
+      <div class="stat place-items-center">
+        <div class="stat-value">
+          <span class="hwio-stat-value" data-hwio-counter={animate ? 'true' : undefined} data-target={String(s.value)} data-suffix={s.suffix ?? ''}>{s.value}{s.suffix ?? ''}</span>
+        </div>
+        <div class="stat-title text-base-content">{s.label}</div>
+        {s.description && <div class="stat-desc">{s.description}</div>}
+      </div>
+    ))}
+  </div>
+</HWioSection>
+<script>
+  import { hwioCounterRuntime } from '@hubpav/hwio-web-runtime/counter';
+  hwioCounterRuntime();
+</script>

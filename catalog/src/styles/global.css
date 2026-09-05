@@ -1,0 +1,14 @@
+@import "tailwindcss";
+@import "@hubpav/hwio-ui/styles.css";
+@import "@hubpav/hwio-ui/prose.css";
+@import "@hubpav/hwio-ui/themes/hwio.css";
+@import "@hubpav/hwio-ui/themes/hwio-dark.css";
+@import "@hubpav/hwio-ui/themes/hwio-forestry.css";
+@import "@hubpav/hwio-ui/themes/hwio-forestry-dark.css";
+@import "@hubpav/hwio-ui/themes/er3o.css";
+@import "@hubpav/hwio-brand/fonts/inter.css";
+@import "@hubpav/hwio-brand/fonts/poppins.css";
+
+/* Catalog chrome only: fixtures render the real components untouched. */
+.catalog-stage { container-type: inline-size; }
+.catalog-stage[data-theme] { font-family: var(--hwio-font-sans); }

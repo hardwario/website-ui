@@ -1,0 +1,58 @@
+---
+/**
+ * Declarative HubSpot form posting through the website-forms Worker. Honeypot (class, not inline
+ * style), hs_language, lazy Turnstile, status line and dataLayer event are built in.
+ */
+import type { HWioFieldDef } from '../types';
+import HWioFormField from './HWioFormField.astro';
+import HWioTurnstile from './HWioTurnstile.astro';
+interface Props {
+  form: { key: string; guid: string; endpoint: string; event?: 'generate_lead' | 'newsletter_signup'; enrich?: boolean; kind?: string; source?: string };
+  fields: HWioFieldDef[];
+  labels: { submit: string; sending: string; success: string; error: string };
+  locale: string;
+  turnstileSiteKey?: string;
+  layout?: 'grid' | 'inline';
+  class?: string;
+}
+const { form, fields, labels, locale, turnstileSiteKey, layout = 'grid', class: className = '' } = Astro.props;
+const LAYOUT = { grid: 'grid gap-4 md:grid-cols-2', inline: 'flex flex-col gap-3 sm:flex-row sm:items-end' } as const;
+---
+<form
+  class:list={['hwio-form', className]}
+  method="post"
+  action={form.endpoint}
+  novalidate={undefined}
+  data-hs-form={form.key}
+  data-hs-form-guid={form.guid}
+  data-hs-endpoint={form.endpoint}
+  data-hs-event={form.event}
+  data-hs-enrich={form.enrich ? 'true' : undefined}
+  data-form-kind={form.kind}
+  data-inquiry-source={form.source}
+  data-hs-sending-msg={labels.sending}
+  data-hs-success-msg={labels.success}
+  data-hs-error-msg={labels.error}
+>
+  <div class={LAYOUT[layout]}>
+    {fields.map((field) => <HWioFormField field={field} />)}
+    {layout === 'inline' && <button type="submit" class="btn btn-primary">{labels.submit}</button>}
+  </div>
+  <input type="hidden" name="hs_language" value={locale} />
+  <div class="hwio-hp" aria-hidden="true">
+    <label>Leave this field empty <input type="text" name="hwio_hp" tabindex="-1" autocomplete="off" /></label>
+  </div>
+  {turnstileSiteKey && <div class="mt-4"><HWioTurnstile siteKey={turnstileSiteKey} /></div>}
+  <slot name="consent" />
+  {layout === 'grid' && (
+    <div class="mt-6 flex flex-wrap items-center gap-4">
+      <button type="submit" class="btn btn-primary btn-lg">{labels.submit}</button>
+      <slot name="after-submit" />
+    </div>
+  )}
+  <p data-hs-status hidden role="status" aria-live="polite"></p>
+</form>
+<script>
+  import { hwioFormsRuntime } from '@hubpav/hwio-web-runtime/forms';
+  hwioFormsRuntime();
+</script>

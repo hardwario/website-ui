@@ -1,0 +1,178 @@
+/*
+ * @hubpav/hwio-ui entry stylesheet. A site's global.css does:
+ *   @import "tailwindcss";
+ *   @import "@hubpav/hwio-ui/styles.css";
+ *   @import "@hubpav/hwio-ui/themes/hwio.css";        exactly one light theme (default: true)
+ *   @import "@hubpav/hwio-ui/themes/hwio-dark.css";   optional: at most one dark theme (prefersdark)
+ *   @import "@hubpav/hwio-brand/fonts/inter.css";
+ *   :root { --hwio-container: 1640px; }               landing preset only (hub sites keep 1275px)
+ */
+@plugin "daisyui" {
+  themes: false;
+  exclude: rootscrollgutter;
+  logs: false;
+}
+
+/* The package's own component sources, so Tailwind emits the classes they use. */
+@source "../components";
+
+@theme inline {
+  --font-sans: var(--hwio-font-sans);
+}
+
+/* One container for the fleet; width comes from the theme (hub) or the site (landing). */
+@utility container {
+  width: 100%;
+  margin-inline: auto;
+  max-width: var(--hwio-container);
+  padding-inline: var(--hwio-container-pad);
+}
+
+@layer base {
+  html {
+    font-family: var(--hwio-font-sans);
+    scroll-behavior: smooth;
+    scroll-padding-top: 100px;
+  }
+  html.is-routing {
+    scroll-behavior: auto;
+  }
+  body {
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    background-color: var(--color-base-100);
+    color: var(--color-base-content);
+  }
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  h1 { font-size: var(--text-4xl); line-height: var(--text-4xl--line-height); }
+  h2 { font-size: var(--text-3xl); line-height: var(--text-3xl--line-height); }
+  h3 { font-size: var(--text-2xl); line-height: var(--text-2xl--line-height); }
+  h4 { font-size: var(--text-xl); line-height: var(--text-xl--line-height); }
+  @media (width >= 48rem) {
+    h1 { font-size: var(--text-5xl); line-height: var(--text-5xl--line-height); }
+    h2 { font-size: var(--text-4xl); line-height: var(--text-4xl--line-height); }
+    h3 { font-size: var(--text-3xl); line-height: var(--text-3xl--line-height); }
+    h4 { font-size: var(--text-2xl); line-height: var(--text-2xl--line-height); }
+  }
+  @media (width >= 64rem) {
+    h1 { font-size: var(--text-6xl); line-height: var(--text-6xl--line-height); }
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-secondary);
+    outline-offset: 2px;
+  }
+  /* Font gate (owner ruling R3): text stays invisible until the face decodes; a bounded
+     failure pins the metric-matched fallback so nothing repaints later. */
+  html.fonts-loading body > :not([data-hwio-font-exempt]) {
+    visibility: hidden;
+  }
+  html.fonts-failed {
+    --hwio-font-sans: 'Inter Fallback', ui-sans-serif, system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  .hwio-section { padding-block: calc(var(--spacing) * 24); }
+  .hwio-section-compact { padding-block: calc(var(--spacing) * 16); }
+  @media (width >= 64rem) {
+    .hwio-section { padding-block: calc(var(--spacing) * 32); }
+    .hwio-section-compact { padding-block: calc(var(--spacing) * 20); }
+  }
+  .hwio-eyebrow {
+    color: var(--color-accent);
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+  .hwio-lead {
+    font-size: var(--text-lg);
+    color: color-mix(in oklab, var(--color-base-content) 75%, transparent);
+  }
+  .hwio-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: calc(var(--spacing) * 1.5) calc(var(--spacing) * 3);
+    border-radius: 9999px;
+    background: color-mix(in oklab, var(--color-base-content) 6%, transparent);
+    font-size: var(--text-sm);
+    font-weight: 500;
+  }
+  /* Honeypot: off-screen, never display:none (bots check that), no inline style attribute. */
+  .hwio-hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    opacity: 0;
+  }
+  [data-hs-status] {
+    margin-top: calc(var(--spacing) * 3);
+    font-size: var(--text-sm);
+    line-height: 1.4;
+  }
+  [data-hs-status].hs-status-success { color: var(--color-success); }
+  [data-hs-status].hs-status-error { color: var(--color-error); }
+
+  /* Scroll reveal: visible at rest for no-JS, animates in once the runtime marks it. */
+  .js [data-hwio-reveal]:not([data-hwio-revealed]) {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  [data-hwio-reveal] {
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  [data-hwio-reveal][data-hwio-revealed] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Count-up: reserve the width of the final value so the layout never jumps. */
+  .hwio-stat-value {
+    display: block;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  /* Logo marquee */
+  .hwio-marquee-track {
+    width: max-content;
+    animation: hwio-marquee 38s linear infinite;
+    will-change: transform;
+  }
+  .hwio-marquee-track:hover,
+  .hwio-marquee-track:focus-within {
+    animation-play-state: paused;
+  }
+  @keyframes hwio-marquee {
+    to { transform: translate3d(-25%, 0, 0); }
+  }
+  .hwio-logo-grey {
+    filter: grayscale(100%);
+    opacity: 0.55;
+    transition: filter 0.3s, opacity 0.3s;
+  }
+  .hwio-logo-grey:hover { filter: none; opacity: 1; }
+  [data-theme$='-dark'] .hwio-logo-grey { filter: grayscale(100%) invert(1); }
+  [data-theme$='-dark'] .hwio-logo-grey:hover { filter: grayscale(100%) invert(1); opacity: 1; }
+
+  .hwio-theme-transition,
+  .hwio-theme-transition *,
+  .hwio-theme-transition *::before,
+  .hwio-theme-transition *::after {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-hwio-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
+    .hwio-marquee-track { animation: none; transform: none; will-change: auto; }
+    .hwio-marquee-track > [aria-hidden='true'] { display: none; }
+  }
+}

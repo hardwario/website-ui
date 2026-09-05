@@ -1,0 +1,41 @@
+{
+  "name": "@hubpav/hwio-web-runtime",
+  "version": "0.0.0",
+  "description": "Framework-free browser runtime for the HARDWARIO websites: consent (Consent Mode v2 + GTM), HubSpot forms with Turnstile, attribution, theme, CTA tracking and small behaviours. View-transition safe.",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hardwario/website-ui.git",
+    "directory": "packages/web-runtime"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "exports": {
+    "./mount": "./dist/mount.js",
+    "./consent": "./dist/consent.js",
+    "./consent-core": "./dist/consent-core.js",
+    "./forms": "./dist/forms.js",
+    "./forms-core": "./dist/forms-core.js",
+    "./turnstile": "./dist/turnstile.js",
+    "./attribution": "./dist/attribution.js",
+    "./theme": "./dist/theme.js",
+    "./track": "./dist/track.js",
+    "./reveal": "./dist/reveal.js",
+    "./counter": "./dist/counter.js",
+    "./nav": "./dist/nav.js",
+    "./accordion": "./dist/accordion.js",
+    "./inline": "./dist/inline.js",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "node scripts/build-inline.mjs && tsc -p tsconfig.json",
+    "test": "node --test test/"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  },
+  "sideEffects": false
+}

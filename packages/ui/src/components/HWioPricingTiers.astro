@@ -1,0 +1,28 @@
+---
+import type { HWioCta } from '../types';
+import HWioButton from './HWioButton.astro';
+import HWioIcon from './HWioIcon.astro';
+interface Tier { name: string; price?: string; description?: string; features: string[]; cta?: HWioCta; featured?: boolean; badge?: string }
+interface Props { tiers: Tier[]; class?: string }
+const { tiers, class: className = '' } = Astro.props;
+const COLS = { 1: 'grid gap-6', 2: 'grid gap-6 md:grid-cols-2', 3: 'grid gap-6 md:grid-cols-3', 4: 'grid gap-6 md:grid-cols-2 lg:grid-cols-4' } as const;
+const cols = (Math.min(Math.max(tiers.length, 1), 4) as 1 | 2 | 3 | 4);
+---
+<div class:list={[COLS[cols], className]}>
+  {tiers.map((tier) => (
+    <article class:list={['card card-border bg-base-100 h-full', tier.featured ? 'border-primary shadow-lg' : '']}>
+      <div class="card-body">
+        <div class="flex items-start justify-between gap-2">
+          <h3 class="card-title">{tier.name}</h3>
+          {tier.badge && <span class="badge badge-primary">{tier.badge}</span>}
+        </div>
+        {tier.price && <p class="text-3xl font-bold">{tier.price}</p>}
+        {tier.description && <p class="opacity-80">{tier.description}</p>}
+        <ul class="my-4 space-y-2 text-sm">
+          {tier.features.map((f) => <li class="flex items-start gap-2"><HWioIcon name="check" size="sm" class="mt-0.5 shrink-0 text-accent" /><span>{f}</span></li>)}
+        </ul>
+        {tier.cta && <div class="card-actions mt-auto"><HWioButton href={tier.cta.href} external={tier.cta.external} variant={tier.featured ? 'primary' : 'secondary'} class="w-full" track={tier.cta.track}>{tier.cta.label}</HWioButton></div>}
+      </div>
+    </article>
+  ))}
+</div>

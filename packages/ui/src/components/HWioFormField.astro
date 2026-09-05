@@ -1,0 +1,29 @@
+---
+import type { HWioFieldDef } from '../types';
+interface Props { field: HWioFieldDef }
+const { field } = Astro.props;
+const id = `hwio-field-${field.name}`;
+const message = field.messageField ? { 'data-message-field': 'true', 'data-message-label': field.label } : {};
+---
+{field.type === 'hidden' ? (
+  <input type="hidden" name={field.name} value={field.value ?? ''} />
+) : field.type === 'checkbox' ? (
+  <label class:list={['label cursor-pointer items-start gap-3 text-base-content', field.half ? '' : 'md:col-span-2']}>
+    <input type="checkbox" id={id} name={field.name} class="checkbox checkbox-primary mt-0.5" required={field.required} {...message} />
+    <span class="text-sm"><slot name="label">{field.label}</slot></span>
+  </label>
+) : (
+  <fieldset class:list={['fieldset', field.half ? '' : 'md:col-span-2']}>
+    <legend class="fieldset-legend">{field.label}{field.required && <span aria-hidden="true"> *</span>}</legend>
+    {field.type === 'textarea' ? (
+      <textarea id={id} name={field.name} class="textarea w-full" rows={field.rows ?? 5} required={field.required} placeholder={field.placeholder} {...message}>{field.value ?? ''}</textarea>
+    ) : field.type === 'select' ? (
+      <select id={id} name={field.name} class="select w-full" required={field.required} {...message}>
+        {field.placeholder && <option value="" disabled selected>{field.placeholder}</option>}
+        {(field.options ?? []).map((o) => <option value={o.value}>{o.label}</option>)}
+      </select>
+    ) : (
+      <input id={id} type={field.type ?? 'text'} name={field.name} class="input w-full" required={field.required} placeholder={field.placeholder} autocomplete={field.autocomplete} value={field.value} {...message} />
+    )}
+  </fieldset>
+)}

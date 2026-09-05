@@ -1,0 +1,494 @@
+{
+  "$comment": "Source of truth for HARDWARIO web brand values. Edit here, run `npm run build`; every generated artifact (tokens.json, vars.css, docusaurus.css, the DaisyUI theme files in @hubpav/hwio-ui) is committed so a change shows its full downstream diff. Colours are hex; theme roles reference palette keys. Owner rulings 2026-09-05 (DESIGN-SYSTEM.md in website-admin): R1 navy primary + red accent, R2 dark kept (Zola neutral palette), R3 font-display block + gate, R7 enerooo palette preserved.",
+  "palette": {
+    "white": "#ffffff",
+    "sky": "#F1FAFF",
+    "gray-100": "#f3f4f6",
+    "gray-200": "#e5e7eb",
+    "gray-300": "#d1d5db",
+    "gray-500": "#6b6a6a",
+    "muted": "#5c5f70",
+    "ink": "#252532",
+    "red": "#e30427",
+    "rose": "#f43f5e",
+    "blue": "#016ad4",
+    "blue-light": "#009cfa",
+    "blue-dark": "#06367a",
+    "night-100": "#0f0f14",
+    "night-200": "#1a1a22",
+    "night-300": "#23232f",
+    "night-content": "#e7e7ee",
+    "green": "#15803d",
+    "amber": "#b45309",
+    "error": "#dc2626",
+    "forestry": "#2B7036",
+    "forestry-light": "#5aa864",
+    "er3o-green": "#01CC9B",
+    "er3o-teal": "#14A0C0",
+    "er3o-teal-text": "#0C6678",
+    "er3o-heading": "#19768B",
+    "er3o-ink": "#061920",
+    "er3o-text": "#333333",
+    "er3o-gray-50": "#f9fafb"
+  },
+  "shape": {
+    "hwio": {
+      "radius-selector": "2rem",
+      "radius-field": "0.5rem",
+      "radius-box": "1rem",
+      "size-selector": "0.25rem",
+      "size-field": "0.28125rem",
+      "border": "1px",
+      "depth": "0",
+      "noise": "0"
+    },
+    "er3o": {
+      "radius-selector": "2rem",
+      "radius-field": "2rem",
+      "radius-box": "1.5rem",
+      "size-selector": "0.25rem",
+      "size-field": "0.28125rem",
+      "border": "1px",
+      "depth": "0",
+      "noise": "0"
+    }
+  },
+  "themes": {
+    "hwio": {
+      "scheme": "light",
+      "default": true,
+      "prefersdark": false,
+      "font": "inter",
+      "shape": "hwio",
+      "roles": {
+        "base-100": "white",
+        "base-200": "sky",
+        "base-300": "gray-100",
+        "base-content": "ink",
+        "primary": "blue-dark",
+        "primary-content": "white",
+        "secondary": "blue",
+        "secondary-content": "white",
+        "accent": "red",
+        "accent-content": "white",
+        "neutral": "ink",
+        "neutral-content": "gray-100",
+        "info": "blue-light",
+        "info-content": "blue-dark",
+        "success": "green",
+        "success-content": "white",
+        "warning": "amber",
+        "warning-content": "white",
+        "error": "error",
+        "error-content": "white"
+      }
+    },
+    "hwio-dark": {
+      "extends": "hwio",
+      "scheme": "dark",
+      "default": false,
+      "prefersdark": true,
+      "roles": {
+        "base-100": "night-100",
+        "base-200": "night-200",
+        "base-300": "night-300",
+        "base-content": "night-content",
+        "accent": "rose",
+        "accent-content": "night-100",
+        "neutral": "night-300",
+        "neutral-content": "night-content"
+      }
+    },
+    "hwio-forestry": {
+      "extends": "hwio",
+      "roles": {
+        "primary": "forestry",
+        "accent": "forestry"
+      }
+    },
+    "hwio-forestry-dark": {
+      "extends": "hwio-dark",
+      "roles": {
+        "primary": "forestry",
+        "accent": "forestry-light",
+        "accent-content": "night-100"
+      }
+    },
+    "er3o": {
+      "scheme": "light",
+      "default": false,
+      "prefersdark": false,
+      "font": "poppins",
+      "shape": "er3o",
+      "roles": {
+        "base-100": "white",
+        "base-200": "er3o-gray-50",
+        "base-300": "gray-100",
+        "base-content": "er3o-text",
+        "primary": "er3o-teal",
+        "primary-content": "white",
+        "secondary": "er3o-green",
+        "secondary-content": "er3o-ink",
+        "accent": "er3o-teal-text",
+        "accent-content": "white",
+        "neutral": "ink",
+        "neutral-content": "white",
+        "info": "er3o-heading",
+        "info-content": "white",
+        "success": "green",
+        "success-content": "white",
+        "warning": "amber",
+        "warning-content": "white",
+        "error": "error",
+        "error-content": "white"
+      },
+      "extras": {
+        "--er3o-gradient-from": "#01CC9B",
+        "--er3o-gradient-to": "#14A0C0"
+      }
+    }
+  },
+  "layout": {
+    "hub": {
+      "container": "1275px",
+      "pad": "27px"
+    },
+    "landing": {
+      "container": "1640px",
+      "pad": "27px"
+    }
+  },
+  "fonts": {
+    "display": "block",
+    "families": {
+      "inter": {
+        "family": "Inter",
+        "stack": "'Inter', 'Inter Fallback', ui-sans-serif, system-ui, sans-serif",
+        "weight": "100 900",
+        "format": "woff2-variations",
+        "faces": [
+          {
+            "file": "inter-latin.woff2",
+            "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+          },
+          {
+            "file": "inter-latin-ext.woff2",
+            "unicodeRange": "U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF"
+          }
+        ],
+        "fallback": {
+          "family": "Inter Fallback",
+          "local": "Arial",
+          "sizeAdjust": "107.40%",
+          "ascent": "90.20%",
+          "descent": "22.48%",
+          "lineGap": "0%"
+        }
+      },
+      "poppins": {
+        "family": "Poppins",
+        "stack": "'Poppins', 'Poppins Fallback', ui-sans-serif, system-ui, sans-serif",
+        "weight": "400",
+        "format": "woff2",
+        "faces": [
+          {
+            "file": "poppins-400-latin.woff2",
+            "weight": "400",
+            "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+          },
+          {
+            "file": "poppins-400-latin-ext.woff2",
+            "weight": "400",
+            "unicodeRange": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF"
+          },
+          {
+            "file": "poppins-600-latin.woff2",
+            "weight": "600",
+            "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+          },
+          {
+            "file": "poppins-600-latin-ext.woff2",
+            "weight": "600",
+            "unicodeRange": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF"
+          },
+          {
+            "file": "poppins-700-latin.woff2",
+            "weight": "700",
+            "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+          },
+          {
+            "file": "poppins-700-latin-ext.woff2",
+            "weight": "700",
+            "unicodeRange": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF"
+          }
+        ],
+        "fallback": {
+          "family": "Poppins Fallback",
+          "local": "Arial",
+          "sizeAdjust": "112%"
+        }
+      }
+    }
+  },
+  "footerSites": {
+    "order": [
+      "www",
+      "docs",
+      "engineering",
+      "studio",
+      "academy",
+      "stem"
+    ],
+    "labels": {
+      "www": "HARDWARIO.com",
+      "docs": "Docs",
+      "engineering": "Engineering",
+      "studio": "Studio",
+      "academy": "Academy",
+      "stem": "STEM"
+    }
+  },
+  "sites": [
+    {
+      "key": "www",
+      "label": "HARDWARIO.com",
+      "url": "https://www.hardwario.com",
+      "locales": [
+        "en",
+        "cs",
+        "de",
+        "sk",
+        "pl"
+      ],
+      "defaultLocale": "en",
+      "theme": "hwio",
+      "layout": "hub",
+      "strip": {
+        "show": true,
+        "omit": []
+      },
+      "gtm": "GTM-WGV5D8TM"
+    },
+    {
+      "key": "docs",
+      "label": "Docs",
+      "url": "https://docs.hardwario.com",
+      "locales": [
+        "en",
+        "cs"
+      ],
+      "defaultLocale": "en",
+      "theme": "hwio",
+      "layout": "hub",
+      "strip": {
+        "show": true,
+        "omit": []
+      },
+      "gtm": null
+    },
+    {
+      "key": "engineering",
+      "label": "HARDWARIO Engineering",
+      "url": "https://hardwario.engineering",
+      "locales": [
+        "en",
+        "cs",
+        "de",
+        "sk",
+        "pl"
+      ],
+      "defaultLocale": "en",
+      "theme": "hwio",
+      "layout": "landing",
+      "strip": {
+        "show": false,
+        "omit": []
+      },
+      "gtm": "GTM-TD83PT2D"
+    },
+    {
+      "key": "studio",
+      "label": "HARDWARIO Studio",
+      "url": "https://hardwario.studio",
+      "locales": [
+        "en",
+        "cs",
+        "de",
+        "sk",
+        "pl"
+      ],
+      "defaultLocale": "en",
+      "theme": "hwio",
+      "layout": "landing",
+      "strip": {
+        "show": true,
+        "omit": []
+      },
+      "gtm": "GTM-PCNXBGDF"
+    },
+    {
+      "key": "academy",
+      "label": "HARDWARIO Academy",
+      "url": "https://hardwario.academy",
+      "locales": [
+        "en",
+        "cs",
+        "de",
+        "sk",
+        "pl"
+      ],
+      "defaultLocale": "en",
+      "theme": "hwio",
+      "layout": "landing",
+      "strip": {
+        "show": true,
+        "omit": [
+          "docs",
+          "stem"
+        ]
+      },
+      "gtm": "GTM-P723ZJGL"
+    },
+    {
+      "key": "stem",
+      "label": "HARDWARIO STEM",
+      "url": "https://stem.hardwario.com",
+      "locales": [
+        "en",
+        "cs"
+      ],
+      "defaultLocale": "en",
+      "theme": "hwio",
+      "layout": "hub",
+      "strip": {
+        "show": true,
+        "omit": []
+      },
+      "gtm": null
+    },
+    {
+      "key": "energy",
+      "label": "energeticky.report",
+      "url": "https://energeticky.report",
+      "locales": [
+        "cs",
+        "en"
+      ],
+      "defaultLocale": "cs",
+      "theme": "hwio",
+      "layout": "landing",
+      "strip": {
+        "show": false,
+        "omit": []
+      },
+      "gtm": null
+    },
+    {
+      "key": "facility",
+      "label": "facility.report",
+      "url": "https://facility.report",
+      "locales": [
+        "en",
+        "cs"
+      ],
+      "defaultLocale": "en",
+      "theme": "hwio",
+      "layout": "landing",
+      "strip": {
+        "show": false,
+        "omit": []
+      },
+      "gtm": null
+    },
+    {
+      "key": "factory",
+      "label": "factory.report",
+      "url": "https://factory.report",
+      "locales": [
+        "en",
+        "cs"
+      ],
+      "defaultLocale": "en",
+      "theme": "hwio",
+      "layout": "landing",
+      "strip": {
+        "show": false,
+        "omit": []
+      },
+      "gtm": null
+    },
+    {
+      "key": "forestry",
+      "label": "forestry.report",
+      "url": "https://forestry.report",
+      "locales": [
+        "en",
+        "cs"
+      ],
+      "defaultLocale": "en",
+      "theme": "hwio-forestry",
+      "layout": "landing",
+      "strip": {
+        "show": false,
+        "omit": []
+      },
+      "gtm": null
+    },
+    {
+      "key": "enerooo",
+      "label": "ENEROOO",
+      "url": "https://www.enerooo.cz",
+      "locales": [
+        "cs"
+      ],
+      "defaultLocale": "cs",
+      "theme": "er3o",
+      "layout": "hub",
+      "strip": {
+        "show": false,
+        "omit": []
+      },
+      "gtm": null
+    }
+  ],
+  "social": {
+    "linkedin": "https://www.linkedin.com/company/13187032",
+    "x": {
+      "cs": "https://x.com/hardwario_cz",
+      "default": "https://x.com/hardwario_en"
+    },
+    "instagram": "https://www.instagram.com/hardwario/",
+    "youtube": "https://www.youtube.com/c/hardwario",
+    "github": "https://github.com/hardwario",
+    "forum": "https://forum.hardwario.com"
+  },
+  "branches": [
+    {
+      "name": "HARDWARIO a.s.",
+      "country": "cz",
+      "mapUrl": "https://maps.app.goo.gl/uwNsT2fuUmTaoXc48"
+    },
+    {
+      "name": "HARDWARIO LLC",
+      "country": "us",
+      "mapUrl": "https://maps.app.goo.gl/YyUsBivFKc6yYVTr8"
+    },
+    {
+      "name": "HARDWARIO LTD",
+      "country": "uk",
+      "mapUrl": "https://maps.app.goo.gl/BPVS4T61Ao1h5HVJ9"
+    }
+  ],
+  "logos": {
+    "hardwario-logo.svg": "full logo, light surfaces",
+    "hardwario-logo-dark.svg": "full logo, dark surfaces",
+    "hardwario-logo-icon.svg": "icon-only mark",
+    "hardwario-mark-pos.svg": "mark, positive (footer)",
+    "hardwario-mark.svg": "mark (docs)",
+    "hardwario-mark-white.svg": "mark, white (docs dark)",
+    "favicon.svg": "favicon",
+    "favicon-32x32.png": "favicon 32px",
+    "apple-touch-icon.png": "iOS icon 180px",
+    "favicon.ico": "legacy favicon"
+  }
+}

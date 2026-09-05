@@ -1,0 +1,87 @@
+---
+/**
+ * Consent banner + settings dialog (Consent Mode v2, consent-gated GTM). Two variants:
+ * `categories` (the HARDWARIO sites: four purposes, granular save) and `simple` (enerooo today:
+ * accept / necessary only). Runtime: @hubpav/hwio-web-runtime/consent.
+ */
+interface CategoryCopy { title: string; description: string }
+interface Props {
+  version: string;
+  locale: string;
+  gtmId?: string | null;
+  policyHref: string;
+  variant?: 'categories' | 'simple';
+  labels: {
+    title: string; short: string; policy: string; acceptAll: string; rejectAll: string; customize?: string; close?: string; save?: string;
+    settingsTitle?: string; settingsIntro?: string; alwaysOn?: string;
+    categories?: { necessary: CategoryCopy; preferences: CategoryCopy; statistics: CategoryCopy; marketing: CategoryCopy };
+  };
+}
+const { version, locale, gtmId = null, policyHref, variant = 'categories', labels } = Astro.props;
+const optional = ['preferences', 'statistics', 'marketing'] as const;
+---
+<div data-hwio-consent data-version={version} data-gtm={gtmId ?? undefined} data-locale={locale} hidden role="region" aria-label={labels.title} class="fixed inset-x-0 bottom-0 z-[120] px-4 pb-4 sm:px-6 sm:pb-6" data-hwio-font-exempt>
+  <div class="card card-border mx-auto max-w-5xl bg-base-100 shadow-2xl">
+    <div class="card-body gap-4 md:flex-row md:items-center">
+      <div class="min-w-0 flex-1">
+        <p class="text-base font-semibold">{labels.title}</p>
+        <p class="mt-1 text-sm leading-6 opacity-80">
+          {labels.short}
+          <a href={policyHref} class="link link-secondary font-semibold">{labels.policy}</a>
+        </p>
+      </div>
+      <div class="flex flex-col gap-2 sm:flex-row md:shrink-0">
+        <button type="button" data-hwio-consent-reject class="btn btn-outline btn-secondary">{labels.rejectAll}</button>
+        {variant === 'categories' && labels.customize && <button type="button" data-hwio-consent-customize class="btn btn-outline btn-secondary">{labels.customize}</button>}
+        <button type="button" data-hwio-consent-accept class="btn btn-primary">{labels.acceptAll}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{variant === 'categories' && labels.categories && (
+  <div data-hwio-consent-modal hidden class="fixed inset-0 z-[130] flex items-center justify-center bg-neutral/60 px-4 py-6" data-hwio-font-exempt>
+    <section role="dialog" aria-modal="true" aria-labelledby="hwio-consent-settings-title" class="card max-h-[calc(100vh-3rem)] w-full max-w-2xl overflow-y-auto bg-base-100 shadow-2xl">
+      <div class="card-body gap-6">
+        <div class="flex items-start justify-between gap-6">
+          <div>
+            <h2 id="hwio-consent-settings-title" class="text-2xl font-bold">{labels.settingsTitle}</h2>
+            <p class="mt-2 text-sm leading-6 opacity-80">{labels.settingsIntro}</p>
+          </div>
+          <button type="button" data-hwio-consent-close class="btn btn-ghost btn-square btn-sm" aria-label={labels.close}>
+            <svg class="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+          </button>
+        </div>
+        <div class="space-y-3">
+          <div class="rounded-box border border-base-300 p-4">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <p class="font-semibold">{labels.categories.necessary.title}</p>
+                <p class="mt-1 text-sm leading-6 opacity-80">{labels.categories.necessary.description}</p>
+              </div>
+              <span class="badge badge-ghost shrink-0">{labels.alwaysOn}</span>
+            </div>
+          </div>
+          {optional.map((category) => (
+            <label class="flex cursor-pointer items-start justify-between gap-4 rounded-box border border-base-300 p-4 transition-colors hover:border-secondary">
+              <span>
+                <span class="block font-semibold">{labels.categories![category].title}</span>
+                <span class="mt-1 block text-sm leading-6 opacity-80">{labels.categories![category].description}</span>
+              </span>
+              <input type="checkbox" class="toggle toggle-primary mt-1 shrink-0" id={`hwio-consent-${category}`} name={`hwio-consent-${category}`} autocomplete="off" data-hwio-consent-toggle={category} />
+            </label>
+          ))}
+        </div>
+        <div class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+          <button type="button" data-hwio-consent-reject class="btn btn-outline btn-secondary">{labels.rejectAll}</button>
+          <button type="button" data-hwio-consent-save class="btn btn-outline btn-secondary">{labels.save}</button>
+          <button type="button" data-hwio-consent-accept class="btn btn-primary">{labels.acceptAll}</button>
+        </div>
+      </div>
+    </section>
+  </div>
+)}
+<script>
+  import { hwioConsentRuntime } from '@hubpav/hwio-web-runtime/consent';
+  hwioConsentRuntime();
+</script>

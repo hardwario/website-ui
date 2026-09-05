@@ -1,0 +1,12 @@
+---
+interface Props { eyebrow?: string; title: string; lead?: string; align?: 'left' | 'center'; level?: 1 | 2 | 3; class?: string }
+const ALIGN = { left: 'text-left', center: 'mx-auto text-center' } as const;
+const { eyebrow, title, lead, align = 'center', level = 2, class: className = '' } = Astro.props;
+const Heading = `h${level}` as 'h1' | 'h2' | 'h3';
+---
+<div class:list={['max-w-3xl', ALIGN[align], className]}>
+  {eyebrow && <p class="hwio-eyebrow mb-3">{eyebrow}</p>}
+  <Heading><slot name="title">{title}</slot></Heading>
+  {lead && <p class="hwio-lead mt-4">{lead}</p>}
+  <slot />
+</div>

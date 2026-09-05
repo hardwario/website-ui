@@ -1,0 +1,19 @@
+---
+/** Closing call-to-action band (www CTASection). The low-commitment fallback line is the `below` slot. */
+import type { HWioCta, HWioTone } from '../types';
+import HWioButton from './HWioButton.astro';
+import HWioSection from './HWioSection.astro';
+interface Props { id?: string; headline: string; description?: string; primary: HWioCta; secondary?: HWioCta; tone?: HWioTone; class?: string }
+const { id, headline, description, primary, secondary, tone = 'base', class: className = '' } = Astro.props;
+---
+<HWioSection id={id} tone={tone} class={className}>
+  <div class="mx-auto max-w-3xl text-center">
+    <h2 class="mb-6">{headline}</h2>
+    {description && <p class="hwio-lead mb-12">{description}</p>}
+    <div class="flex flex-wrap justify-center gap-4">
+      <HWioButton href={primary.href} external={primary.external} variant="primary" size="lg" arrow track={primary.track}>{primary.label}</HWioButton>
+      {secondary && <HWioButton href={secondary.href} external={secondary.external} variant="secondary" size="lg" track={secondary.track}>{secondary.label}</HWioButton>}
+    </div>
+    <div class="mt-10 text-sm opacity-80"><slot name="below" /></div>
+  </div>
+</HWioSection>

@@ -1,0 +1,15 @@
+---
+import HWioSection from '@hubpav/hwio-ui/components/HWioSection.astro';
+import HWioSectionHeader from '@hubpav/hwio-ui/components/HWioSectionHeader.astro';
+import HWioFaq from '@hubpav/hwio-ui/components/HWioFaq.astro';
+---
+<HWioSection id="faq">
+  <div class="mx-auto max-w-3xl">
+    <HWioSectionHeader title="Questions we hear often" />
+    <HWioFaq class="mt-10" jsonLd={false} items={[
+      { q: 'Who owns the intellectual property of the project?', a: 'The customer owns the agreed project-specific resulting IP. The contract defines the boundaries of background, third-party, open-source and pre-existing technology.' },
+      { q: 'Jak dlouho trvá první funkční vzorek?', a: 'Záleží na zadání; typicky mluvíme o týdnech, ne měsících. Konkrétní odhad dostanete písemně po prostudování briefu.' },
+      { q: 'Arbeiten Sie auch mit Stückzahlverpflichtungen?', a: 'Ja. Neben Zeit und Material oder Festpreis bieten wir Konditionen, die an eine Produktionsvolumen-Zusage gebunden sind.' },
+    ]} />
+  </div>
+</HWioSection>

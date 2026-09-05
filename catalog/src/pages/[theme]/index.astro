@@ -1,0 +1,14 @@
+---
+import CatalogLayout from '../../layouts/CatalogLayout.astro';
+import { THEMES, type CatalogTheme } from '../../themes';
+import { FIXTURES } from '../../fixtures/index';
+export function getStaticPaths() { return THEMES.map((theme) => ({ params: { theme } })); }
+const theme = Astro.params.theme as CatalogTheme;
+const modules = import.meta.glob<{ default: (props: Record<string, unknown>) => unknown }>('../../fixtures/*.astro', { eager: true });
+const fixtures = FIXTURES.filter((f) => !('standalone' in f && f.standalone));
+---
+<CatalogLayout title={`All components · ${theme}`} theme={theme}>
+  <div class="catalog-stage" data-theme={theme} data-catalog-all>
+    {fixtures.map((f) => { const Fixture = modules[`../../fixtures/${f.file}.astro`].default as any; return <div data-fixture={f.slug}><Fixture /></div>; })}
+  </div>
+</CatalogLayout>

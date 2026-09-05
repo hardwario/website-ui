@@ -1,0 +1,42 @@
+---
+import type { HWioTrack } from '../types';
+import HWioIcon from './HWioIcon.astro';
+/**
+ * Link or button on DaisyUI `btn`. Labels are slot content (sites own their copy; owner rule:
+ * imperative verb, no article). `track` writes the measurement attributes data-track / data-track-location.
+ */
+interface Props {
+  href?: string;
+  external?: boolean;
+  variant?: 'primary' | 'secondary' | 'ghost' | 'neutral' | 'link';
+  size?: 'sm' | 'md' | 'lg' | 'wide';
+  track?: HWioTrack;
+  arrow?: boolean;
+  type?: 'button' | 'submit';
+  class?: string;
+  [key: string]: unknown;
+}
+const VARIANT = {
+  primary: 'btn btn-primary',
+  secondary: 'btn btn-outline btn-secondary',
+  ghost: 'btn btn-ghost',
+  neutral: 'btn btn-neutral',
+  link: 'btn btn-link',
+} as const;
+const SIZE = { sm: 'btn-sm', md: '', lg: 'btn-lg', wide: 'btn-wide' } as const;
+const { href, external = false, variant = 'primary', size = 'md', track, arrow = false, type = 'button', class: className = '', ...rest } = Astro.props;
+const classes = [VARIANT[variant], SIZE[size], className];
+const trackAttrs = track ? { 'data-track': track.id, 'data-track-location': track.location } : {};
+---
+{href ? (
+  <a href={href} class:list={classes} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined} {...trackAttrs} {...rest}>
+    <slot />
+    {arrow && <HWioIcon name="arrow-right" size="sm" />}
+    {external && !arrow && <HWioIcon name="external" size="sm" />}
+  </a>
+) : (
+  <button type={type} class:list={classes} {...trackAttrs} {...rest}>
+    <slot />
+    {arrow && <HWioIcon name="arrow-right" size="sm" />}
+  </button>
+)}

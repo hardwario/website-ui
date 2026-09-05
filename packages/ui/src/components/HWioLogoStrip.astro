@@ -1,0 +1,29 @@
+---
+/** Customer/partner logos as a static row or an infinite marquee (paused on hover, static under reduced motion). */
+import type { HWioTone } from '../types';
+interface Logo { src: string; alt: string; href?: string; width: number; height: number; class?: string }
+interface Props { id?: string; logos: Logo[]; label?: string; marquee?: boolean; grey?: boolean; tone?: HWioTone; class?: string }
+const { id, logos, label, marquee = true, grey = true, tone = 'base', class: className = '' } = Astro.props;
+const TONE = { base: 'bg-base-100', alt: 'bg-base-200', neutral: 'bg-neutral text-neutral-content' } as const;
+const FADE = { base: 'from-base-100', alt: 'from-base-200', neutral: 'from-neutral' } as const;
+const groups = marquee ? [0, 1, 2, 3] : [0];
+---
+<section id={id} class:list={['overflow-hidden border-y border-base-300 py-10', TONE[tone], className]}>
+  {label && <div class="container"><p class="mb-8 text-center text-sm font-semibold opacity-70">{label}</p></div>}
+  <div class="relative">
+    {marquee && <div class:list={['pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r to-transparent md:w-32', FADE[tone]]}></div>}
+    {marquee && <div class:list={['pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l to-transparent md:w-32', FADE[tone]]}></div>}
+    <div class:list={[marquee ? 'hwio-marquee-track flex' : 'container flex flex-wrap items-center justify-center gap-x-12 gap-y-6']} role="group" aria-label={label}>
+      {groups.map((g) => (
+        <div class="flex shrink-0 items-center" aria-hidden={g > 0 ? 'true' : undefined}>
+          {logos.map((logo) => {
+            const img = <img src={logo.src} alt={logo.alt} width={logo.width} height={logo.height} loading="lazy" decoding="async" class:list={['h-7 w-auto transition-transform duration-300 hover:scale-105', grey ? 'hwio-logo-grey' : '', logo.class]} />;
+            return logo.href
+              ? <a href={logo.href} target="_blank" rel="noopener noreferrer" class="mx-8" tabindex={g > 0 ? -1 : undefined}>{img}</a>
+              : <span class="mx-8">{img}</span>;
+          })}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

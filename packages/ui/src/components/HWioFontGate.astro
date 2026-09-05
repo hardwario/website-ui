@@ -1,0 +1,18 @@
+---
+/**
+ * Font policy (owner ruling R3, 2026-09-05): font-display block plus a pre-paint gate. Rendered by
+ * HWioSeoHead; preloads both faces, runs the static gate bootstrap (hash-stable; it reads
+ * data-hwio-font-* from <html>) and restores visibility without JavaScript.
+ */
+import { fontGate } from '@hubpav/hwio-web-runtime/inline';
+interface Props { files: string[] }
+const { files } = Astro.props;
+---
+{files.map((f) => <link rel="preload" href={f} as="font" type="font/woff2" crossorigin fetchpriority="high" />)}
+<script is:inline set:html={fontGate.code} />
+<noscript>
+  <style is:inline>
+    html.fonts-loading body > * { visibility: visible !important; }
+    html.fonts-loading { --hwio-font-sans: 'Inter Fallback', ui-sans-serif, system-ui, sans-serif; }
+  </style>
+</noscript>

@@ -1,0 +1,16 @@
+---
+/** The "HARDWARIO websites" strip. Pass the entries from hwioFooterSites() in @hubpav/hwio-brand. */
+interface Props { items: { key: string; label: string; href: string }[]; label: string; class?: string }
+const { items, label, class: className = '' } = Astro.props;
+---
+{items.length > 0 && (
+  <nav class:list={['flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1 text-sm', className]} aria-label={label}>
+    <span class="w-full text-center opacity-70 sm:w-auto sm:text-left">{label}:</span>
+    {items.map((site, i) => (
+      <>
+        {i > 0 && <span class="opacity-50" aria-hidden="true">&middot;</span>}
+        <a href={site.href} target="_blank" rel="noopener noreferrer" class="link link-hover">{site.label}</a>
+      </>
+    ))}
+  </nav>
+)}

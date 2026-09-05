@@ -1,0 +1,29 @@
+{
+  "name": "catalog",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Component catalog for @hubpav/hwio-ui: every HWio component under every theme, the owner's review surface and the visual-regression target.",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test:vrt": "playwright test",
+    "test:vrt:update": "playwright test --update-snapshots"
+  },
+  "dependencies": {
+    "@hubpav/hwio-brand": "0.0.0",
+    "@hubpav/hwio-ui": "0.0.0",
+    "@hubpav/hwio-web-runtime": "0.0.0",
+    "@hubpav/hwio-web-worker": "0.0.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.3.1",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@playwright/test": "^1.63.0",
+    "typescript": "^6.0.3"
+  }
+}

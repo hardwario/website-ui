@@ -1,0 +1,41 @@
+/* Generated from brand.json by @hubpav/hwio-ui (scripts/build-themes.mjs). Theme "hwio". */
+@plugin "daisyui/theme" {
+  name: "hwio";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+  --color-base-100: #ffffff;
+  --color-base-200: #F1FAFF;
+  --color-base-300: #f3f4f6;
+  --color-base-content: #252532;
+  --color-primary: #06367a;
+  --color-primary-content: #ffffff;
+  --color-secondary: #016ad4;
+  --color-secondary-content: #ffffff;
+  --color-accent: #e30427;
+  --color-accent-content: #ffffff;
+  --color-neutral: #252532;
+  --color-neutral-content: #f3f4f6;
+  --color-info: #009cfa;
+  --color-info-content: #06367a;
+  --color-success: #15803d;
+  --color-success-content: #ffffff;
+  --color-warning: #b45309;
+  --color-warning-content: #ffffff;
+  --color-error: #dc2626;
+  --color-error-content: #ffffff;
+  --radius-selector: 2rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.28125rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+:root, [data-theme="hwio"] {
+  --hwio-font-sans: 'Inter', 'Inter Fallback', ui-sans-serif, system-ui, sans-serif;
+  --hwio-container: 1275px;
+  --hwio-container-pad: 27px;
+}

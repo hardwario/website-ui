@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.astro/
+catalog/test-results/
+catalog/playwright-report/
+*.log
+.DS_Store

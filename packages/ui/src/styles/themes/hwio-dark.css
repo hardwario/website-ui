@@ -1,0 +1,47 @@
+/* Generated from brand.json by @hubpav/hwio-ui (scripts/build-themes.mjs). Theme "hwio-dark". */
+@plugin "daisyui/theme" {
+  name: "hwio-dark";
+  default: false;
+  prefersdark: true;
+  color-scheme: dark;
+  --color-base-100: #0f0f14;
+  --color-base-200: #1a1a22;
+  --color-base-300: #23232f;
+  --color-base-content: #e7e7ee;
+  --color-primary: #06367a;
+  --color-primary-content: #ffffff;
+  --color-secondary: #016ad4;
+  --color-secondary-content: #ffffff;
+  --color-accent: #f43f5e;
+  --color-accent-content: #0f0f14;
+  --color-neutral: #23232f;
+  --color-neutral-content: #e7e7ee;
+  --color-info: #009cfa;
+  --color-info-content: #06367a;
+  --color-success: #15803d;
+  --color-success-content: #ffffff;
+  --color-warning: #b45309;
+  --color-warning-content: #ffffff;
+  --color-error: #dc2626;
+  --color-error-content: #ffffff;
+  --radius-selector: 2rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.28125rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+[data-theme="hwio-dark"] {
+  --hwio-font-sans: 'Inter', 'Inter Fallback', ui-sans-serif, system-ui, sans-serif;
+  --hwio-container: 1275px;
+  --hwio-container-pad: 27px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --hwio-font-sans: 'Inter', 'Inter Fallback', ui-sans-serif, system-ui, sans-serif;
+  }
+}

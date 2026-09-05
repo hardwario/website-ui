@@ -1,0 +1,19 @@
+---
+/** Renders breadcrumb items (the site derives them) with optional BreadcrumbList JSON-LD. */
+import type { HWioLinkItem } from '../types';
+interface Props { items: (HWioLinkItem & { noLink?: boolean })[]; label: string; siteUrl?: string; jsonLd?: boolean; class?: string }
+const { items, label, siteUrl = '', jsonLd = true, class: className = '' } = Astro.props;
+const ld = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: items.filter((i) => !i.noLink).map((i, n) => ({ '@type': 'ListItem', position: n + 1, name: i.label, item: i.href.startsWith('http') ? i.href : `${siteUrl}${i.href}` })) };
+---
+{items.length > 1 && (
+  <nav aria-label={label} class:list={['container pt-2 text-sm', className]}>
+    <div class="breadcrumbs">
+      <ul>
+        {items.map((item, i) => (
+          <li>{i === items.length - 1 || item.noLink ? <span aria-current={i === items.length - 1 ? 'page' : undefined}>{item.label}</span> : <a href={item.href}>{item.label}</a>}</li>
+        ))}
+      </ul>
+    </div>
+    {jsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(ld)} />}
+  </nav>
+)}

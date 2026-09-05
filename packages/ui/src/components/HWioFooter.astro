@@ -1,0 +1,96 @@
+---
+/**
+ * Site footer on the neutral surface: social bar, logo slot, link columns, branches, legal row
+ * with the cookie-settings button, the cross-site strip, copyright and tagline. All strings are props.
+ */
+import type { HWioLinkItem } from '../types';
+import HWioIcon from './HWioIcon.astro';
+import HWioFooterSites from './HWioFooterSites.astro';
+
+interface Column { title: string; links: HWioLinkItem[] }
+interface Props {
+  columns: Column[];
+  social?: { icon: 'linkedin' | 'x' | 'instagram' | 'youtube' | 'github' | 'forum'; label: string; href: string }[];
+  branches?: { title: string; items: { name: string; country: string; mapUrl: string }[] };
+  legal?: HWioLinkItem[];
+  cookieSettingsLabel?: string;
+  sites?: { items: { key: string; label: string; href: string }[]; label: string };
+  copyright: string;
+  tagline?: string;
+  class?: string;
+}
+const { columns, social = [], branches, legal = [], cookieSettingsLabel, sites, copyright, tagline, class: className = '' } = Astro.props;
+const linkClass = 'link link-hover inline-flex items-center gap-1';
+---
+<footer class:list={['bg-neutral text-neutral-content', className]} data-hwio-footer>
+  {social.length > 0 && (
+    <div class="border-b border-neutral-content/10">
+      <div class="container flex justify-center gap-6 py-6">
+        {social.filter((s) => s.icon !== 'forum').map((s) => (
+          <a href={s.href} target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors" aria-label={s.label}>
+            <HWioIcon name={s.icon} class="size-9" />
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <div class="container py-12 lg:py-16">
+    <div class="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-6">
+      <div class="hidden md:col-span-3 md:flex lg:col-span-1 lg:block">
+        <slot name="logo" />
+      </div>
+      {branches && (
+        <div>
+          <p class="mb-4 font-medium">{branches.title}</p>
+          <div class="space-y-2 text-base">
+            {branches.items.map((b) => (
+              <div>
+                <p class="opacity-80">{b.name}</p>
+                <a href={b.mapUrl} target="_blank" rel="noopener noreferrer" class={linkClass}>{b.country}<HWioIcon name="external" size="sm" /></a>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      {columns.map((col) => (
+        <div>
+          <p class="mb-4 font-medium">{col.title}</p>
+          <ul class="space-y-1 text-base">
+            {col.links.map((l) => (
+              <li>
+                <a href={l.href} target={l.external ? '_blank' : undefined} rel={l.external ? 'noopener noreferrer' : undefined} class={linkClass} data-track={l.track?.id} data-track-location={l.track?.location ?? 'footer'}>
+                  {l.label}{l.external && <HWioIcon name="external" size="sm" />}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+      {(legal.length > 0 || cookieSettingsLabel) && (
+        <div>
+          <slot name="legal-title" />
+          <ul class="space-y-1 text-base">
+            {legal.map((l) => (
+              <li><a href={l.href} target={l.external ? '_blank' : undefined} rel={l.external ? 'noopener noreferrer' : undefined} class={linkClass}>{l.label}{l.external && <HWioIcon name="download" size="sm" />}</a></li>
+            ))}
+            {cookieSettingsLabel && <li><button type="button" data-hwio-cookie-settings class="link link-hover text-left">{cookieSettingsLabel}</button></li>}
+          </ul>
+        </div>
+      )}
+    </div>
+  </div>
+
+  {sites && sites.items.length > 0 && (
+    <div class="border-t border-neutral-content/10">
+      <div class="container py-5"><HWioFooterSites items={sites.items} label={sites.label} /></div>
+    </div>
+  )}
+
+  <div class="border-t border-neutral-content/10">
+    <div class="container flex flex-col items-center justify-between gap-4 py-6 text-sm opacity-80 md:flex-row">
+      <p>{copyright}</p>
+      {tagline && <p class="text-center">{tagline}</p>}
+    </div>
+  </div>
+</footer>

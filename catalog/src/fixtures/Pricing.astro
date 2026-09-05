@@ -1,0 +1,13 @@
+---
+import HWioSection from '@hubpav/hwio-ui/components/HWioSection.astro';
+import HWioSectionHeader from '@hubpav/hwio-ui/components/HWioSectionHeader.astro';
+import HWioPricingTiers from '@hubpav/hwio-ui/components/HWioPricingTiers.astro';
+---
+<HWioSection id="packages" tone="alt">
+  <HWioSectionHeader title="Learning paths" lead="Three ways to start, each with the same hardware." />
+  <HWioPricingTiers class="mt-12" tiers={[
+    { name: 'Starter', description: 'One kit, one classroom', features: ['TOWER Core Module', 'Two sensor modules', 'Getting-started lessons'], cta: { label: 'Visit Store', href: 'https://www.hardwario.store/', external: true } },
+    { name: 'Classroom', description: 'Sada pro celou třídu', features: ['Deset stavebnic', 'Metodika pro učitele', 'Školení pro pedagogy', 'Podpora e-mailem'], cta: { label: 'Plan pilot', href: '#contact' }, featured: true, badge: 'Recommended' },
+    { name: 'School', description: 'Für mehrere Klassen und Fächer', features: ['Individuelle Zusammenstellung', 'Lehrerschulung vor Ort', 'Grafana-Dashboards'], cta: { label: 'Book consultation', href: '#contact' } },
+  ]} />
+</HWioSection>

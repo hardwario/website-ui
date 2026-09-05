@@ -1,0 +1,35 @@
+{
+  "name": "@hubpav/hwio-web-worker",
+  "version": "0.0.0",
+  "description": "Shared Cloudflare Worker handler and security-header builder for the HARDWARIO static sites: canonical-host redirect, CSP report collector, Early Hints, _headers generation.",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hardwario/website-ui.git",
+    "directory": "packages/web-worker"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./headers": {
+      "types": "./dist/headers.d.ts",
+      "default": "./dist/headers.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "node --test test/"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  },
+  "sideEffects": false
+}

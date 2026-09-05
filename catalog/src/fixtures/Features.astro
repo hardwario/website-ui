@@ -1,0 +1,14 @@
+---
+import HWioSection from '@hubpav/hwio-ui/components/HWioSection.astro';
+import HWioSectionHeader from '@hubpav/hwio-ui/components/HWioSectionHeader.astro';
+import HWioFeatureGrid from '@hubpav/hwio-ui/components/HWioFeatureGrid.astro';
+---
+<HWioSection id="features" tone="alt">
+  <HWioSectionHeader eyebrow="Why it fits" title="Real technology learners reuse in advanced study" lead="Každý panel zobrazuje sdílené komponenty pod jedním kandidátním tématem; kopie je zástupná, komponenty jsou skutečné." />
+  <HWioFeatureGrid class="mt-12" columns={4} items={[
+    { icon: 'check', title: 'STM32 low-power MCUs', text: 'Industrial-grade microcontrollers, the same family used in shipped products.' },
+    { icon: 'globe', title: 'Rust and Embassy firmware', text: 'Memory-safe firmware with an async runtime, a Rust CLI on the host side.' },
+    { icon: 'bag', title: 'Secure sub-GHz radio', text: 'Dlouhý dosah a nízká spotřeba pro měření ve třídách i v terénu.' },
+    { icon: 'mail', title: 'MQTT, Node-RED, InfluxDB, Grafana', text: 'Ein durchgängiger Datenpfad vom Sensor bis zum Dashboard.', href: '#' },
+  ]} />
+</HWioSection>

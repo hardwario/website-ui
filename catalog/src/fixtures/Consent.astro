@@ -1,0 +1,22 @@
+---
+import HWioCookieConsent from '@hubpav/hwio-ui/components/HWioCookieConsent.astro';
+---
+<div class="container py-24 text-sm opacity-70">The consent banner renders at the bottom of the viewport until a choice is stored (cookie <code>hwio_cookie_consent</code>). Use the footer's cookie-settings button on a real site to reopen it.</div>
+<HWioCookieConsent
+  version="2026-09-05"
+  locale="en"
+  gtmId={null}
+  policyHref="#"
+  labels={{
+    title: 'Cookie preferences',
+    short: 'We use necessary cookies to make this site work. With your consent, we use statistics and marketing technologies to improve the website and measure campaigns.',
+    policy: 'Cookie policy', acceptAll: 'Accept all', rejectAll: 'Reject all', customize: 'Customize', close: 'Close', save: 'Save preferences',
+    settingsTitle: 'Manage cookie preferences', settingsIntro: 'Choose which optional purposes HARDWARIO may use on this website. You can change or withdraw your consent anytime from the footer.', alwaysOn: 'Always on',
+    categories: {
+      necessary: { title: 'Necessary', description: 'Required for consent storage, security, forms, and core website functions.' },
+      preferences: { title: 'Preferences', description: 'Remember choices such as display preferences.' },
+      statistics: { title: 'Statistics', description: 'Help us understand page performance and content usage.' },
+      marketing: { title: 'Marketing', description: 'Help us measure campaigns and show relevant ads.' },
+    },
+  }}
+/>

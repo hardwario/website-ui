@@ -1,0 +1,61 @@
+---
+import HWioSection from '@hubpav/hwio-ui/components/HWioSection.astro';
+import HWioSectionHeader from '@hubpav/hwio-ui/components/HWioSectionHeader.astro';
+import HWioButton from '@hubpav/hwio-ui/components/HWioButton.astro';
+import HWioThemeToggle from '@hubpav/hwio-ui/components/HWioThemeToggle.astro';
+import HWioLanguageSwitcher from '@hubpav/hwio-ui/components/HWioLanguageSwitcher.astro';
+---
+<HWioSection id="primitives">
+  <HWioSectionHeader title="DaisyUI primitives under this theme" align="left" />
+  <div class="mt-10 grid gap-10 lg:grid-cols-2">
+    <div class="space-y-6">
+      <div class="flex flex-wrap gap-3">
+        <HWioButton variant="primary" arrow>Book meeting</HWioButton>
+        <HWioButton variant="secondary">Visit Store</HWioButton>
+        <HWioButton variant="neutral">Request review</HWioButton>
+        <HWioButton variant="ghost">Plan pilot</HWioButton>
+        <HWioButton variant="link">Read the case study</HWioButton>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <HWioButton variant="primary" size="sm">Navštívit e-shop</HWioButton>
+        <HWioButton variant="primary">Shop besuchen</HWioButton>
+        <HWioButton variant="primary" size="lg">Odwiedź sklep</HWioButton>
+        <HWioButton variant="secondary" href="https://www.hardwario.com" external>External</HWioButton>
+      </div>
+      <div class="flex flex-wrap items-center gap-3">
+        <span class="badge badge-primary">Primary</span><span class="badge badge-secondary">Secondary</span><span class="badge badge-accent">Accent</span><span class="badge badge-neutral">Neutral</span><span class="badge badge-ghost">Ghost</span><span class="hwio-chip">Chip</span>
+      </div>
+      <div class="flex flex-wrap items-center gap-4">
+        <HWioThemeToggle label="Switch theme" />
+        <HWioLanguageSwitcher label="Language" items={[{ code: 'en', label: 'English', href: '#', current: true }, { code: 'cs', label: 'Čeština', href: '#' }]} />
+        <HWioLanguageSwitcher label="Language" variant="pills" items={[{ code: 'en', label: 'EN', href: '#', current: true }, { code: 'cs', label: 'CS', href: '#' }, { code: 'de', label: 'DE', href: '#' }]} />
+      </div>
+      <div role="alert" class="alert alert-info"><span>Info alert: the pilot ships on the recommended defaults.</span></div>
+      <div role="alert" class="alert alert-success"><span>Success alert: form submitted.</span></div>
+      <div role="alert" class="alert alert-error"><span>Error alert: the Worker rejected the token.</span></div>
+    </div>
+    <div class="space-y-6">
+      <div class="card card-border bg-base-100">
+        <div class="card-body">
+          <h3 class="card-title">Card title</h3>
+          <p>Cards carry the box radius from the theme; buttons carry the field radius.</p>
+          <div class="card-actions justify-end"><HWioButton size="sm">Book meeting</HWioButton></div>
+        </div>
+      </div>
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">Work email</legend>
+        <input type="email" class="input w-full" placeholder="name@company.com" />
+      </fieldset>
+      <div class="flex flex-wrap items-center gap-6">
+        <label class="label gap-3"><input type="checkbox" class="checkbox checkbox-primary" checked /> Checkbox</label>
+        <label class="label gap-3"><input type="checkbox" class="toggle toggle-primary" checked /> Toggle</label>
+        <select class="select"><option>Select</option><option>Option</option></select>
+      </div>
+      <div role="tablist" class="tabs tabs-border">
+        <a role="tab" class="tab tab-active">Overview</a><a role="tab" class="tab">Specifications</a><a role="tab" class="tab">Downloads</a>
+      </div>
+      <div class="breadcrumbs text-sm"><ul><li><a href="#">Home</a></li><li><a href="#">Products</a></li><li>CHESTER</li></ul></div>
+      <div class="hwio-prose max-w-none"><p>Prose paragraph with a <a href="#">link</a>, <strong>strong text</strong> and <code>inline code</code>.</p></div>
+    </div>
+  </div>
+</HWioSection>

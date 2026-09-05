@@ -1,0 +1,28 @@
+{
+  "name": "website-ui",
+  "private": true,
+  "version": "0.0.0",
+  "description": "HARDWARIO web design system: brand tokens, DaisyUI 5 themes, Astro components, shared web runtime and Worker handler.",
+  "license": "MIT",
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "catalog"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "npm run build -w packages/brand -w packages/web-runtime -w packages/web-worker -w packages/ui && npm run build -w catalog --if-present",
+    "test": "npm run test -ws --if-present",
+    "lint": "node scripts/policy-lint.mjs",
+    "check": "npm run lint && npm run build && npm run test",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "npm run build && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.29.0",
+    "typescript": "^6.0.3"
+  }
+}

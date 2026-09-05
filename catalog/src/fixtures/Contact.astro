@@ -1,0 +1,20 @@
+---
+import HWioContactSection from '@hubpav/hwio-ui/components/HWioContactSection.astro';
+import HWioHubSpotForm from '@hubpav/hwio-ui/components/HWioHubSpotForm.astro';
+---
+<HWioContactSection eyebrow="Contact" title="Tell us about your project" lead="Napište nám, co potřebujete postavit. Odpovíme do dvou pracovních dnů." person={{ name: 'Pavel Hübner', role: 'CEO, HARDWARIO', email: 'ask@hardwario.com', phone: '+420 775 159 734' }}>
+  <HWioHubSpotForm
+    form={{ key: 'contact', guid: '00000000-0000-0000-0000-000000000000', endpoint: 'https://submit.hardwario.com/api/submit', event: 'generate_lead', enrich: true }}
+    fields={[
+      { name: 'firstName', label: 'First name', required: true, half: true, autocomplete: 'given-name' },
+      { name: 'lastName', label: 'Last name', required: true, half: true, autocomplete: 'family-name' },
+      { name: 'email', label: 'Work email', type: 'email', required: true, half: true, autocomplete: 'email' },
+      { name: 'company', label: 'Company', half: true, autocomplete: 'organization' },
+      { name: 'budget', label: 'Budget range', type: 'select', placeholder: 'Choose a range', messageField: true, options: [{ value: 'under-50k', label: 'Under 50 000 EUR' }, { value: '50-200k', label: '50 000 to 200 000 EUR' }, { value: 'over-200k', label: 'Over 200 000 EUR' }] },
+      { name: 'message', label: 'Message', type: 'textarea', required: true },
+      { name: 'consent', label: 'I agree to be contacted about this request.', type: 'checkbox', required: true },
+    ]}
+    labels={{ submit: 'Send request', sending: 'Sending…', success: 'Thank you. We will get back to you within two working days.', error: 'Something went wrong. Please try again or write to ask@hardwario.com.' }}
+    locale="en"
+  />
+</HWioContactSection>
