@@ -12,7 +12,7 @@ private catalog. The program plan, owner rulings and rollout phases live in the 
 | `packages/ui` | `@hubpav/hwio-ui` | Astro components `src/components/HWio*.astro`, `styles.css` (Tailwind 4 entry with the DaisyUI plugin and `@source` for the components), `prose.css`, generated `themes/*.css`, `types.ts`, `schemas.ts`, `html.ts`, `integration.mjs` (`hwioUi()`). |
 | `packages/web-runtime` | `@hubpav/hwio-web-runtime` | Framework-free browser modules (consent, forms, turnstile, attribution, theme, track, reveal, counter, nav, accordion) and `inline` (static bootstrap scripts + SHA-256 hashes). Pure logic in `*-core.ts` is unit-tested with `node --test`. |
 | `packages/web-worker` | `@hubpav/hwio-web-worker` | `hwioWorker()` fetch handler and the security-header / `_headers` builder. |
-| `catalog` | private | Every component under every theme (`/<theme>/`, `/<theme>/<fixture>/`), Playwright visual regression, deployed noindex to ui.hardwario.com. |
+| `catalog` | private | Every component under every theme (`/<theme>/`, `/<theme>/<fixture>/`), Playwright visual regression, deployed noindex to https://ui.hardwario.com as Worker `website-ui-catalog` (Workers Builds trigger on `design-system`: root `/`, `npm ci && npm run build`, `npx wrangler deploy -c catalog/wrangler.jsonc`; the repo root is the build root because the catalog depends on the workspace packages). |
 
 Generated files are committed (`packages/brand/dist` is not; it is rebuilt), so a token change
 shows its downstream diff in `packages/ui/src/styles/themes/*.css`.

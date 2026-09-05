@@ -10,8 +10,8 @@ the shared web runtime, published as `@hubpav/hwio-*` npm packages.
 | `@hubpav/hwio-web-runtime` | consent (Consent Mode v2, GTM), HubSpot forms with Turnstile, attribution, theme, tracking, behaviours |
 | `@hubpav/hwio-web-worker` | Cloudflare Worker handler and `_headers` / CSP builder |
 
-Catalog: every component under every theme, at ui.hardwario.com (noindex).
+Catalog: every component under every theme, live at https://ui.hardwario.com (noindex); the Worker `website-ui-catalog` rebuilds from the `design-system` branch through Workers Builds.
 
-Status: scaffolding on the `design-system` branch; not yet released. Conventions for
+Status: 0.1.0 published; work continues on the `design-system` branch. Conventions for
 contributors and agents are in `AGENTS.md`. Code is MIT; HARDWARIO brand assets are trademarks
 (see `LICENSE`).
