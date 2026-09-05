@@ -31,8 +31,8 @@ const optional = ['preferences', 'statistics', 'marketing'] as const;
         </p>
       </div>
       <div class="flex flex-col gap-2 sm:flex-row md:shrink-0">
-        <button type="button" data-hwio-consent-reject class="btn btn-outline btn-secondary">{labels.rejectAll}</button>
-        {variant === 'categories' && labels.customize && <button type="button" data-hwio-consent-customize class="btn btn-outline btn-secondary">{labels.customize}</button>}
+        <button type="button" data-hwio-consent-reject class="btn btn-outline btn-primary">{labels.rejectAll}</button>
+        {variant === 'categories' && labels.customize && <button type="button" data-hwio-consent-customize class="btn btn-outline btn-primary">{labels.customize}</button>}
         <button type="button" data-hwio-consent-accept class="btn btn-primary">{labels.acceptAll}</button>
       </div>
     </div>
@@ -73,8 +73,8 @@ const optional = ['preferences', 'statistics', 'marketing'] as const;
           ))}
         </div>
         <div class="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-          <button type="button" data-hwio-consent-reject class="btn btn-outline btn-secondary">{labels.rejectAll}</button>
-          <button type="button" data-hwio-consent-save class="btn btn-outline btn-secondary">{labels.save}</button>
+          <button type="button" data-hwio-consent-reject class="btn btn-outline btn-primary">{labels.rejectAll}</button>
+          <button type="button" data-hwio-consent-save class="btn btn-outline btn-primary">{labels.save}</button>
           <button type="button" data-hwio-consent-accept class="btn btn-primary">{labels.acceptAll}</button>
         </div>
       </div>
