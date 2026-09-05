@@ -10,6 +10,7 @@ const THEME_VERSION_KEY = 'hwio_theme_consent_version';
 export function hwioResolvedScheme(): HWioScheme {
   const theme = document.documentElement.getAttribute('data-theme');
   if (theme) return theme.endsWith('-dark') ? 'dark' : 'light';
+  if (document.documentElement.classList.contains('dark')) return 'dark'; // legacy-ok: www's class toggle until P2
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
