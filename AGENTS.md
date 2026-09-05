@@ -43,6 +43,11 @@ shows its downstream diff in `packages/ui/src/styles/themes/*.css`.
 ## Working here
 
 - `npm ci`, then `npm run check` (lint, build, tests). `npm run dev -w catalog` for the catalog.
+- Update VRT baselines after a deliberate visual change: push a commit whose message contains
+  `[vrt-update]`; CI regenerates the screenshots in its Linux image and uploads them as the
+  `vrt-baselines` artifact; download it into `catalog/tests/__screenshots__` and commit
+  (`gh run download <run id> -n vrt-baselines -D catalog/tests/__screenshots__`). Never generate
+  baselines on macOS. The `VRT baselines` dispatch workflow becomes usable once it is on `main`.
 - Add a component: `packages/ui/src/components/HWioName.astro` + a fixture in
   `catalog/src/fixtures/` registered in `catalog/src/fixtures/index.ts`; run `astro check` in
   the catalog and the VRT before opening a PR.

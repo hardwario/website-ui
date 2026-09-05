@@ -17,8 +17,21 @@ jobs:
       - run: npm run build
       - run: npm test
       - run: npm run check -w catalog
+      # Baselines are generated only in this Linux image. A commit whose message contains
+      # [vrt-update] regenerates them and uploads them as the "vrt-baselines" artifact; download
+      # it into catalog/tests/__screenshots__ and commit (gh run download <run> -n vrt-baselines).
+      - name: Regenerate VRT baselines
+        if: contains(github.event.head_commit.message, '[vrt-update]')
+        run: |
+          npx playwright install --with-deps chromium
+          npm run test:vrt:update -w catalog
+      - uses: actions/upload-artifact@v4
+        if: contains(github.event.head_commit.message, '[vrt-update]')
+        with:
+          name: vrt-baselines
+          path: catalog/tests/__screenshots__
       - name: Visual regression (once baselines exist)
-        if: hashFiles('catalog/tests/__screenshots__/**') != ''
+        if: ${{ !contains(github.event.head_commit.message, '[vrt-update]') && hashFiles('catalog/tests/__screenshots__/**') != '' }}
         run: |
           npx playwright install --with-deps chromium
           npm run test:vrt -w catalog
