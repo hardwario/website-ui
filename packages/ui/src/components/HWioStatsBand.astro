@@ -2,8 +2,8 @@
 /** Proof numbers in a hairline band with dividers (direction A); counts up on first view unless `animate` is false. */
 interface Props { id?: string; items: { value: string | number; suffix?: string; label: string; description?: string }[]; animate?: boolean; class?: string }
 const { id, items, animate = true, class: className = '' } = Astro.props;
-const COLS = { 2: 'sm:grid-cols-2', 3: 'sm:grid-cols-3', 4: 'sm:grid-cols-2 lg:grid-cols-4' } as const;
-const cols = COLS[(Math.min(Math.max(items.length, 2), 4) as 2 | 3 | 4)];
+const COLS = { 2: 'sm:grid-cols-2', 3: 'sm:grid-cols-3', 4: 'sm:grid-cols-2 lg:grid-cols-4', 5: 'sm:grid-cols-2 lg:grid-cols-5' } as const;
+const cols = COLS[(Math.min(Math.max(items.length, 2), 5) as 2 | 3 | 4 | 5)];
 ---
 <section id={id} class:list={['border-y border-base-300 bg-base-100 text-base-content', className]}>
   <div class:list={['container grid py-9', cols]}>
@@ -11,7 +11,7 @@ const cols = COLS[(Math.min(Math.max(items.length, 2), 4) as 2 | 3 | 4)];
       const numeric = typeof s.value === 'number';
       return (
         <div class:list={['px-8 py-2', i > 0 ? 'sm:border-l sm:border-base-300' : '']}>
-          <div class="mb-2.5 text-[2.5rem] font-bold leading-none tracking-[-0.03em]">
+          <div class="mb-2.5 text-[2.25rem] font-bold leading-none tracking-[-0.03em] lg:text-[2.5rem]">
             <span class="hwio-stat-value" data-hwio-counter={animate && numeric ? 'true' : undefined} data-target={numeric ? String(s.value) : undefined} data-suffix={s.suffix ?? ''}>{s.value}{s.suffix ?? ''}</span>
           </div>
           <div class="text-[15px] font-semibold">{s.label}</div>
