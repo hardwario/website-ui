@@ -1,0 +1,31 @@
+---
+/** Two or three parallel offers, one of them the lead (www's "A live project or a technical evaluation?"). */
+import type { HWioCta } from '../types';
+import HWioButton from './HWioButton.astro';
+import HWioIcon from './HWioIcon.astro';
+interface Choice { label: string; title: string; text: string; points?: string[]; cta: HWioCta }
+interface Props { items: Choice[]; lead?: number; class?: string }
+const { items, lead = 0, class: className = '' } = Astro.props;
+const COLS = { 1: 'grid gap-6', 2: 'grid gap-6 md:grid-cols-2', 3: 'grid gap-6 md:grid-cols-3' } as const;
+const cols = COLS[(Math.min(Math.max(items.length, 1), 3) as 1 | 2 | 3)];
+---
+<div class:list={[cols, 'mx-auto max-w-[65rem]', className]}>
+  {items.map((c, i) => {
+    const isLead = i === lead;
+    return (
+      <article class:list={['card card-border flex h-full flex-col bg-base-100 border-t-[3px]', isLead ? 'border-t-accent' : 'border-t-base-300']}>
+        <div class="card-body gap-0 p-10">
+          <p class:list={['mb-4 text-sm font-semibold', isLead ? 'text-accent' : 'hwio-muted']}>{c.label}</p>
+          <h3 class="mb-3.5 text-[1.75rem] leading-[1.15] tracking-[-0.02em]">{c.title}</h3>
+          <p class="hwio-muted mb-6">{c.text}</p>
+          {c.points && c.points.length > 0 && (
+            <ul class="hwio-muted mb-8 flex flex-col gap-3 text-[15px]">
+              {c.points.map((pt) => <li class="flex items-start gap-3"><HWioIcon name="check" class="mt-0.5 shrink-0 text-accent" />{pt}</li>)}
+            </ul>
+          )}
+          <div class="mt-auto"><HWioButton href={c.cta.href} external={c.cta.external} variant={isLead ? 'primary' : 'secondary'} arrow={isLead} track={c.cta.track}>{c.cta.label}</HWioButton></div>
+        </div>
+      </article>
+    );
+  })}
+</div>

@@ -1,0 +1,12 @@
+---
+import HWioSection from '@hubpav/hwio-ui/components/HWioSection.astro';
+import HWioSectionHeader from '@hubpav/hwio-ui/components/HWioSectionHeader.astro';
+import HWioChoiceCards from '@hubpav/hwio-ui/components/HWioChoiceCards.astro';
+---
+<HWioSection id="paths">
+  <HWioSectionHeader eyebrow="Choose your starting point" title="A live project or a technical evaluation?" lead="Use the path that matches what you need to prove next." />
+  <HWioChoiceCards class="mt-14" items={[
+    { label: 'I have a customer project', title: 'Validate the architecture and rollout', text: 'Bring the use case, environment, data destination and expected scale. We will review the field layer with you.', points: ['Device and connectivity fit', 'Data handoff and ownership', 'Pilot-to-rollout risks'], cta: { label: 'Review your project', href: '#contact' } },
+    { label: 'I need to evaluate the stack', title: 'Get to the first payload', text: 'Choose a reference path, open the documentation and test real hardware without waiting for a sales process.', points: ['Open Zephyr-based SDKs', 'Quickstarts and real payloads', 'DevKit and reference applications'], cta: { label: 'Open the developer path', href: '#developers' } },
+  ]} />
+</HWioSection>

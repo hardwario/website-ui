@@ -1,5 +1,5 @@
 {
-  "$comment": "Source of truth for HARDWARIO web brand values. Edit here, run `npm run build`; every generated artifact (tokens.json, vars.css, docusaurus.css, the DaisyUI theme files in @hubpav/hwio-ui) is committed so a change shows its full downstream diff. Colours are hex; theme roles reference palette keys. Owner rulings 2026-09-05 (DESIGN-SYSTEM.md in website-admin): R1 navy primary + red accent, R2 dark kept (Zola neutral palette), R3 font-display block + gate, R7 enerooo palette preserved.",
+  "$comment": "Source of truth for HARDWARIO web brand values. Edit here, run `npm run build`; every generated artifact (tokens.json, vars.css, docusaurus.css, the DaisyUI theme files in @hubpav/hwio-ui) is committed so a change shows its full downstream diff. Colours are hex; theme roles reference palette keys. Owner rulings 2026-09-05 (DESIGN-SYSTEM.md in website-admin): R1 navy primary + red accent, R2 dark kept (Zola neutral palette), R3 font-display block + gate, R7 enerooo palette preserved. R9 (2026-09-05): visual direction A, www systematised: type ramp 56/40/28/22/17, 8 px rhythm, hairline borders (base-300 = gray-200), 48 px controls, sentence-case red kickers.",
   "palette": {
     "white": "#ffffff",
     "sky": "#F1FAFF",
@@ -37,7 +37,7 @@
       "radius-field": "0.5rem",
       "radius-box": "1rem",
       "size-selector": "0.25rem",
-      "size-field": "0.28125rem",
+      "size-field": "0.3rem",
       "border": "1px",
       "depth": "0",
       "noise": "0"
@@ -47,7 +47,7 @@
       "radius-field": "2rem",
       "radius-box": "1.5rem",
       "size-selector": "0.25rem",
-      "size-field": "0.28125rem",
+      "size-field": "0.3rem",
       "border": "1px",
       "depth": "0",
       "noise": "0"
@@ -63,7 +63,7 @@
       "roles": {
         "base-100": "white",
         "base-200": "sky",
-        "base-300": "gray-100",
+        "base-300": "gray-200",
         "base-content": "ink",
         "primary": "blue-dark",
         "primary-content": "white",
@@ -81,6 +81,9 @@
         "warning-content": "white",
         "error": "error",
         "error-content": "white"
+      },
+      "extras": {
+        "--hwio-kicker-on-neutral": "#f43f5e"
       }
     },
     "hwio-dark": {

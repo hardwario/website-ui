@@ -8,7 +8,7 @@ import HWioIcon from './HWioIcon.astro';
 interface Props {
   href?: string;
   external?: boolean;
-  variant?: 'primary' | 'secondary' | 'ghost' | 'neutral' | 'link';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'neutral' | 'inverse' | 'link';
   size?: 'sm' | 'md' | 'lg' | 'wide';
   track?: HWioTrack;
   arrow?: boolean;
@@ -18,9 +18,10 @@ interface Props {
 }
 const VARIANT = {
   primary: 'btn btn-primary',
-  secondary: 'btn btn-outline btn-secondary',
+  secondary: 'btn btn-outline btn-primary',
   ghost: 'btn btn-ghost',
   neutral: 'btn btn-neutral',
+  inverse: 'btn hwio-btn-inverse',
   link: 'btn btn-link',
 } as const;
 const SIZE = { sm: 'btn-sm', md: '', lg: 'btn-lg', wide: 'btn-wide' } as const;

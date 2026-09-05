@@ -1,30 +1,33 @@
 ---
-/** Two-column hero: copy + actions left, media slot right (or reversed). Title may be passed as a slot for inline markup. */
+/** Two-column hero (direction A): kicker, headline with optional accent line, lead, actions, checklist; media on a soft sky glow. */
 import type { HWioCta } from '../types';
 import HWioButton from './HWioButton.astro';
 import HWioIcon from './HWioIcon.astro';
-interface Props { id?: string; eyebrow?: string; title: string; lead?: string; actions?: HWioCta[]; checklist?: string[]; reverse?: boolean; class?: string }
-const { id, eyebrow, title, lead, actions = [], checklist = [], reverse = false, class: className = '' } = Astro.props;
+interface Props { id?: string; eyebrow?: string; title: string; accent?: string; lead?: string; actions?: HWioCta[]; checklist?: string[]; reverse?: boolean; glow?: boolean; class?: string }
+const { id, eyebrow, title, accent, lead, actions = [], checklist = [], reverse = false, glow = true, class: className = '' } = Astro.props;
 const VARIANT = { primary: 'primary', secondary: 'secondary', ghost: 'ghost' } as const;
 ---
 <section id={id} class:list={['bg-base-100 text-base-content', className]}>
-  <div class:list={['container grid items-center gap-12 py-16 lg:grid-cols-2 lg:py-24', reverse ? 'lg:[&>*:first-child]:order-2' : '']}>
+  <div class:list={['container grid items-center gap-12 py-16 lg:grid-cols-[7fr_5fr] lg:gap-16 lg:py-24', reverse ? 'lg:[&>*:first-child]:order-2' : '']}>
     <div>
-      {eyebrow && <p class="hwio-eyebrow mb-4">{eyebrow}</p>}
-      <h1><slot name="title">{title}</slot></h1>
-      {lead && <p class="hwio-lead mt-6 max-w-xl">{lead}</p>}
+      {eyebrow && <p class="hwio-kicker mb-5">{eyebrow}</p>}
+      <h1><slot name="title"><span class="block">{title}</span>{accent && <span class="block text-accent">{accent}</span>}</slot></h1>
+      {lead && <p class="hwio-lead mt-7 max-w-[37.5rem] text-xl">{lead}</p>}
       {actions.length > 0 && (
-        <div class="mt-8 flex flex-wrap gap-4">
+        <div class="mt-9 flex flex-wrap gap-3">
           {actions.map((a, i) => <HWioButton href={a.href} external={a.external} variant={VARIANT[a.variant ?? (i === 0 ? 'primary' : 'secondary')]} size="lg" arrow={i === 0} track={a.track}>{a.label}</HWioButton>)}
         </div>
       )}
       {checklist.length > 0 && (
-        <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm">
+        <ul class="hwio-muted mt-8 flex flex-wrap gap-x-8 gap-y-3 text-[15px]">
           {checklist.map((c) => <li class="inline-flex items-center gap-2"><HWioIcon name="check" size="sm" class="text-accent" />{c}</li>)}
         </ul>
       )}
       <slot name="extra" />
     </div>
-    <div class="relative"><slot name="media" /></div>
+    <div class:list={['relative flex items-center justify-center', glow ? 'hwio-hero-glow aspect-square rounded-3xl' : '']}><slot name="media" /></div>
   </div>
 </section>
+<style>
+  .hwio-hero-glow { background: radial-gradient(closest-side, var(--color-base-200) 0%, var(--color-base-200) 55%, var(--color-base-100) 100%); }
+</style>

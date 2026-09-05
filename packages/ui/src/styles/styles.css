@@ -42,28 +42,29 @@
     overflow-x: hidden;
     background-color: var(--color-base-100);
     color: var(--color-base-content);
+    font-size: 1.0625rem; /* 17 px body (direction A) */
+    line-height: 1.6;
   }
   button:not(:disabled),
   [role='button']:not(:disabled) {
     cursor: pointer;
   }
+  /* Type ramp (direction A): 56 / 40 / 28 / 22 / 17 on large screens, tighter tracking as size grows. */
   h1, h2, h3, h4, h5, h6 {
     font-weight: 700;
-    letter-spacing: -0.02em;
     text-wrap: balance;
   }
-  h1 { font-size: var(--text-4xl); line-height: var(--text-4xl--line-height); }
-  h2 { font-size: var(--text-3xl); line-height: var(--text-3xl--line-height); }
-  h3 { font-size: var(--text-2xl); line-height: var(--text-2xl--line-height); }
-  h4 { font-size: var(--text-xl); line-height: var(--text-xl--line-height); }
+  h1 { font-size: 2.5rem; line-height: 1.05; letter-spacing: -0.03em; }
+  h2 { font-size: 2rem; line-height: 1.1; letter-spacing: -0.025em; }
+  h3 { font-size: 1.375rem; line-height: 1.2; letter-spacing: -0.01em; }
+  h4 { font-size: 1.125rem; line-height: 1.3; letter-spacing: -0.005em; }
   @media (width >= 48rem) {
-    h1 { font-size: var(--text-5xl); line-height: var(--text-5xl--line-height); }
-    h2 { font-size: var(--text-4xl); line-height: var(--text-4xl--line-height); }
-    h3 { font-size: var(--text-3xl); line-height: var(--text-3xl--line-height); }
-    h4 { font-size: var(--text-2xl); line-height: var(--text-2xl--line-height); }
+    h1 { font-size: 3rem; }
+    h2 { font-size: 2.5rem; }
+    h3 { font-size: 1.375rem; }
   }
   @media (width >= 64rem) {
-    h1 { font-size: var(--text-6xl); line-height: var(--text-6xl--line-height); }
+    h1 { font-size: 3.5rem; }
   }
   :focus-visible {
     outline: 2px solid var(--color-secondary);
@@ -80,20 +81,49 @@
 }
 
 @layer components {
-  .hwio-section { padding-block: calc(var(--spacing) * 24); }
-  .hwio-section-compact { padding-block: calc(var(--spacing) * 16); }
+  /* Rhythm (direction A): 80 / 112 px sections, 40 / 48 px compact bands. */
+  .hwio-section { padding-block: calc(var(--spacing) * 20); }
+  .hwio-section-compact { padding-block: calc(var(--spacing) * 10); }
   @media (width >= 64rem) {
-    .hwio-section { padding-block: calc(var(--spacing) * 32); }
-    .hwio-section-compact { padding-block: calc(var(--spacing) * 20); }
+    .hwio-section { padding-block: calc(var(--spacing) * 28); }
+    .hwio-section-compact { padding-block: calc(var(--spacing) * 12); }
   }
+  /* Kicker: the sentence-case red label above a heading (replaces www's uppercase eyebrows). */
+  .hwio-kicker,
   .hwio-eyebrow {
     color: var(--color-accent);
-    font-size: var(--text-sm);
+    font-size: 0.875rem;
     font-weight: 600;
+    line-height: 1.4;
+  }
+  .hwio-tone-neutral .hwio-kicker,
+  .hwio-tone-neutral .hwio-eyebrow {
+    color: var(--hwio-kicker-on-neutral, var(--color-accent));
+  }
+  .hwio-muted {
+    color: color-mix(in oklab, var(--color-base-content) 72%, transparent);
+  }
+  .hwio-tone-neutral .hwio-muted {
+    color: color-mix(in oklab, var(--color-neutral-content) 75%, transparent);
   }
   .hwio-lead {
-    font-size: var(--text-lg);
-    color: color-mix(in oklab, var(--color-base-content) 75%, transparent);
+    font-size: 1.1875rem;
+    line-height: 1.55;
+    color: color-mix(in oklab, var(--color-base-content) 72%, transparent);
+  }
+  .hwio-tone-neutral .hwio-lead {
+    color: color-mix(in oklab, var(--color-neutral-content) 75%, transparent);
+  }
+  .hwio-hairline { border-color: var(--color-base-300); }
+  /* Inverse button for ink/neutral panels (navy on ink has no contrast). */
+  .hwio-btn-inverse {
+    background-color: var(--color-base-100);
+    border-color: var(--color-base-100);
+    color: var(--color-neutral);
+  }
+  .hwio-btn-inverse:hover {
+    background-color: var(--color-base-200);
+    border-color: var(--color-base-200);
   }
   .hwio-chip {
     display: inline-flex;
@@ -176,3 +206,16 @@
     .hwio-marquee-track > [aria-hidden='true'] { display: none; }
   }
 }
+
+/* Brand overrides of DaisyUI defaults. Unlayered on purpose: DaisyUI lives in the utilities layer
+   and would otherwise win. Direction A: 15 px/600 sentence-case buttons, 48 px tall, 8 px radius,
+   28 px padding on large buttons at the same height; card padding 32 px. */
+.btn {
+  --fontsize: 0.9375rem;
+  font-weight: 600;
+  padding-inline: 1.5rem;
+}
+.btn-sm { --fontsize: 0.875rem; padding-inline: 1rem; }
+.btn-lg { height: var(--size); --fontsize: 0.9375rem; padding-inline: 1.75rem; }
+.btn-square, .btn-circle { padding-inline: 0; }
+.card .card-body { --card-p: 2rem; }

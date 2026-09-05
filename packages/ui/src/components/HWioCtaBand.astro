@@ -1,19 +1,20 @@
 ---
-/** Closing call-to-action band (www CTASection). The low-commitment fallback line is the `below` slot. */
+/** Closing call-to-action band (www CTASection, direction A). The low-commitment fallback line is the `below` slot. */
 import type { HWioCta, HWioTone } from '../types';
 import HWioButton from './HWioButton.astro';
 import HWioSection from './HWioSection.astro';
-interface Props { id?: string; headline: string; description?: string; primary: HWioCta; secondary?: HWioCta; tone?: HWioTone; class?: string }
-const { id, headline, description, primary, secondary, tone = 'base', class: className = '' } = Astro.props;
+interface Props { id?: string; eyebrow?: string; headline: string; description?: string; primary: HWioCta; secondary?: HWioCta; tone?: HWioTone; class?: string }
+const { id, eyebrow, headline, description, primary, secondary, tone = 'base', class: className = '' } = Astro.props;
 ---
 <HWioSection id={id} tone={tone} class={className}>
   <div class="mx-auto max-w-3xl text-center">
-    <h2 class="mb-6">{headline}</h2>
-    {description && <p class="hwio-lead mb-12">{description}</p>}
-    <div class="flex flex-wrap justify-center gap-4">
-      <HWioButton href={primary.href} external={primary.external} variant="primary" size="lg" arrow track={primary.track}>{primary.label}</HWioButton>
+    {eyebrow && <p class="hwio-kicker mb-4">{eyebrow}</p>}
+    <h2 class="mb-5">{headline}</h2>
+    {description && <p class="hwio-lead mx-auto mb-10 max-w-[40rem]">{description}</p>}
+    <div class="flex flex-wrap justify-center gap-3">
+      <HWioButton href={primary.href} external={primary.external} variant={tone === 'neutral' ? 'inverse' : 'primary'} size="lg" arrow track={primary.track}>{primary.label}</HWioButton>
       {secondary && <HWioButton href={secondary.href} external={secondary.external} variant="secondary" size="lg" track={secondary.track}>{secondary.label}</HWioButton>}
     </div>
-    <div class="mt-10 text-sm opacity-80"><slot name="below" /></div>
+    <div class="hwio-muted mt-8 text-[15px]"><slot name="below" /></div>
   </div>
 </HWioSection>

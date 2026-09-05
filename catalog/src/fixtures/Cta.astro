@@ -1,6 +1,24 @@
 ---
 import HWioCtaBand from '@hubpav/hwio-ui/components/HWioCtaBand.astro';
+import HWioSection from '@hubpav/hwio-ui/components/HWioSection.astro';
 ---
-<HWioCtaBand headline="Ready to plan your pilot?" description="Book a meeting or start with the DevKit; either way you talk to the people who build the products." primary={{ label: 'Book meeting', href: '#contact', track: { id: 'cta-book', location: 'cta-band' } }} secondary={{ label: 'Visit Store', href: 'https://www.hardwario.store/', external: true }}>
-  <span slot="below">Prefer to write? <a href="#contact" class="link link-hover font-medium">Send a message</a> · or call <a href="tel:+420775159734" class="link link-hover font-medium">+420 775 159 734</a></span>
+<HWioSection tone="neutral" id="partner">
+  <div class="grid items-center gap-12 lg:grid-cols-[7fr_5fr] lg:gap-20">
+    <div>
+      <p class="hwio-kicker mb-4">Partner-first by design</p>
+      <h2 class="mb-5 text-[2.75rem] leading-[1.08] tracking-[-0.03em]">Your customer. Your application. Your roadmap.</h2>
+      <p class="hwio-lead max-w-[37.5rem]">HARDWARIO strengthens the field layer and helps your team get it into production. We do not need to replace the integrator in front of the end customer.</p>
+    </div>
+    <div>
+      <ul class="mb-8 flex flex-col gap-4 text-[15px] text-neutral-content/85">
+        <li class="flex gap-3"><svg class="mt-0.5 size-5 shrink-0 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 12.75 6 6 9-13.5"/></svg>You retain the customer relationship and first-line support.</li>
+        <li class="flex gap-3"><svg class="mt-0.5 size-5 shrink-0 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 12.75 6 6 9-13.5"/></svg>You choose the application, brand and data destination.</li>
+        <li class="flex gap-3"><svg class="mt-0.5 size-5 shrink-0 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4.5 12.75 6 6 9-13.5"/></svg>We support device engineering, production and long-term availability.</li>
+      </ul>
+      <a href="#partners" class="btn hwio-btn-inverse">Explore the partner model</a>
+    </div>
+  </div>
+</HWioSection>
+<HWioCtaBand headline="What must your next field deployment prove?" description="Bring the environment, signals, connectivity, data destination and expected scale. We will help you find the shortest credible path to live data." primary={{ label: 'Review your project', href: '#contact', track: { id: 'cta-review', location: 'cta-band' } }} secondary={{ label: 'Start with the DevKit', href: 'https://www.hardwario.store/', external: true }}>
+  <span slot="below">Send us a message <span class="mx-2 opacity-40" aria-hidden="true">·</span> Or call directly: <a href="tel:+420775159734" class="link link-hover font-medium">+420 775 159 734</a></span>
 </HWioCtaBand>

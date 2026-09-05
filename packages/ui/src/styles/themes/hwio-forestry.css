@@ -6,7 +6,7 @@
   color-scheme: light;
   --color-base-100: #ffffff;
   --color-base-200: #F1FAFF;
-  --color-base-300: #f3f4f6;
+  --color-base-300: #e5e7eb;
   --color-base-content: #252532;
   --color-primary: #2B7036;
   --color-primary-content: #ffffff;
@@ -28,7 +28,7 @@
   --radius-field: 0.5rem;
   --radius-box: 1rem;
   --size-selector: 0.25rem;
-  --size-field: 0.28125rem;
+  --size-field: 0.3rem;
   --border: 1px;
   --depth: 0;
   --noise: 0;
@@ -38,4 +38,5 @@
   --hwio-font-sans: 'Inter', 'Inter Fallback', ui-sans-serif, system-ui, sans-serif;
   --hwio-container: 1275px;
   --hwio-container-pad: 27px;
+  --hwio-kicker-on-neutral: #f43f5e;
 }

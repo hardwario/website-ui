@@ -41,7 +41,7 @@ const CTA_VARIANT = { primary: 'primary', secondary: 'secondary', ghost: 'ghost'
                 </div>
               </details>
             ) : (
-              <a href={item.href} class="font-medium" aria-current={item.current ? 'page' : undefined} data-track={item.track?.id} data-track-location={item.track?.location ?? 'header'}>{item.label}</a>
+              <a href={item.href} class="text-[15px] font-medium text-base-content/80 hover:text-accent" aria-current={item.current ? 'page' : undefined} data-track={item.track?.id} data-track-location={item.track?.location ?? 'header'}>{item.label}</a>
             )}
           </li>
         ))}

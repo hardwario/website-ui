@@ -3,13 +3,13 @@ import HWioIcon from './HWioIcon.astro';
 interface Props { title: string; text: string; icon?: string; href?: string; class?: string }
 const { title, text, icon, href, class: className = '' } = Astro.props;
 ---
-<article class:list={['card card-border bg-base-100 h-full', href ? 'transition-shadow hover:shadow-lg' : '', className]}>
-  <div class="card-body">
+<article class:list={['card card-border h-full bg-base-100', href ? 'transition-shadow hover:shadow-lg' : '', className]}>
+  <div class="card-body gap-0">
     <slot name="icon">
-      {icon && <span class="mb-2 inline-flex size-12 items-center justify-center rounded-box bg-primary/10 text-primary"><HWioIcon name={icon as 'check'} size="lg" /></span>}
+      {icon && <span class="mb-6 inline-flex size-12 items-center justify-center rounded-xl bg-accent/8 text-accent"><HWioIcon name={icon as 'check'} size="lg" /></span>}
     </slot>
-    <h3 class="card-title text-xl">{href ? <a href={href} class="link link-hover">{title}</a> : title}</h3>
-    <p class="opacity-80">{text}</p>
+    <h3 class="mb-2.5">{href ? <a href={href} class="link link-hover">{title}</a> : title}</h3>
+    <p class="hwio-muted text-base">{text}</p>
     <slot />
   </div>
 </article>

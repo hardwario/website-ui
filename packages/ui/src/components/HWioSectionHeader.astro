@@ -1,12 +1,24 @@
 ---
-interface Props { eyebrow?: string; title: string; lead?: string; align?: 'left' | 'center'; level?: 1 | 2 | 3; class?: string }
+/** Kicker + heading + lead. `layout="split"` puts the lead beside the heading (direction A's section opener). */
+interface Props { eyebrow?: string; title: string; lead?: string; align?: 'left' | 'center'; layout?: 'stack' | 'split'; level?: 1 | 2 | 3; class?: string }
 const ALIGN = { left: 'text-left', center: 'mx-auto text-center' } as const;
-const { eyebrow, title, lead, align = 'center', level = 2, class: className = '' } = Astro.props;
+const { eyebrow, title, lead, align = 'center', layout = 'stack', level = 2, class: className = '' } = Astro.props;
 const Heading = `h${level}` as 'h1' | 'h2' | 'h3';
 ---
-<div class:list={['max-w-3xl', ALIGN[align], className]}>
-  {eyebrow && <p class="hwio-eyebrow mb-3">{eyebrow}</p>}
-  <Heading><slot name="title">{title}</slot></Heading>
-  {lead && <p class="hwio-lead mt-4">{lead}</p>}
-  <slot />
-</div>
+{layout === 'split' ? (
+  <div class:list={['grid gap-8 lg:grid-cols-[5fr_7fr] lg:items-end', className]}>
+    <div>
+      {eyebrow && <p class="hwio-kicker mb-4">{eyebrow}</p>}
+      <Heading><slot name="title">{title}</slot></Heading>
+    </div>
+    {lead && <p class="hwio-lead lg:max-w-[36rem]">{lead}</p>}
+    <slot />
+  </div>
+) : (
+  <div class:list={['max-w-3xl', ALIGN[align], className]}>
+    {eyebrow && <p class="hwio-kicker mb-4">{eyebrow}</p>}
+    <Heading><slot name="title">{title}</slot></Heading>
+    {lead && <p class="hwio-lead mt-4">{lead}</p>}
+    <slot />
+  </div>
+)}

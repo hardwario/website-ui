@@ -4,11 +4,10 @@ import HWioSectionHeader from '@hubpav/hwio-ui/components/HWioSectionHeader.astr
 import HWioFeatureGrid from '@hubpav/hwio-ui/components/HWioFeatureGrid.astro';
 ---
 <HWioSection id="features" tone="alt">
-  <HWioSectionHeader eyebrow="Why it fits" title="Real technology learners reuse in advanced study" lead="Každý panel zobrazuje sdílené komponenty pod jedním kandidátním tématem; kopie je zástupná, komponenty jsou skutečné." />
-  <HWioFeatureGrid class="mt-12" columns={4} items={[
-    { icon: 'check', title: 'STM32 low-power MCUs', text: 'Industrial-grade microcontrollers, the same family used in shipped products.' },
-    { icon: 'globe', title: 'Rust and Embassy firmware', text: 'Memory-safe firmware with an async runtime, a Rust CLI on the host side.' },
-    { icon: 'bag', title: 'Secure sub-GHz radio', text: 'Dlouhý dosah a nízká spotřeba pro měření ve třídách i v terénu.' },
-    { icon: 'mail', title: 'MQTT, Node-RED, InfluxDB, Grafana', text: 'Ein durchgängiger Datenpfad vom Sensor bis zum Dashboard.', href: '#' },
+  <HWioSectionHeader layout="split" eyebrow="The build-or-buy trap" title="Stop rebuilding the field layer." lead="Your value is the customer solution, not another enclosure, radio certification or fleet-management backend." />
+  <HWioFeatureGrid class="mt-14" columns={3} items={[
+    { icon: 'globe', title: 'Hardware slows the project', text: 'Enclosures, power, radio, compliance and supply turn a promising prototype into a long engineering program.' },
+    { icon: 'bag', title: 'The stack takes over your team', text: 'Firmware updates, device operations and connectivity edge cases consume capacity meant for your application.' },
+    { icon: 'check', title: 'A shortcut should not take control', text: 'Moving faster should not mean giving a vendor your customer, brand, data or product roadmap.' },
   ]} />
 </HWioSection>
