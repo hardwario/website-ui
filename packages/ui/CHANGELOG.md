@@ -1,5 +1,14 @@
 # @hubpav/hwio-ui
 
+## 0.1.2
+
+### Patch Changes
+
+- 99232a8: HWioStatsBand supports five items in one row.
+  - @hubpav/hwio-brand@0.1.2
+  - @hubpav/hwio-web-runtime@0.1.2
+  - @hubpav/hwio-web-worker@0.1.2
+
 ## 0.1.1
 
 ### Patch Changes
