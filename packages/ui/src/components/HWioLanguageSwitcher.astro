@@ -8,7 +8,7 @@ const current = items.find((i) => i.current);
 {variant === 'pills' ? (
   <nav aria-label={label} class:list={['join', className]}>
     {items.map((i) => (
-      <a href={i.href} hreflang={i.code} lang={i.code} class:list={['btn btn-sm join-item', i.current ? 'btn-primary' : 'btn-ghost']} aria-current={i.current ? 'page' : undefined}>{i.label}</a>
+      <a href={i.href} hreflang={i.code} lang={i.code} class:list={['btn btn-sm join-item', i.current ? 'btn-primary' : 'btn-ghost']} aria-current={i.current ? 'page' : undefined} title={i.label} aria-label={i.label}><span class="uppercase">{i.code}</span></a>
     ))}
   </nav>
 ) : (
@@ -20,7 +20,7 @@ const current = items.find((i) => i.current);
     </summary>
     <ul class="menu dropdown-content bg-base-100 rounded-box z-50 mt-2 w-44 p-2 shadow-lg border border-base-300" aria-label={label}>
       {items.map((i) => (
-        <li><a href={i.href} hreflang={i.code} lang={i.code} class:list={[i.current ? 'menu-active' : '']} aria-current={i.current ? 'page' : undefined}>{i.label}</a></li>
+        <li><a href={i.href} hreflang={i.code} lang={i.code} class:list={[i.current ? 'menu-active' : '']} aria-current={i.current ? 'page' : undefined}>{i.label.toLowerCase() !== i.code.toLowerCase() && <span class="w-6 text-xs font-semibold uppercase opacity-60">{i.code}</span>}<span>{i.label}</span></a></li>
       ))}
     </ul>
   </details>
