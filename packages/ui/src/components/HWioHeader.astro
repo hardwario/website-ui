@@ -30,7 +30,7 @@ const CTA_VARIANT = { primary: 'primary', secondary: 'secondary', ghost: 'ghost'
     </div>
 
     <nav class="hidden flex-1 justify-center lg:flex" aria-label={labels.nav} data-hwio-scrollspy={scrollspy ? 'true' : undefined}>
-      <ul class="menu menu-horizontal gap-1 px-1">
+      <ul class="menu menu-horizontal flex-nowrap gap-0 px-0 whitespace-nowrap">
         {nav.map((item) => (
           <li>
             {item.mega ? (
@@ -41,7 +41,7 @@ const CTA_VARIANT = { primary: 'primary', secondary: 'secondary', ghost: 'ghost'
                 </div>
               </details>
             ) : (
-              <a href={item.href} class="text-[15px] font-medium text-base-content/80 hover:text-accent" aria-current={item.current ? 'page' : undefined} data-track={item.track?.id} data-track-location={item.track?.location ?? 'header'}>{item.label}</a>
+              <a href={item.href} class="px-3 text-[15px] font-medium text-base-content/80 hover:text-accent" aria-current={item.current ? 'page' : undefined} data-track={item.track?.id} data-track-location={item.track?.location ?? 'header'}>{item.label}</a>
             )}
           </li>
         ))}
