@@ -1,5 +1,16 @@
 # @hubpav/hwio-ui
 
+## 0.1.1
+
+### Patch Changes
+
+- a3545be: `.container` is an unlayered rule so the theme width (`--hwio-container`) beats Tailwind's breakpoint caps on every viewport.
+- c5a5e2a: HWioFooter and HWioFooterSites set their link colours explicitly instead of inheriting, so a site-wide anchor colour rule cannot turn the footer red.
+- 1906d63: Type declaration for the `hwioUi()` integration entry (`@hubpav/hwio-ui/integration`).
+  - @hubpav/hwio-brand@0.1.1
+  - @hubpav/hwio-web-runtime@0.1.1
+  - @hubpav/hwio-web-worker@0.1.1
+
 ## 0.1.0
 
 ### Minor Changes
