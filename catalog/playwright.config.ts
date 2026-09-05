@@ -8,7 +8,7 @@ export default defineConfig({
   fullyParallel: true,
   retries: 0,
   reporter: [['list']],
-  webServer: { command: 'npm run preview -- --port 4390', port: 4390, reuseExistingServer: true },
+  webServer: { command: 'npm run preview -- --host 127.0.0.1 --port 4390', url: 'http://127.0.0.1:4390/hwio/', reuseExistingServer: !process.env.CI, timeout: 60_000 },
   use: { baseURL: 'http://127.0.0.1:4390', reducedMotion: 'reduce', colorScheme: 'light' },
   expect: { toHaveScreenshot: { maxDiffPixelRatio: 0.001, animations: 'disabled' } },
   projects: [
