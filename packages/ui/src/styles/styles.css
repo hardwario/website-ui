@@ -20,8 +20,10 @@
   --font-sans: var(--hwio-font-sans);
 }
 
-/* One container for the fleet; width comes from the theme (hub) or the site (landing). */
-@utility container {
+/* One container for the fleet; width comes from the theme (hub) or the site (landing).
+   Unlayered on purpose: Tailwind's built-in `container` utility caps max-width at each
+   breakpoint (40/48/64/80/96rem) and would otherwise win over the theme's width. */
+.container {
   width: 100%;
   margin-inline: auto;
   max-width: var(--hwio-container);
