@@ -32,7 +32,7 @@
   },
   "scripts": {
     "build": "node scripts/build-inline.mjs && tsc -p tsconfig.json",
-    "test": "node --test test/"
+    "test": "node --test \"test/**/*.test.mjs\""
   },
   "devDependencies": {
     "typescript": "^6.0.3"
