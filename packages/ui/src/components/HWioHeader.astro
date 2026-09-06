@@ -53,7 +53,10 @@ const CTA_VARIANT = { primary: 'primary', secondary: 'secondary', ghost: 'ghost'
       {languages.length > 1 && <HWioLanguageSwitcher items={languages} label={labels.languages ?? 'Language'} />}
       <div class="hidden items-center gap-2 lg:flex">
         {ctas.map((cta) => (
-          <HWioButton href={cta.href} external={cta.external} variant={CTA_VARIANT[cta.variant ?? 'primary']} size="sm" track={cta.track ?? { id: 'header-cta', location: 'header' }}>{cta.label}</HWioButton>
+          <HWioButton href={cta.href} external={cta.external} variant={CTA_VARIANT[cta.variant ?? 'primary']} size="sm" track={cta.track ?? { id: 'header-cta', location: 'header' }} class={cta.icon ? 'xl:px-4 px-2.5' : ''} aria-label={cta.icon ? cta.label : undefined} title={cta.icon ? cta.label : undefined}>
+            {cta.icon && <HWioIcon name={cta.icon as 'bag'} size="sm" />}
+            {cta.icon ? <span class="hidden xl:inline">{cta.label}</span> : cta.label}
+          </HWioButton>
         ))}
       </div>
       <div class="drawer drawer-end w-auto lg:hidden">

@@ -24,6 +24,8 @@ export interface HWioMedia {
 export interface HWioCta extends HWioLinkItem {
   /** Visual weight; primary is the DaisyUI btn-primary fill. */
   variant?: 'primary' | 'secondary' | 'ghost';
+  /** HWioIcon name. In HWioHeader a CTA with an icon collapses to the icon alone below xl (label as aria-label). */
+  icon?: string;
 }
 
 export type HWioTone = 'base' | 'alt' | 'neutral';
