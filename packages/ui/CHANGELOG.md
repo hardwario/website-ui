@@ -1,5 +1,15 @@
 # @hubpav/hwio-ui
 
+## 0.1.5
+
+### Patch Changes
+
+- ec10633: `.hwio-logo-grey` inverts in system dark mode too (previously only with an explicit dark data-theme).
+- db6aa92: Dark themes: outline and ghost primary buttons use the light brand blue (navy text was unreadable on the night surfaces), in both the explicit-theme and system-preference cases.
+  - @hubpav/hwio-brand@0.1.5
+  - @hubpav/hwio-web-runtime@0.1.5
+  - @hubpav/hwio-web-worker@0.1.5
+
 ## 0.1.4
 
 ### Patch Changes
