@@ -43,10 +43,16 @@ ${extras ? extras + '\n' : ''}  }
   }
   if (t.name === 'er3o') {
     css += `
-/* ENEROOO carries its gradient as a theme rule: DaisyUI slots are single colours. */
-[data-theme="er3o"] .btn-primary {
+/* ENEROOO carries its gradient as a theme rule: DaisyUI slots are single colours. Only the filled
+   button gets it; outline, ghost and link variants keep their transparent background. */
+[data-theme="er3o"] .btn-primary:not(.btn-outline):not(.btn-ghost):not(.btn-link) {
   background-image: linear-gradient(90deg, var(--er3o-gradient-from), var(--er3o-gradient-to));
   border-color: transparent;
+}
+/* The outline button reads in the AA teal (the theme's accent, 6.6:1); the filled primary teal is 2.9:1 as text. */
+[data-theme="er3o"] .btn-outline.btn-primary:not(:hover):not(:active) {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
 }
 [data-theme="er3o"] .er3o-gradient-text {
   background-image: linear-gradient(90deg, var(--er3o-gradient-from), var(--er3o-gradient-to));
