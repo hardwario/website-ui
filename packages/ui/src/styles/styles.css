@@ -195,6 +195,10 @@
   .hwio-logo-grey:hover { filter: none; opacity: 1; }
   [data-theme$='-dark'] .hwio-logo-grey { filter: grayscale(100%) invert(1); }
   [data-theme$='-dark'] .hwio-logo-grey:hover { filter: grayscale(100%) invert(1); opacity: 1; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) .hwio-logo-grey { filter: grayscale(100%) invert(1); }
+    :root:not([data-theme]) .hwio-logo-grey:hover { filter: grayscale(100%) invert(1); opacity: 1; }
+  }
 
   .hwio-theme-transition,
   .hwio-theme-transition *,
