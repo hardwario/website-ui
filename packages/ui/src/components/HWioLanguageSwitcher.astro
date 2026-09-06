@@ -13,8 +13,10 @@ const current = items.find((i) => i.current);
   </nav>
 ) : (
   <details class:list={['dropdown dropdown-end', className]}>
-    <summary class="btn btn-ghost btn-sm gap-1" aria-label={label}>
+    <summary class="btn btn-ghost btn-sm gap-1" title={label}>
       <HWioIcon name="globe" size="sm" />
+      {/* The accessible name contains the visible code (WCAG 2.5.3), so the label is visually hidden text, not aria-label. */}
+      <span class="sr-only">{label}: </span>
       <span class="uppercase">{current?.code ?? items[0]?.code}</span>
       <HWioIcon name="chevron-down" size="sm" />
     </summary>
