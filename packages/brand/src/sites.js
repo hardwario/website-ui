@@ -1,6 +1,6 @@
 // Sites registry and the cross-site footer strip rules (owner rulings in website-admin
-// AGENTS.md: fixed order, self omitted, engineering carries no strip, academy omits Docs
-// and STEM until the TOWER docs migrate, .report pages and enerooo carry none).
+// AGENTS.md: fixed order, self omitted, academy omits Docs and STEM until the TOWER docs
+// migrate, .report pages and enerooo carry none; engineering's 2026-07-19 exemption was lifted 2026-09-06).
 import { sites, footerSites, social, branches } from './sites-data.js';
 
 export { sites, footerSites, social, branches };

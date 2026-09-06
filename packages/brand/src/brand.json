@@ -28,6 +28,7 @@
     "er3o-teal-text": "#0C6678",
     "er3o-heading": "#19768B",
     "er3o-ink": "#061920",
+    "er3o-graphite": "#404040",
     "er3o-text": "#333333",
     "er3o-gray-50": "#f9fafb"
   },
@@ -137,7 +138,7 @@
         "secondary-content": "er3o-ink",
         "accent": "er3o-teal-text",
         "accent-content": "white",
-        "neutral": "ink",
+        "neutral": "er3o-graphite",
         "neutral-content": "white",
         "info": "er3o-heading",
         "info-content": "white",
@@ -307,7 +308,7 @@
       "theme": "hwio",
       "layout": "landing",
       "strip": {
-        "show": false,
+        "show": true,
         "omit": []
       },
       "gtm": "GTM-TD83PT2D"

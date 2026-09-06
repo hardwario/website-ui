@@ -26,7 +26,7 @@ const { id = 'contact', eyebrow, title, lead, person, tone = 'alt', class: class
             <p class="font-semibold">{person.name}</p>
             {person.role && <p class="opacity-80">{person.role}</p>}
             {person.email && <a href={`mailto:${person.email}`} class="link link-hover inline-flex items-center gap-1"><HWioIcon name="mail" size="sm" />{person.email}</a>}
-            {person.phone && <a href={person.phoneHref ?? `tel:${person.phone.replace(/\s+/g, '')}`} class="link link-hover ml-3 inline-flex items-center gap-1"><HWioIcon name="phone" size="sm" />{person.phone}</a>}
+            {person.phone && <a href={person.phoneHref ?? `tel:${person.phone.replace(/\s+/g, '')}`} class="link link-hover ml-3 inline-flex items-center gap-1 whitespace-nowrap"><HWioIcon name="phone" size="sm" />{person.phone}</a>}
           </div>
         </div>
       )}

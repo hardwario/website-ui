@@ -93,6 +93,15 @@ export function hwioFormsRuntime() {
         if (status) { status.textContent = ''; status.classList.remove('hs-status-success', 'hs-status-error'); status.hidden = true; }
 
         await hwioEnsureTurnstileToken(form as HWioTurnstileForm);
+        if (form.querySelector('.cf-turnstile') && !form.querySelector<HTMLInputElement>('input[name="cf-turnstile-response"]')?.value) {
+          // The widget produced no token (script blocked, unsupported browser, timeout): say so instead of
+          // sending a request the endpoint has to reject.
+          hwioResetTurnstile(form as HWioTurnstileForm);
+          if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = original; }
+          if (status) { status.hidden = false; status.textContent = form.dataset.hsTurnstileMsg || error; status.classList.add('hs-status-error'); }
+          console.error('form submission blocked: no Turnstile token');
+          return;
+        }
         let fields: Record<string, string> = {};
         for (const [name, value] of new FormData(form).entries()) if (typeof value === 'string') fields[name] = value;
         const context = Array.from(form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>('[data-message-field]')).map((el) => ({
