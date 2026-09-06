@@ -1,5 +1,25 @@
 # @hubpav/hwio-ui
 
+## 0.6.0
+
+### Minor Changes
+
+- f5bc02d: `HWioHeader` mega items: the `mega:<key>` slot now opens as a full-width panel under the bar (hover with intent on pointer devices, click, ArrowDown into the panel; Escape, outside click and focus leaving close it; one panel at a time), driven by the nav runtime. A mega item's `children` render as a collapsible group in the drawer, where the panel is not shown; a child's optional `description` is a second, muted line. The former anchored dropdown is gone.
+
+### Patch Changes
+
+- 36794e1: - `hwioUi()` copies only the font families the site uses into `/fonts` (`fonts` option, default `['inter']`); the Poppins files no longer ship with every HARDWARIO site.
+  - A form whose Turnstile widget produced no token (blocked script, unsupported browser, timeout) shows the error status and does not send the request; `HWioHubSpotForm` accepts an optional `labels.turnstile` message for it.
+  - `HWioContactSection`: the phone number never breaks across lines on narrow screens.
+  - Registry: hardwario.engineering carries the cross-site footer strip again (owner lifted the 2026-07-19 exemption on 2026-09-06).
+  - `HWioIcon`: `facebook` (enerooo's footer).
+  - Theme `er3o`: `neutral` is the ENEROOO footer graphite `#404040` (the production footer's black at 75 percent over white), owner ruling 2026-09-06.
+- Updated dependencies [f5bc02d]
+- Updated dependencies [36794e1]
+  - @hubpav/hwio-web-runtime@0.6.0
+  - @hubpav/hwio-brand@0.6.0
+  - @hubpav/hwio-web-worker@0.6.0
+
 ## 0.5.0
 
 ### Minor Changes
