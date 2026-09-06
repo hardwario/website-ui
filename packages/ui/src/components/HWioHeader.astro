@@ -1,7 +1,8 @@
 ---
 /**
- * Sticky site header: logo slot, primary nav (flat links; mega-menu content via `mega:<key>` slots),
- * CTAs, language switcher, theme toggle, and a DaisyUI drawer for small screens.
+ * Sticky site header: logo slot, primary nav (flat links, or mega items whose `mega:<key>` slot opens as a
+ * full-width panel under the bar), CTAs, language switcher, theme toggle, and a DaisyUI drawer for small
+ * screens, where a mega item lists its `children` as a collapsible group instead.
  */
 import type { HWioCta, HWioLinkItem } from '../types';
 import HWioButton from './HWioButton.astro';
@@ -9,7 +10,12 @@ import HWioIcon from './HWioIcon.astro';
 import HWioLanguageSwitcher from './HWioLanguageSwitcher.astro';
 import HWioThemeToggle from './HWioThemeToggle.astro';
 
-interface NavItem extends HWioLinkItem { mega?: string }
+interface NavItem extends HWioLinkItem {
+  /** Key of the `mega:<key>` slot; the item becomes a button that opens the panel (hover, click, keyboard). */
+  mega?: string;
+  /** Links listed under the item in the drawer (the panel is desktop-only); a description renders as a second, muted line. */
+  children?: (HWioLinkItem & { description?: string })[];
+}
 interface Props {
   nav: NavItem[];
   ctas?: HWioCta[];
@@ -24,11 +30,13 @@ interface Props {
 }
 const { nav, ctas = [], languages = [], showThemeToggle = true, scrollspy = false, labels, desktopFrom = 'lg', id = 'hwio-nav-drawer', class: className = '' } = Astro.props;
 const BREAK = {
-  lg: { nav: 'hidden flex-1 justify-center lg:flex', ctas: 'hidden items-center gap-2 lg:flex', drawer: 'drawer drawer-end w-auto lg:hidden' },
-  xl: { nav: 'hidden flex-1 justify-center xl:flex', ctas: 'hidden items-center gap-2 xl:flex', drawer: 'drawer drawer-end w-auto xl:hidden' },
+  lg: { nav: 'hidden flex-1 justify-center lg:flex', ctas: 'hidden items-center gap-2 lg:flex', drawer: 'drawer drawer-end w-auto lg:hidden', panels: 'hidden lg:block' },
+  xl: { nav: 'hidden flex-1 justify-center xl:flex', ctas: 'hidden items-center gap-2 xl:flex', drawer: 'drawer drawer-end w-auto xl:hidden', panels: 'hidden xl:block' },
 } as const;
 const bp = BREAK[desktopFrom];
 const CTA_VARIANT = { primary: 'primary', secondary: 'secondary', ghost: 'ghost' } as const;
+const megaItems = nav.filter((item) => item.mega);
+const linkAttrs = (item: HWioLinkItem) => (item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {});
 ---
 <header class:list={['sticky top-0 z-50 border-b border-base-300 bg-base-100/90 backdrop-blur supports-[backdrop-filter]:bg-base-100/80', className]} data-hwio-font-exempt>
   <div class="container flex h-16 items-center gap-4 lg:h-[72px]">
@@ -41,12 +49,10 @@ const CTA_VARIANT = { primary: 'primary', secondary: 'secondary', ghost: 'ghost'
         {nav.map((item) => (
           <li>
             {item.mega ? (
-              <details>
-                <summary class="font-medium">{item.label}</summary>
-                <div class="dropdown-content bg-base-100 rounded-box z-50 mt-2 p-4 shadow-lg border border-base-300">
-                  <slot name={`mega:${item.mega}`} />
-                </div>
-              </details>
+              <button type="button" class="px-3 text-[15px] font-medium text-base-content/80 hover:text-accent" data-hwio-mega-trigger={item.mega} aria-expanded="false" aria-haspopup="true" aria-controls={`${id}-mega-${item.mega}`}>
+                {item.label}
+                <HWioIcon name="chevron-down" size="sm" class="opacity-50 transition-transform duration-200" />
+              </button>
             ) : (
               <a href={item.href} class="px-3 text-[15px] font-medium text-base-content/80 hover:text-accent" aria-current={item.current ? 'page' : undefined} data-track={item.track?.id} data-track-location={item.track?.location ?? 'header'}>{item.label}</a>
             )}
@@ -81,7 +87,28 @@ const CTA_VARIANT = { primary: 'primary', secondary: 'secondary', ghost: 'ghost'
             </div>
             <ul class="menu w-full text-base">
               {nav.map((item) => (
-                <li><a href={item.href} aria-current={item.current ? 'page' : undefined} data-track={item.track?.id} data-track-location="mobile-menu">{item.label}</a></li>
+                <li>
+                  {item.children?.length ? (
+                    <details>
+                      <summary>{item.label}</summary>
+                      <ul>
+                        {item.children.map((child) => (
+                          <li>
+                            <a href={child.href} {...linkAttrs(child)} data-track={child.track?.id} data-track-location="mobile-menu">
+                              {/* One grid cell: DaisyUI lays menu items out as a column-flow grid, so the two lines nest in one span. */}
+                              <span class="flex flex-col items-start gap-0.5">
+                                <span class="inline-flex items-center gap-1">{child.label}{child.external && <HWioIcon name="external" size="sm" class="opacity-50" />}</span>
+                                {child.description && <span class="text-xs font-normal leading-snug opacity-70">{child.description}</span>}
+                              </span>
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
+                  ) : (
+                    <a href={item.href} {...linkAttrs(item)} aria-current={item.current ? 'page' : undefined} data-track={item.track?.id} data-track-location="mobile-menu">{item.label}</a>
+                  )}
+                </li>
               ))}
             </ul>
             <div class="mt-4 flex flex-col gap-2">
@@ -95,6 +122,15 @@ const CTA_VARIANT = { primary: 'primary', secondary: 'secondary', ghost: 'ghost'
       </div>
     </div>
   </div>
+  {megaItems.length > 0 && (
+    <div class={bp.panels}>
+      {megaItems.map((item) => (
+        <div id={`${id}-mega-${item.mega}`} class="absolute inset-x-0 top-full border-t border-base-300 bg-base-100 shadow-xl" data-hwio-mega-panel={item.mega} hidden>
+          <div class="container py-8"><slot name={`mega:${item.mega}`} /></div>
+        </div>
+      ))}
+    </div>
+  )}
 </header>
 <script>
   import { hwioNavRuntime } from '@hubpav/hwio-web-runtime/nav';
