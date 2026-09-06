@@ -94,9 +94,12 @@ const linkAttrs = (item: HWioLinkItem) => (item.external ? { target: '_blank', r
                       <ul>
                         {item.children.map((child) => (
                           <li>
-                            <a href={child.href} {...linkAttrs(child)} class:list={[child.description && 'flex-col items-start gap-0']} data-track={child.track?.id} data-track-location="mobile-menu">
-                              <span class="inline-flex items-center gap-1">{child.label}{child.external && <HWioIcon name="external" size="sm" class="opacity-50" />}</span>
-                              {child.description && <span class="text-xs font-normal opacity-70">{child.description}</span>}
+                            <a href={child.href} {...linkAttrs(child)} data-track={child.track?.id} data-track-location="mobile-menu">
+                              {/* One grid cell: DaisyUI lays menu items out as a column-flow grid, so the two lines nest in one span. */}
+                              <span class="flex flex-col items-start gap-0.5">
+                                <span class="inline-flex items-center gap-1">{child.label}{child.external && <HWioIcon name="external" size="sm" class="opacity-50" />}</span>
+                                {child.description && <span class="text-xs font-normal leading-snug opacity-70">{child.description}</span>}
+                              </span>
                             </a>
                           </li>
                         ))}
