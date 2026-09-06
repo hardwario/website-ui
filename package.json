@@ -14,7 +14,7 @@
   },
   "scripts": {
     "build": "npm run build -w packages/brand -w packages/web-runtime -w packages/web-worker -w packages/ui && npm run build -w catalog --if-present",
-    "test": "npm run test -ws --if-present",
+    "test": "npm run test --workspaces --if-present",
     "lint": "node scripts/policy-lint.mjs",
     "check": "npm run lint && npm run build && npm run test",
     "changeset": "changeset",
