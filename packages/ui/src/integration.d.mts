@@ -5,5 +5,7 @@ export interface HWioUiOptions {
   headers?: HWioHeadersOptions | false;
   /** Serve the brand fonts and logos in dev and copy them into the build output. */
   assets?: boolean;
+  /** Font families copied into /fonts (file-name prefixes in @hubpav/hwio-brand/dist/fonts). Default ['inter']. */
+  fonts?: string[];
 }
 export function hwioUi(options?: HWioUiOptions): AstroIntegration;

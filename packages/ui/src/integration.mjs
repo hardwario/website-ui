@@ -19,11 +19,12 @@ function brandDir() {
 const MIME = { '.woff2': 'font/woff2', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon' };
 
 /**
- * @param {{ headers?: import('@hubpav/hwio-web-worker/headers').HWioHeadersOptions | false, assets?: boolean }} [options]
+ * @param {{ headers?: import('@hubpav/hwio-web-worker/headers').HWioHeadersOptions | false, assets?: boolean, fonts?: string[] }} [options]
+ *   fonts: font families (file-name prefixes in @hubpav/hwio-brand/dist/fonts) copied to /fonts; default ['inter'].
  * @returns {import('astro').AstroIntegration}
  */
 export function hwioUi(options = {}) {
-  const { headers = false, assets = true } = options;
+  const { headers = false, assets = true, fonts = ['inter'] } = options;
   const brand = brandDir();
   const fontsDir = join(brand, 'dist/fonts');
   const logosDir = join(brand, 'logos');
@@ -51,7 +52,12 @@ export function hwioUi(options = {}) {
           for (const [src, dest] of [[fontsDir, 'fonts'], [logosDir, 'brand']]) {
             if (!existsSync(src)) continue;
             mkdirSync(join(out, dest), { recursive: true });
-            for (const f of readdirSync(src)) if (extname(f) !== '.css') copyFileSync(join(src, f), join(out, dest, f));
+            for (const f of readdirSync(src)) {
+              if (extname(f) === '.css') continue;
+              // Only the families the site's themes use (a HARDWARIO site never serves Poppins, enerooo never Inter).
+              if (dest === 'fonts' && !fonts.some((family) => f.startsWith(`${family}-`))) continue;
+              copyFileSync(join(src, f), join(out, dest, f));
+            }
           }
         }
         if (headers) writeFileSync(join(out, '_headers'), hwioRenderHeadersFile(headers));
