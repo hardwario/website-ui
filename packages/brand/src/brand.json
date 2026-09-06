@@ -99,7 +99,9 @@
         "accent": "rose",
         "accent-content": "night-100",
         "neutral": "night-300",
-        "neutral-content": "night-content"
+        "neutral-content": "night-content",
+        "primary": "blue-light",
+        "primary-content": "night-100"
       }
     },
     "hwio-forestry": {
@@ -112,9 +114,10 @@
     "hwio-forestry-dark": {
       "extends": "hwio-dark",
       "roles": {
-        "primary": "forestry",
+        "primary": "forestry-light",
         "accent": "forestry-light",
-        "accent-content": "night-100"
+        "accent-content": "night-100",
+        "primary-content": "night-100"
       }
     },
     "er3o": {
