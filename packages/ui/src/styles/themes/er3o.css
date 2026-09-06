@@ -49,6 +49,10 @@
   background-image: linear-gradient(90deg, var(--er3o-gradient-from), var(--er3o-gradient-to));
   border-color: transparent;
 }
+/* DaisyUI's hover darkens background-color, which the gradient image covers; dim the gradient instead. */
+[data-theme="er3o"] .btn-primary:not(.btn-outline):not(.btn-ghost):not(.btn-link):hover {
+  filter: brightness(0.92);
+}
 /* The outline button reads in the AA teal (the theme's accent, 6.6:1); the filled primary teal is 2.9:1 as text. */
 [data-theme="er3o"] .btn-outline.btn-primary:not(:hover):not(:active) {
   color: var(--color-accent);
