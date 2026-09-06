@@ -22,8 +22,10 @@ function themeNames() {
 export function hwioApplyTheme(choice: HWioThemeChoice): void {
   const html = document.documentElement;
   const names = themeNames();
-  if (choice === 'system') html.removeAttribute('data-theme');
-  else html.setAttribute('data-theme', choice === 'dark' ? names.dark : names.light);
+  // 'system' stamps the resolved theme (never an empty attribute): non-default themes only apply when stamped.
+  const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const dark = choice === 'system' ? systemDark : choice === 'dark';
+  html.setAttribute('data-theme', dark ? names.dark : names.light);
   html.classList.add('hwio-theme-transition');
   window.setTimeout(() => html.classList.remove('hwio-theme-transition'), 300);
   try {
@@ -47,12 +49,19 @@ export function hwioApplyTheme(choice: HWioThemeChoice): void {
  */
 export function hwioThemeRuntime() {
   let controller: AbortController | null = null;
+  // No stored choice: follow the OS scheme while the page is open.
+  try {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      if (!localStorage.getItem(THEME_KEY)) hwioApplyTheme('system');
+    });
+  } catch {
+    // matchMedia unavailable
+  }
   let themeBeforeSwap: string | null = null;
   document.addEventListener('astro:before-swap', () => { themeBeforeSwap = document.documentElement.getAttribute('data-theme'); });
   document.addEventListener('astro:after-swap', () => {
     document.documentElement.classList.add('js');
     if (themeBeforeSwap) document.documentElement.setAttribute('data-theme', themeBeforeSwap);
-    else document.documentElement.removeAttribute('data-theme');
   });
   function syncPressed() {
     const dark = hwioResolvedScheme() === 'dark';

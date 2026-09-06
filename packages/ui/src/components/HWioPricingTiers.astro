@@ -15,7 +15,7 @@ const cols = (Math.min(Math.max(tiers.length, 1), 4) as 1 | 2 | 3 | 4);
         {tier.eyebrow && <p class="hwio-kicker">{tier.eyebrow}</p>}
         <div class="flex items-start justify-between gap-2">
           <h3 class="card-title text-[1.375rem]">{tier.name}</h3>
-          {tier.badge && <span class="badge badge-primary">{tier.badge}</span>}
+          {tier.badge && <span class="badge badge-primary shrink-0 whitespace-nowrap">{tier.badge}</span>}
         </div>
         {tier.price && (
           <p class="flex flex-wrap items-baseline gap-x-1.5">
