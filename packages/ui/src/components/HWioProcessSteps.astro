@@ -1,15 +1,16 @@
 ---
 /** Numbered process steps. Order carries meaning here, so the numbers are content, not decoration. */
-interface Props { items: { title: string; text: string }[]; orientation?: 'horizontal' | 'vertical'; class?: string }
+/** `number` overrides the rendered ordinal (sites whose copy numbers steps "01", "02"…). */
+interface Props { items: { title: string; text: string; number?: string }[]; orientation?: 'horizontal' | 'vertical'; class?: string }
 const { items, orientation = 'horizontal', class: className = '' } = Astro.props;
 const LAYOUT = { horizontal: 'grid gap-8 md:grid-cols-2 lg:grid-cols-4', vertical: 'grid gap-8' } as const;
 ---
 <ol class:list={[LAYOUT[orientation], className]} data-hwio-steps>
   {items.map((step, i) => (
     <li class="flex gap-4">
-      <span class="badge badge-primary badge-lg shrink-0 font-semibold" aria-hidden="true">{i + 1}</span>
+      <span class="badge badge-primary badge-lg shrink-0 font-semibold tabular-nums" aria-hidden="true">{step.number ?? i + 1}</span>
       <div>
-        <h3 class="text-lg font-semibold"><span class="sr-only">{i + 1}. </span>{step.title}</h3>
+        <h3 class="text-lg font-semibold"><span class="sr-only">{step.number ?? i + 1}. </span>{step.title}</h3>
         <p class="mt-1 opacity-80">{step.text}</p>
       </div>
     </li>
