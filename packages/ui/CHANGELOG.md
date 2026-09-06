@@ -1,5 +1,14 @@
 # @hubpav/hwio-ui
 
+## 0.6.4
+
+### Patch Changes
+
+- 5661ba4: Theme `er3o`: the filled primary button dims on hover (`brightness(0.92)`); DaisyUI's hover only changes `background-color`, which the CTA gradient image covered, so the button showed no hover state.
+  - @hubpav/hwio-brand@0.6.4
+  - @hubpav/hwio-web-runtime@0.6.4
+  - @hubpav/hwio-web-worker@0.6.4
+
 ## 0.6.3
 
 ### Patch Changes
