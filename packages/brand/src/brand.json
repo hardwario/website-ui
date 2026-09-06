@@ -307,7 +307,7 @@
       "theme": "hwio",
       "layout": "landing",
       "strip": {
-        "show": false,
+        "show": true,
         "omit": []
       },
       "gtm": "GTM-TD83PT2D"
