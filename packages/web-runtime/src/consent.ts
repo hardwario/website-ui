@@ -114,8 +114,6 @@ export function hwioConsentRuntime(): HWioConsentApi {
     }
     try {
       if (!categories.marketing) ATTRIBUTION_KEYS.forEach((k) => sessionStorage.removeItem(k));
-      else {
-      }
     } catch {
       // storage unavailable
     }
