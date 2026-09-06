@@ -13,10 +13,10 @@
     "test:vrt:update": "playwright test --update-snapshots"
   },
   "dependencies": {
-    "@hubpav/hwio-brand": "0.6.1",
-    "@hubpav/hwio-ui": "0.6.1",
-    "@hubpav/hwio-web-runtime": "0.6.1",
-    "@hubpav/hwio-web-worker": "0.6.1",
+    "@hubpav/hwio-brand": "0.6.2",
+    "@hubpav/hwio-ui": "0.6.2",
+    "@hubpav/hwio-web-runtime": "0.6.2",
+    "@hubpav/hwio-web-worker": "0.6.2",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.1",
     "tailwindcss": "^4.3.3"

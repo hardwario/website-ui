@@ -1,5 +1,14 @@
 # @hubpav/hwio-ui
 
+## 0.6.2
+
+### Patch Changes
+
+- 1dbf42e: Theme `er3o`: the CTA gradient applies only to the filled `btn-primary`; outline, ghost and link variants keep a transparent background (the consent banner's "Odmítnout" was gradient-on-gradient), and the outline button uses the AA teal accent for text and border. `HWioCookieConsent`: the policy link is `link-accent` (AA on every theme; `link-secondary` was the 2.0:1 green on enerooo).
+  - @hubpav/hwio-brand@0.6.2
+  - @hubpav/hwio-web-runtime@0.6.2
+  - @hubpav/hwio-web-worker@0.6.2
+
 ## 0.6.1
 
 ### Patch Changes
