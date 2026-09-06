@@ -1,5 +1,19 @@
 # @hubpav/hwio-ui
 
+## 0.5.0
+
+### Minor Changes
+
+- f1c41ff: Owner decision 2026-09-06: light is the default theme on every site regardless of the OS setting; dark applies only when the visitor chose it. The choice is remembered without a consent gate (a user-requested display preference): localStorage on every site and, where the site declares `themeCookieDomain` in `hwioHtmlAttrs`, a first-party `hwio_theme` cookie shared across that domain (www, docs, stem on .hardwario.com). The consent runtime no longer clears theme keys; `hwio-dark` no longer claims `prefersdark`; the system-scheme media twins are gone.
+
+### Patch Changes
+
+- 375ebe3: HWioHeader: one language control everywhere (the desktop dropdown; pills only inside the drawer). The `languageVariant` prop added in 0.4.0 is removed (owner rule: keep component variations to a minimum).
+- Updated dependencies [f1c41ff]
+  - @hubpav/hwio-web-runtime@0.5.0
+  - @hubpav/hwio-brand@0.5.0
+  - @hubpav/hwio-web-worker@0.5.0
+
 ## 0.4.0
 
 ### Patch Changes
