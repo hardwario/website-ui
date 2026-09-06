@@ -2,7 +2,7 @@
 import HWioHeader from '@hubpav/hwio-ui/components/HWioHeader.astro';
 ---
 <HWioHeader
-  nav={[{ label: 'Products', href: '#products', mega: 'products', children: [{ label: 'CHESTER', href: '#chester' }, { label: 'TOWER', href: '#tower' }, { label: 'Docs', href: 'https://docs.hardwario.com/', external: true }] }, { label: 'Why TOWER', href: '#why' }, { label: 'For teachers', href: '#teachers', current: true }, { label: 'Learning paths', href: '#paths' }, { label: 'Kontakt', href: '#contact' }]}
+  nav={[{ label: 'Products', href: '#products', mega: 'products', children: [{ label: 'CHESTER', href: '#chester', description: 'Modular IoT gateway for industrial telemetry' }, { label: 'TOWER', href: '#tower', description: 'Modular kit for prototyping and STEM' }, { label: 'Docs', href: 'https://docs.hardwario.com/', external: true }] }, { label: 'Why TOWER', href: '#why' }, { label: 'For teachers', href: '#teachers', current: true }, { label: 'Learning paths', href: '#paths' }, { label: 'Kontakt', href: '#contact' }]}
   ctas={[{ label: 'Visit Store', href: 'https://www.hardwario.store/', external: true, variant: 'secondary', track: { id: 'visit-store' } }, { label: 'Book meeting', href: '#contact', track: { id: 'goto-contact' } }]}
   languages={[{ code: 'en', label: 'English', href: '/', current: true }, { code: 'cs', label: 'Čeština', href: '/cs/' }, { code: 'de', label: 'Deutsch', href: '/de/' }, { code: 'sk', label: 'Slovenčina', href: '/sk/' }, { code: 'pl', label: 'Polski', href: '/pl/' }]}
   labels={{ nav: 'Main navigation', menu: 'Open menu', close: 'Close menu', theme: 'Switch theme', languages: 'Language' }}
