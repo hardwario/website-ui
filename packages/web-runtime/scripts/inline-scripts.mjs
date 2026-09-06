@@ -9,10 +9,11 @@ export const consentDefaults = `(function(){window.dataLayer=window.dataLayer||[
  * Applies a stored explicit choice only when it was stored under the current consent version
  * (preferences consent). Legacy keys from the pre-design-system sites are honoured once.
  */
-// Stamps data-theme before paint: the stored choice when its consent version matches, otherwise the
-// system scheme. A stamped attribute is what lets non-default DaisyUI themes (hwio-forestry) and every
-// [data-theme$="-dark"] rule apply; DaisyUI's default/prefersdark flags remain the no-JS fallback.
-export const themeBootstrap = `(function(){var h=document.documentElement,d=h.dataset;h.classList.add('js');try{var v=d.hwioConsentVersion;var sv=localStorage.getItem('hwio_theme_consent_version')||localStorage.getItem('hw_theme_consent_version');if(v&&sv===v){var t=localStorage.getItem('hwio_theme')||localStorage.getItem('theme');if(t==='dark'&&d.hwioThemeDark)h.setAttribute('data-theme',d.hwioThemeDark);else if(t==='light'&&d.hwioThemeLight)h.setAttribute('data-theme',d.hwioThemeLight)}}catch(e){}if(!h.getAttribute('data-theme')&&d.hwioThemeLight){var dk=false;try{dk=matchMedia('(prefers-color-scheme: dark)').matches}catch(e){}h.setAttribute('data-theme',dk&&d.hwioThemeDark?d.hwioThemeDark:d.hwioThemeLight)}})();`;
+// Stamps data-theme before paint: light by default (owner decision 2026-09-06), dark only when the visitor
+// chose it. The choice is read from the hwio_theme cookie when the site declares a shared cookie domain
+// (data-hwio-theme-cookie-domain), else from localStorage (hwio_theme; legacy key theme). A stamped
+// attribute is what lets non-default DaisyUI themes (hwio-forestry) apply.
+export const themeBootstrap = `(function(){var h=document.documentElement,d=h.dataset;h.classList.add('js');var t=null;try{if(d.hwioThemeCookieDomain){var m=document.cookie.match(/(?:^|; )hwio_theme=(dark|light)/);if(m)t=m[1]}if(!t)t=localStorage.getItem('hwio_theme')||localStorage.getItem('theme')}catch(e){}if(!h.getAttribute('data-theme')&&d.hwioThemeLight){h.setAttribute('data-theme',t==='dark'&&d.hwioThemeDark?d.hwioThemeDark:d.hwioThemeLight)}})();`;
 
 /**
  * Pre-paint font gate (owner ruling R3: font-display block + gate, flicker-free). Reads

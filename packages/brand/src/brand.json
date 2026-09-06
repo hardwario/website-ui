@@ -90,7 +90,7 @@
       "extends": "hwio",
       "scheme": "dark",
       "default": false,
-      "prefersdark": true,
+      "prefersdark": false,
       "roles": {
         "base-100": "night-100",
         "base-200": "night-200",

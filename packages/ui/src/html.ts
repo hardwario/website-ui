@@ -10,6 +10,8 @@ export interface HWioHtmlOptions {
   /** Pin data-theme on <html> (single-theme sites such as enerooo, or a fixed catalog page). */
   pinTheme?: boolean;
   font?: { family: string; sample?: string; sampleExt?: string } | null;
+  /** Share the light/dark choice across a domain's sites through a first-party cookie (e.g. '.hardwario.com'). */
+  themeCookieDomain?: string;
   class?: string;
 }
 
@@ -21,6 +23,7 @@ export function hwioHtmlAttrs(o: HWioHtmlOptions): Record<string, string> {
     'data-hwio-theme-light': o.themes.light,
   };
   if (o.themes.dark) attrs['data-hwio-theme-dark'] = o.themes.dark;
+  if (o.themeCookieDomain) attrs['data-hwio-theme-cookie-domain'] = o.themeCookieDomain;
   if (o.pinTheme || !o.themes.dark) attrs['data-theme'] = o.themes.light;
   if (o.font) {
     attrs['data-hwio-font-family'] = o.font.family;

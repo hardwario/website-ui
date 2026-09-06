@@ -36,7 +36,6 @@ declare global {
 }
 
 const ATTRIBUTION_KEYS = ['hwio_attribution', 'hw_attribution']; // legacy-ok
-const THEME_KEYS = ['hwio_theme', 'hwio_theme_consent_version', 'theme', 'hw_theme_consent_version']; // legacy-ok
 
 /**
  * Consent runtime. Markup contract (rendered by HWioCookieConsent):
@@ -115,10 +114,7 @@ export function hwioConsentRuntime(): HWioConsentApi {
     }
     try {
       if (!categories.marketing) ATTRIBUTION_KEYS.forEach((k) => sessionStorage.removeItem(k));
-      if (!categories.preferences) THEME_KEYS.forEach((k) => localStorage.removeItem(k));
       else {
-        if (localStorage.getItem('hwio_theme')) localStorage.setItem('hwio_theme_consent_version', version);
-        if (localStorage.getItem('theme')) localStorage.setItem('hw_theme_consent_version', version); // legacy-ok
       }
     } catch {
       // storage unavailable

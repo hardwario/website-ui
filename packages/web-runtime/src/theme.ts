@@ -1,17 +1,16 @@
 import { hwioMount } from './mount.js';
 
 export type HWioScheme = 'light' | 'dark';
-export type HWioThemeChoice = HWioScheme | 'system';
+export type HWioThemeChoice = HWioScheme;
 
 const THEME_KEY = 'hwio_theme';
-const THEME_VERSION_KEY = 'hwio_theme_consent_version';
 
-/** The scheme actually in effect: explicit data-theme ending in "-dark", else the OS preference. */
+/** The scheme actually in effect: the stamped data-theme ending in "-dark" means dark. */
 export function hwioResolvedScheme(): HWioScheme {
   const theme = document.documentElement.getAttribute('data-theme');
   if (theme) return theme.endsWith('-dark') ? 'dark' : 'light';
   if (document.documentElement.classList.contains('dark')) return 'dark'; // legacy-ok: www's class toggle until P2
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  return 'light';
 }
 
 function themeNames() {
@@ -19,24 +18,22 @@ function themeNames() {
   return { light: d.hwioThemeLight ?? 'hwio', dark: d.hwioThemeDark ?? 'hwio-dark' };
 }
 
+/**
+ * Applies and remembers the visitor's choice. Light is the default (owner decision 2026-09-06); the
+ * choice is a user-requested display preference, stored without a consent gate: localStorage on every
+ * site and, when <html data-hwio-theme-cookie-domain> is set, a first-party cookie shared by that
+ * domain's sites (www, docs, stem on .hardwario.com).
+ */
 export function hwioApplyTheme(choice: HWioThemeChoice): void {
   const html = document.documentElement;
   const names = themeNames();
-  // 'system' stamps the resolved theme (never an empty attribute): non-default themes only apply when stamped.
-  const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const dark = choice === 'system' ? systemDark : choice === 'dark';
-  html.setAttribute('data-theme', dark ? names.dark : names.light);
+  html.setAttribute('data-theme', choice === 'dark' ? names.dark : names.light);
   html.classList.add('hwio-theme-transition');
   window.setTimeout(() => html.classList.remove('hwio-theme-transition'), 300);
   try {
-    if (window.hwioConsent?.allows('preferences')) {
-      if (choice === 'system') { localStorage.removeItem(THEME_KEY); localStorage.removeItem(THEME_VERSION_KEY); }
-      else {
-        localStorage.setItem(THEME_KEY, choice);
-        const version = html.dataset.hwioConsentVersion;
-        if (version) localStorage.setItem(THEME_VERSION_KEY, version);
-      }
-    }
+    localStorage.setItem(THEME_KEY, choice);
+    const domain = html.dataset.hwioThemeCookieDomain;
+    if (domain) document.cookie = `${THEME_KEY}=${choice}; Domain=${domain}; Path=/; Max-Age=31536000; SameSite=Lax; Secure`;
   } catch {
     // storage unavailable
   }
@@ -49,14 +46,6 @@ export function hwioApplyTheme(choice: HWioThemeChoice): void {
  */
 export function hwioThemeRuntime() {
   let controller: AbortController | null = null;
-  // No stored choice: follow the OS scheme while the page is open.
-  try {
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-      if (!localStorage.getItem(THEME_KEY)) hwioApplyTheme('system');
-    });
-  } catch {
-    // matchMedia unavailable
-  }
   let themeBeforeSwap: string | null = null;
   document.addEventListener('astro:before-swap', () => { themeBeforeSwap = document.documentElement.getAttribute('data-theme'); });
   document.addEventListener('astro:after-swap', () => {

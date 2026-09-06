@@ -11,10 +11,6 @@ const { label, class: className = '' } = Astro.props;
   .hwio-theme-toggle :global(.hwio-theme-toggle__sun) { display: none; }
   :global([data-theme$='-dark']) .hwio-theme-toggle :global(.hwio-theme-toggle__sun) { display: block; }
   :global([data-theme$='-dark']) .hwio-theme-toggle :global(.hwio-theme-toggle__moon) { display: none; }
-  @media (prefers-color-scheme: dark) {
-    :global(html:not([data-theme])) .hwio-theme-toggle :global(.hwio-theme-toggle__sun) { display: block; }
-    :global(html:not([data-theme])) .hwio-theme-toggle :global(.hwio-theme-toggle__moon) { display: none; }
-  }
 </style>
 <script>
   import { hwioThemeRuntime } from '@hubpav/hwio-web-runtime/theme';

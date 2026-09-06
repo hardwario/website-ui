@@ -2,7 +2,7 @@
 @plugin "daisyui/theme" {
   name: "hwio-dark";
   default: false;
-  prefersdark: true;
+  prefersdark: false;
   color-scheme: dark;
   --color-base-100: #0f0f14;
   --color-base-200: #1a1a22;
@@ -39,11 +39,4 @@
   --hwio-container: 1275px;
   --hwio-container-pad: 27px;
   --hwio-kicker-on-neutral: #f43f5e;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) {
-    --hwio-font-sans: 'Inter', 'Inter Fallback', ui-sans-serif, system-ui, sans-serif;
-  --hwio-kicker-on-neutral: #f43f5e;
-  }
 }
