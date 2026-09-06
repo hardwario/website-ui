@@ -84,7 +84,7 @@
         "error-content": "white"
       },
       "extras": {
-        "--hwio-kicker-on-neutral": "#f43f5e"
+        "--hwio-kicker-on-neutral": "#fb7185"
       }
     },
     "hwio-dark": {
