@@ -1,5 +1,16 @@
 # @hubpav/hwio-ui
 
+## 0.4.0
+
+### Patch Changes
+
+- 0d4868c: HWioHeader `languageVariant` (inline pills for two-language sites); HWioPricingTiers `pricePrefix` and `period` around the amount; HWioFaq answers may be an array of paragraphs.
+- e75d628: The theme bootstrap always stamps `data-theme` (stored choice, else the system scheme) so non-default DaisyUI themes such as `hwio-forestry` apply and dark rules match on the attribute alone; the runtime follows `prefers-color-scheme` changes when no choice is stored. Pricing badges stay on one line.
+- Updated dependencies [e75d628]
+  - @hubpav/hwio-web-runtime@0.4.0
+  - @hubpav/hwio-brand@0.4.0
+  - @hubpav/hwio-web-worker@0.4.0
+
 ## 0.3.0
 
 ### Minor Changes

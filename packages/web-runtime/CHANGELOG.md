@@ -1,5 +1,11 @@
 # @hubpav/hwio-web-runtime
 
+## 0.4.0
+
+### Minor Changes
+
+- e75d628: The theme bootstrap always stamps `data-theme` (stored choice, else the system scheme) so non-default DaisyUI themes such as `hwio-forestry` apply and dark rules match on the attribute alone; the runtime follows `prefers-color-scheme` changes when no choice is stored. Pricing badges stay on one line.
+
 ## 0.3.0
 
 ## 0.2.0
