@@ -1,5 +1,17 @@
 # @hubpav/hwio-ui
 
+## 0.3.0
+
+### Minor Changes
+
+- 48a2fa6: HWioHeader CTAs accept an `icon` and collapse to the icon alone below 2xl (label becomes the aria-label; the store button rule). HWioPricingTiers tiers take an `eyebrow`. HWioLogoStrip logos take a `size` step (xs to xl). HWioHeader takes `desktopFrom` (lg default, xl) so long navs keep the drawer up to 1279 px.
+
+### Patch Changes
+
+- @hubpav/hwio-brand@0.3.0
+- @hubpav/hwio-web-runtime@0.3.0
+- @hubpav/hwio-web-worker@0.3.0
+
 ## 0.2.0
 
 ### Minor Changes
