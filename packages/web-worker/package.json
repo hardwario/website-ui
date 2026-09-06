@@ -1,6 +1,6 @@
 {
   "name": "@hubpav/hwio-web-worker",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Shared Cloudflare Worker handler and security-header builder for the HARDWARIO static sites: canonical-host redirect, CSP report collector, Early Hints, _headers generation.",
   "license": "MIT",
   "type": "module",

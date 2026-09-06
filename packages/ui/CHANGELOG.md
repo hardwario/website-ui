@@ -1,5 +1,15 @@
 # @hubpav/hwio-ui
 
+## 0.1.4
+
+### Patch Changes
+
+- bf3b72c: `.hwio-btn-inverse` uses the neutral pair, so it stays light on dark surfaces in the dark theme too.
+- 19cf0f0: HWioProcessSteps: optional `number` per item renders the copy's own ordinal ("01") instead of the index.
+  - @hubpav/hwio-brand@0.1.4
+  - @hubpav/hwio-web-runtime@0.1.4
+  - @hubpav/hwio-web-worker@0.1.4
+
 ## 0.1.3
 
 ### Patch Changes
