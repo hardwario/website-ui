@@ -1,5 +1,18 @@
 # @hubpav/hwio-ui
 
+## 0.2.0
+
+### Minor Changes
+
+- 3bd781e: Owner ruling R10 (2026-09-06): the dark themes lift `primary` to the light brand blue (`#009cfa`) with dark content (6.5:1 on the night surfaces); `hwio-forestry-dark` likewise to `forestry-light`. Filled, outline and ghost primary buttons, badges and links are now legible in dark mode without per-variant overrides (the 0.1.5 outline rule is removed).
+
+### Patch Changes
+
+- Updated dependencies [3bd781e]
+  - @hubpav/hwio-brand@0.2.0
+  - @hubpav/hwio-web-runtime@0.2.0
+  - @hubpav/hwio-web-worker@0.2.0
+
 ## 0.1.5
 
 ### Patch Changes

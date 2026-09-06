@@ -1,6 +1,6 @@
 {
   "name": "@hubpav/hwio-web-runtime",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "Framework-free browser runtime for the HARDWARIO websites: consent (Consent Mode v2 + GTM), HubSpot forms with Turnstile, attribution, theme, CTA tracking and small behaviours. View-transition safe.",
   "license": "MIT",
   "type": "module",

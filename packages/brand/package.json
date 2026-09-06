@@ -1,6 +1,6 @@
 {
   "name": "@hubpav/hwio-brand",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "HARDWARIO brand source of truth: palette, theme roles, fonts, logos and the sites registry, generated into CSS and JSON for any stack.",
   "license": "MIT",
   "type": "module",
