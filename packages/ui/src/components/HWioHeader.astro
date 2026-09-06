@@ -17,10 +17,17 @@ interface Props {
   showThemeToggle?: boolean;
   scrollspy?: boolean;
   labels: { nav: string; menu: string; close: string; theme?: string; languages?: string };
+  /** Viewport from which the inline nav and CTAs replace the drawer (default lg; xl for long navs). */
+  desktopFrom?: 'lg' | 'xl';
   id?: string;
   class?: string;
 }
-const { nav, ctas = [], languages = [], showThemeToggle = true, scrollspy = false, labels, id = 'hwio-nav-drawer', class: className = '' } = Astro.props;
+const { nav, ctas = [], languages = [], showThemeToggle = true, scrollspy = false, labels, desktopFrom = 'lg', id = 'hwio-nav-drawer', class: className = '' } = Astro.props;
+const BREAK = {
+  lg: { nav: 'hidden flex-1 justify-center lg:flex', ctas: 'hidden items-center gap-2 lg:flex', drawer: 'drawer drawer-end w-auto lg:hidden' },
+  xl: { nav: 'hidden flex-1 justify-center xl:flex', ctas: 'hidden items-center gap-2 xl:flex', drawer: 'drawer drawer-end w-auto xl:hidden' },
+} as const;
+const bp = BREAK[desktopFrom];
 const CTA_VARIANT = { primary: 'primary', secondary: 'secondary', ghost: 'ghost' } as const;
 ---
 <header class:list={['sticky top-0 z-50 border-b border-base-300 bg-base-100/90 backdrop-blur supports-[backdrop-filter]:bg-base-100/80', className]} data-hwio-font-exempt>
@@ -29,7 +36,7 @@ const CTA_VARIANT = { primary: 'primary', secondary: 'secondary', ghost: 'ghost'
       <slot name="logo" />
     </div>
 
-    <nav class="hidden flex-1 justify-center lg:flex" aria-label={labels.nav} data-hwio-scrollspy={scrollspy ? 'true' : undefined}>
+    <nav class={bp.nav} aria-label={labels.nav} data-hwio-scrollspy={scrollspy ? 'true' : undefined}>
       <ul class="menu menu-horizontal flex-nowrap gap-0 px-0 whitespace-nowrap">
         {nav.map((item) => (
           <li>
@@ -51,7 +58,7 @@ const CTA_VARIANT = { primary: 'primary', secondary: 'secondary', ghost: 'ghost'
     <div class="ml-auto flex items-center gap-2">
       {showThemeToggle && <HWioThemeToggle label={labels.theme ?? 'Theme'} />}
       {languages.length > 1 && <HWioLanguageSwitcher items={languages} label={labels.languages ?? 'Language'} />}
-      <div class="hidden items-center gap-2 lg:flex">
+      <div class={bp.ctas}>
         {ctas.map((cta) => (
           <HWioButton href={cta.href} external={cta.external} variant={CTA_VARIANT[cta.variant ?? 'primary']} size="sm" track={cta.track ?? { id: 'header-cta', location: 'header' }} class={cta.icon ? '2xl:px-4 px-2.5' : ''} aria-label={cta.icon ? cta.label : undefined} title={cta.icon ? cta.label : undefined}>
             {cta.icon && <HWioIcon name={cta.icon as 'bag'} size="sm" />}
@@ -59,7 +66,7 @@ const CTA_VARIANT = { primary: 'primary', secondary: 'secondary', ghost: 'ghost'
           </HWioButton>
         ))}
       </div>
-      <div class="drawer drawer-end w-auto lg:hidden">
+      <div class={bp.drawer}>
         <input id={id} type="checkbox" class="drawer-toggle" />
         <div class="drawer-content">
           <label for={id} class="btn btn-ghost btn-square drawer-button" aria-label={labels.menu} aria-controls={`${id}-panel`} aria-expanded="false" tabindex="0" role="button">
