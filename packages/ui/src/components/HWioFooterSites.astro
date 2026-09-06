@@ -9,7 +9,7 @@ const { items, label, class: className = '' } = Astro.props;
     {items.map((site, i) => (
       <>
         {i > 0 && <span class="opacity-50" aria-hidden="true">&middot;</span>}
-        <a href={site.href} target="_blank" rel="noopener noreferrer" class="text-neutral-content/80 transition-colors hover:text-accent">{site.label}</a>
+        <a href={site.href} target="_blank" rel="noopener noreferrer" class="text-neutral-content/80 transition-colors hover:text-[var(--hwio-footer-hover,var(--color-accent))]">{site.label}</a>
       </>
     ))}
   </nav>

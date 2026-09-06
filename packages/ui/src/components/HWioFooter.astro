@@ -20,14 +20,14 @@ interface Props {
   class?: string;
 }
 const { columns, social = [], branches, legal = [], cookieSettingsLabel, sites, copyright, tagline, class: className = '' } = Astro.props;
-const linkClass = 'inline-flex items-center gap-1 text-neutral-content/80 transition-colors hover:text-accent';
+const linkClass = 'inline-flex items-center gap-1 text-neutral-content/80 transition-colors hover:text-[var(--hwio-footer-hover,var(--color-accent))]';
 ---
 <footer class:list={['bg-neutral text-neutral-content', className]} data-hwio-footer>
   {social.length > 0 && (
     <div class="border-b border-neutral-content/10">
       <div class="container flex justify-center gap-6 py-6">
         {social.filter((s) => s.icon !== 'forum').map((s) => (
-          <a href={s.href} target="_blank" rel="noopener noreferrer" class="text-neutral-content transition-colors hover:text-accent" aria-label={s.label}>
+          <a href={s.href} target="_blank" rel="noopener noreferrer" class="text-neutral-content transition-colors hover:text-[var(--hwio-footer-hover,var(--color-accent))]" aria-label={s.label}>
             <HWioIcon name={s.icon} class="size-9" />
           </a>
         ))}
@@ -74,7 +74,7 @@ const linkClass = 'inline-flex items-center gap-1 text-neutral-content/80 transi
             {legal.map((l) => (
               <li><a href={l.href} target={l.external ? '_blank' : undefined} rel={l.external ? 'noopener noreferrer' : undefined} class={linkClass}>{l.label}{l.external && <HWioIcon name="download" size="sm" />}</a></li>
             ))}
-            {cookieSettingsLabel && <li><button type="button" data-hwio-cookie-settings class="text-left text-neutral-content/80 transition-colors hover:text-accent">{cookieSettingsLabel}</button></li>}
+            {cookieSettingsLabel && <li><button type="button" data-hwio-cookie-settings class="text-left text-neutral-content/80 transition-colors hover:text-[var(--hwio-footer-hover,var(--color-accent))]">{cookieSettingsLabel}</button></li>}
           </ul>
         </div>
       )}
