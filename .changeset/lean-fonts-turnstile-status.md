@@ -9,3 +9,4 @@
 - `HWioContactSection`: the phone number never breaks across lines on narrow screens.
 - Registry: hardwario.engineering carries the cross-site footer strip again (owner lifted the 2026-07-19 exemption on 2026-09-06).
 - `HWioIcon`: `facebook` (enerooo's footer).
+- Theme `er3o`: `neutral` is the ENEROOO footer graphite `#404040` (the production footer's black at 75 percent over white), owner ruling 2026-09-06.
