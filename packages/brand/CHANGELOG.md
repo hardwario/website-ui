@@ -1,5 +1,11 @@
 # @hubpav/hwio-brand
 
+## 0.6.3
+
+### Patch Changes
+
+- 9f0b548: Footer link hover colour is themed: `--hwio-footer-hover` (default the accent). The `er3o` theme sets white, because its accent is a dark teal that vanished on the graphite footer.
+
 ## 0.6.2
 
 ## 0.6.1
