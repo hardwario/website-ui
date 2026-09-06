@@ -222,3 +222,20 @@
 .btn-lg { height: var(--size); --fontsize: 0.9375rem; padding-inline: 1.75rem; }
 .btn-square, .btn-circle { padding-inline: 0; }
 .card .card-body { --card-p: 2rem; }
+
+/* Dark themes keep the navy primary for filled buttons (white on navy: 11.6:1), but navy text is
+   1.3-1.7:1 on the night surfaces, so outline and ghost primary buttons take the light brand blue
+   there (5.3-6.5:1) and fill with it on hover, dark text on top. Both dark cases: an explicit
+   data-theme ending in -dark, and the system preference with no stored choice (DaisyUI's prefersdark). */
+[data-theme$="-dark"] .btn-outline.btn-primary,
+[data-theme$="-dark"] .btn-ghost.btn-primary {
+  --btn-color: var(--color-info);
+  --btn-fg: var(--color-base-100);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .btn-outline.btn-primary,
+  :root:not([data-theme]) .btn-ghost.btn-primary {
+    --btn-color: var(--color-info);
+    --btn-fg: var(--color-base-100);
+  }
+}
