@@ -41,6 +41,7 @@
   --er3o-gradient-from: #01CC9B;
   --er3o-gradient-to: #14A0C0;
   --hwio-footer-hover: #ffffff;
+  --hwio-nav-active: #296ea7;
 }
 
 /* ENEROOO carries its gradient as a theme rule: DaisyUI slots are single colours. Only the filled
