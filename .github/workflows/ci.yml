@@ -1,8 +1,8 @@
 name: CI
+# Every branch push runs the checks (pull requests show the run of their head commit). The push
+# event carries the commit message, which the [vrt-update] baseline switch below relies on.
 on:
   push:
-    branches: [main]
-  pull_request:
 jobs:
   check:
     runs-on: ubuntu-latest
