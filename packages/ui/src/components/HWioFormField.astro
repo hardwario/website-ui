@@ -14,16 +14,16 @@ const message = field.messageField ? { 'data-message-field': 'true', 'data-messa
   </label>
 ) : (
   <fieldset class:list={['fieldset', field.half ? '' : 'md:col-span-2']}>
-    <legend class="fieldset-legend">{field.label}{field.required && <span aria-hidden="true"> *</span>}</legend>
+    <legend id={`${id}-label`} class="fieldset-legend">{field.label}{field.required && <span aria-hidden="true"> *</span>}</legend>
     {field.type === 'textarea' ? (
-      <textarea id={id} name={field.name} class="textarea w-full" rows={field.rows ?? 5} required={field.required} placeholder={field.placeholder} {...message}>{field.value ?? ''}</textarea>
+      <textarea id={id} name={field.name} aria-labelledby={`${id}-label`} class="textarea w-full" rows={field.rows ?? 5} required={field.required} placeholder={field.placeholder} {...message}>{field.value ?? ''}</textarea>
     ) : field.type === 'select' ? (
-      <select id={id} name={field.name} class="select w-full" required={field.required} {...message}>
+      <select id={id} name={field.name} aria-labelledby={`${id}-label`} class="select w-full" required={field.required} {...message}>
         {field.placeholder && <option value="" disabled selected>{field.placeholder}</option>}
         {(field.options ?? []).map((o) => <option value={o.value}>{o.label}</option>)}
       </select>
     ) : (
-      <input id={id} type={field.type ?? 'text'} name={field.name} class="input w-full" required={field.required} placeholder={field.placeholder} autocomplete={field.autocomplete} value={field.value} {...message} />
+      <input id={id} type={field.type ?? 'text'} name={field.name} aria-labelledby={`${id}-label`} class="input w-full" required={field.required} placeholder={field.placeholder} autocomplete={field.autocomplete} value={field.value} {...message} />
     )}
   </fieldset>
 )}
