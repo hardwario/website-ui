@@ -19,10 +19,12 @@ interface Props {
   labels: { nav: string; menu: string; close: string; theme?: string; languages?: string };
   /** Viewport from which the inline nav and CTAs replace the drawer (default lg; xl for long navs). */
   desktopFrom?: 'lg' | 'xl';
+  /** Desktop language control: dropdown (default) or inline pills (two-language sites). */
+  languageVariant?: 'dropdown' | 'pills';
   id?: string;
   class?: string;
 }
-const { nav, ctas = [], languages = [], showThemeToggle = true, scrollspy = false, labels, desktopFrom = 'lg', id = 'hwio-nav-drawer', class: className = '' } = Astro.props;
+const { nav, ctas = [], languages = [], showThemeToggle = true, scrollspy = false, labels, desktopFrom = 'lg', languageVariant = 'dropdown', id = 'hwio-nav-drawer', class: className = '' } = Astro.props;
 const BREAK = {
   lg: { nav: 'hidden flex-1 justify-center lg:flex', ctas: 'hidden items-center gap-2 lg:flex', drawer: 'drawer drawer-end w-auto lg:hidden' },
   xl: { nav: 'hidden flex-1 justify-center xl:flex', ctas: 'hidden items-center gap-2 xl:flex', drawer: 'drawer drawer-end w-auto xl:hidden' },
@@ -57,7 +59,7 @@ const CTA_VARIANT = { primary: 'primary', secondary: 'secondary', ghost: 'ghost'
 
     <div class="ml-auto flex items-center gap-2">
       {showThemeToggle && <HWioThemeToggle label={labels.theme ?? 'Theme'} />}
-      {languages.length > 1 && <HWioLanguageSwitcher items={languages} label={labels.languages ?? 'Language'} />}
+      {languages.length > 1 && <HWioLanguageSwitcher items={languages} label={labels.languages ?? 'Language'} variant={languageVariant} />}
       <div class={bp.ctas}>
         {ctas.map((cta) => (
           <HWioButton href={cta.href} external={cta.external} variant={CTA_VARIANT[cta.variant ?? 'primary']} size="sm" track={cta.track ?? { id: 'header-cta', location: 'header' }} class={cta.icon ? '2xl:px-4 px-2.5' : ''} aria-label={cta.icon ? cta.label : undefined} title={cta.icon ? cta.label : undefined}>

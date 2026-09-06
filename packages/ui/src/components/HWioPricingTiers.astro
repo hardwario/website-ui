@@ -2,7 +2,7 @@
 import type { HWioCta } from '../types';
 import HWioButton from './HWioButton.astro';
 import HWioIcon from './HWioIcon.astro';
-interface Tier { eyebrow?: string; name: string; price?: string; description?: string; features: string[]; cta?: HWioCta; featured?: boolean; badge?: string }
+interface Tier { eyebrow?: string; name: string; price?: string; pricePrefix?: string; period?: string; description?: string; features: string[]; cta?: HWioCta; featured?: boolean; badge?: string }
 interface Props { tiers: Tier[]; class?: string }
 const { tiers, class: className = '' } = Astro.props;
 const COLS = { 1: 'grid gap-6', 2: 'grid gap-6 md:grid-cols-2', 3: 'grid gap-6 md:grid-cols-3', 4: 'grid gap-6 md:grid-cols-2 lg:grid-cols-4' } as const;
@@ -17,7 +17,13 @@ const cols = (Math.min(Math.max(tiers.length, 1), 4) as 1 | 2 | 3 | 4);
           <h3 class="card-title text-[1.375rem]">{tier.name}</h3>
           {tier.badge && <span class="badge badge-primary">{tier.badge}</span>}
         </div>
-        {tier.price && <p class="text-3xl font-bold">{tier.price}</p>}
+        {tier.price && (
+          <p class="flex flex-wrap items-baseline gap-x-1.5">
+            {tier.pricePrefix && <span class="hwio-muted text-sm">{tier.pricePrefix}</span>}
+            <span class="text-3xl font-bold tracking-tight">{tier.price}</span>
+            {tier.period && <span class="hwio-muted text-sm">{tier.period}</span>}
+          </p>
+        )}
         {tier.description && <p class="opacity-80">{tier.description}</p>}
         <ul class="my-4 space-y-2 text-sm">
           {tier.features.map((f) => <li class="flex items-start gap-2"><HWioIcon name="check" size="sm" class="mt-0.5 shrink-0 text-accent" /><span>{f}</span></li>)}

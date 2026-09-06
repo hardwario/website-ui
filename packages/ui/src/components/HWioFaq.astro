@@ -1,14 +1,16 @@
 ---
 /** Exclusive accordion on native <details name>, optional FAQPage JSON-LD. Answers are text unless `html` is set. */
-interface Props { items: { q: string; a: string }[]; name?: string; html?: boolean; jsonLd?: boolean; class?: string }
+/** An answer is one paragraph, or several as an array. */
+interface Props { items: { q: string; a: string | string[] }[]; name?: string; html?: boolean; jsonLd?: boolean; class?: string }
 const { items, name = 'hwio-faq', html = false, jsonLd = true, class: className = '' } = Astro.props;
-const ld = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: items.map((i) => ({ '@type': 'Question', name: i.q, acceptedAnswer: { '@type': 'Answer', text: i.a } })) };
+const paragraphs = (a: string | string[]) => (Array.isArray(a) ? a : [a]);
+const ld = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: items.map((i) => ({ '@type': 'Question', name: i.q, acceptedAnswer: { '@type': 'Answer', text: paragraphs(i.a).join(' ') } })) };
 ---
 <div class:list={['space-y-3', className]}>
   {items.map((item) => (
     <details class="collapse collapse-arrow border border-base-300 bg-base-100" name={name}>
       <summary class="collapse-title font-semibold">{item.q}</summary>
-      <div class="collapse-content opacity-90">{html ? <div set:html={item.a} /> : <p>{item.a}</p>}</div>
+      <div class="collapse-content space-y-3 opacity-90">{html ? <div set:html={paragraphs(item.a).join('')} /> : paragraphs(item.a).map((p) => <p>{p}</p>)}</div>
     </details>
   ))}
 </div>
