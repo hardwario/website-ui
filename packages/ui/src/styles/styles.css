@@ -118,14 +118,15 @@
   }
   .hwio-hairline { border-color: var(--color-base-300); }
   /* Inverse button for ink/neutral panels (navy on ink has no contrast). */
+  /* Button for neutral (dark) surfaces: reads from the neutral pair so it stays light in both themes. */
   .hwio-btn-inverse {
-    background-color: var(--color-base-100);
-    border-color: var(--color-base-100);
+    background-color: var(--color-neutral-content);
+    border-color: var(--color-neutral-content);
     color: var(--color-neutral);
   }
   .hwio-btn-inverse:hover {
-    background-color: var(--color-base-200);
-    border-color: var(--color-base-200);
+    background-color: color-mix(in oklab, var(--color-neutral-content) 88%, var(--color-neutral));
+    border-color: color-mix(in oklab, var(--color-neutral-content) 88%, var(--color-neutral));
   }
   .hwio-chip {
     display: inline-flex;
