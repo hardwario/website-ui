@@ -91,6 +91,26 @@
     .hwio-section-compact { padding-block: calc(var(--spacing) * 12); }
   }
   /* Kicker: the sentence-case red label above a heading (replaces www's uppercase eyebrows). */
+  /* Current page in the header nav: coloured label plus a 2px bar on the header's bottom edge
+     (the nav stretches to the bar's full height, so the li reaches the border). Themes set
+     --hwio-nav-active; the primary colour is the default. */
+  .hwio-nav-current {
+    position: relative;
+  }
+  .hwio-nav-current > a,
+  .hwio-nav-current > button {
+    color: var(--hwio-nav-active, var(--color-primary));
+  }
+  .hwio-nav-current::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0.75rem;
+    bottom: 0;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--hwio-nav-active, var(--color-primary));
+  }
+
   .hwio-kicker,
   .hwio-eyebrow {
     color: var(--color-accent);

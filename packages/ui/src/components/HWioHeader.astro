@@ -30,8 +30,8 @@ interface Props {
 }
 const { nav, ctas = [], languages = [], showThemeToggle = true, scrollspy = false, labels, desktopFrom = 'lg', id = 'hwio-nav-drawer', class: className = '' } = Astro.props;
 const BREAK = {
-  lg: { nav: 'hidden flex-1 justify-center lg:flex', ctas: 'hidden items-center gap-2 lg:flex', drawer: 'drawer drawer-end w-auto lg:hidden', panels: 'hidden lg:block' },
-  xl: { nav: 'hidden flex-1 justify-center xl:flex', ctas: 'hidden items-center gap-2 xl:flex', drawer: 'drawer drawer-end w-auto xl:hidden', panels: 'hidden xl:block' },
+  lg: { nav: 'hidden flex-1 self-stretch justify-center lg:flex', ctas: 'hidden items-center gap-2 lg:flex', drawer: 'drawer drawer-end w-auto lg:hidden', panels: 'hidden lg:block' },
+  xl: { nav: 'hidden flex-1 self-stretch justify-center xl:flex', ctas: 'hidden items-center gap-2 xl:flex', drawer: 'drawer drawer-end w-auto xl:hidden', panels: 'hidden xl:block' },
 } as const;
 const bp = BREAK[desktopFrom];
 const CTA_VARIANT = { primary: 'primary', secondary: 'secondary', ghost: 'ghost' } as const;
@@ -45,9 +45,9 @@ const linkAttrs = (item: HWioLinkItem) => (item.external ? { target: '_blank', r
     </div>
 
     <nav class={bp.nav} aria-label={labels.nav} data-hwio-scrollspy={scrollspy ? 'true' : undefined}>
-      <ul class="menu menu-horizontal flex-nowrap gap-0 px-0 whitespace-nowrap">
+      <ul class="menu menu-horizontal h-full flex-nowrap items-center gap-0 px-0 py-0 whitespace-nowrap">
         {nav.map((item) => (
-          <li>
+          <li class:list={[item.current && 'hwio-nav-current']}>
             {item.mega ? (
               <button type="button" class="px-3 text-[15px] font-medium text-base-content/80 hover:text-accent" data-hwio-mega-trigger={item.mega} aria-expanded="false" aria-haspopup="true" aria-controls={`${id}-mega-${item.mega}`}>
                 {item.label}
