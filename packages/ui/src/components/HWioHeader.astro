@@ -45,7 +45,7 @@ const linkAttrs = (item: HWioLinkItem) => (item.external ? { target: '_blank', r
     </div>
 
     <nav class={bp.nav} aria-label={labels.nav} data-hwio-scrollspy={scrollspy ? 'true' : undefined}>
-      <ul class="menu menu-horizontal h-full flex-nowrap items-center gap-0 px-0 py-0 whitespace-nowrap">
+      <ul class="menu hwio-nav menu-horizontal h-full flex-nowrap items-stretch gap-0 px-0 py-0 whitespace-nowrap">
         {nav.map((item) => (
           <li class:list={[item.current && 'hwio-nav-current']}>
             {item.mega ? (
@@ -54,7 +54,7 @@ const linkAttrs = (item: HWioLinkItem) => (item.external ? { target: '_blank', r
                 <HWioIcon name="chevron-down" size="sm" class="opacity-50 transition-transform duration-200" />
               </button>
             ) : (
-              <a href={item.href} class="px-3 text-[15px] font-medium text-base-content/80 hover:text-accent" aria-current={item.current ? 'page' : undefined} data-track={item.track?.id} data-track-location={item.track?.location ?? 'header'}>{item.label}</a>
+              <a href={item.href} class="px-3 text-[15px] font-medium text-base-content/80 hover:text-accent aria-[current=page]:text-[var(--hwio-nav-active,var(--color-primary))]" aria-current={item.current ? 'page' : undefined} data-track={item.track?.id} data-track-location={item.track?.location ?? 'header'}>{item.label}</a>
             )}
           </li>
         ))}

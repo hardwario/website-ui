@@ -94,12 +94,11 @@
   /* Current page in the header nav: coloured label plus a 2px bar on the header's bottom edge
      (the nav stretches to the bar's full height, so the li reaches the border). Themes set
      --hwio-nav-active; the primary colour is the default. */
+  .hwio-nav > li {
+    justify-content: center; /* items span the bar's full height; the link stays centred */
+  }
   .hwio-nav-current {
     position: relative;
-  }
-  .hwio-nav-current > a,
-  .hwio-nav-current > button {
-    color: var(--hwio-nav-active, var(--color-primary));
   }
   .hwio-nav-current::after {
     content: '';
