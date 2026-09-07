@@ -1,8 +1,10 @@
 import { hwioMount } from './mount.js';
 
 /**
- * Header behaviours: keeps aria-expanded on the DaisyUI drawer label in sync with its checkbox,
- * closes the drawer when a link inside it is followed, opens HWioHeader's mega panels
+ * Header behaviours: drives the DaisyUI drawer from its [data-hwio-drawer-toggle] buttons (Enter and
+ * Space work because they are buttons; aria-expanded follows the checkbox, focus moves to the panel's
+ * first control on open and back to the trigger on close, Escape closes, a followed link closes),
+ * opens HWioHeader's mega panels
  * ([data-hwio-mega-trigger] buttons and their [data-hwio-mega-panel]; hover with intent on pointer
  * devices, click, ArrowDown into the panel, Escape / outside click / focus leaving close; one at a
  * time), and marks the nav link whose section is in view ([data-hwio-scrollspy] nav with same-page
@@ -20,13 +22,37 @@ export function hwioNavRuntime() {
     controller = new AbortController();
     const { signal } = controller;
     document.querySelectorAll<HTMLInputElement>('input.drawer-toggle').forEach((input) => {
-      const labels = Array.from(document.querySelectorAll<HTMLElement>(`label[for="${input.id}"]`));
-      const sync = () => labels.forEach((l) => l.setAttribute('aria-expanded', String(input.checked)));
+      const side = input.parentElement?.querySelector<HTMLElement>('.drawer-side') ?? null;
+      const toggles = Array.from(document.querySelectorAll<HTMLElement>(`[data-hwio-drawer-toggle="${input.id}"]`));
+      const trigger = toggles.find((t) => !side?.contains(t)) ?? null;
+      const sync = () => toggles.forEach((t) => t.setAttribute('aria-expanded', String(input.checked)));
+      // DaisyUI reveals .drawer-side after a 100 ms visibility delay; retry per frame until the control takes focus.
+      const focusWhenVisible = (el: HTMLElement, frames = 40) => {
+        if (!input.checked) return;
+        el.focus();
+        if (document.activeElement !== el && frames > 0) requestAnimationFrame(() => focusWhenVisible(el, frames - 1));
+      };
+      const apply = (restoreFocus: boolean) => {
+        sync();
+        if (input.checked) {
+          const first = side?.querySelector<HTMLElement>('button, a[href], input:not([type="hidden"]), select, textarea, summary, [tabindex]:not([tabindex="-1"])');
+          if (first) focusWhenVisible(first);
+        } else if (restoreFocus) {
+          trigger?.focus();
+        }
+      };
+      const setOpen = (open: boolean, restoreFocus = true) => {
+        if (input.checked === open) return;
+        input.checked = open;
+        apply(restoreFocus);
+      };
       sync();
-      input.addEventListener('change', sync, { signal });
-      const side = input.parentElement?.querySelector('.drawer-side');
-      side?.querySelectorAll('a[href]').forEach((a) => a.addEventListener('click', () => { input.checked = false; sync(); }, { signal }));
-      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && input.checked) { input.checked = false; sync(); } }, { signal });
+      toggles.forEach((t) => t.addEventListener('click', () => setOpen(!input.checked), { signal }));
+      // Labels (the overlay) still flip the checkbox natively; follow them.
+      input.addEventListener('change', () => apply(true), { signal });
+      // A followed link closes the drawer without stealing focus from the navigation target (same-page anchors).
+      side?.querySelectorAll('a[href]').forEach((a) => a.addEventListener('click', () => setOpen(false, false), { signal }));
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && input.checked) setOpen(false); }, { signal });
     });
     const triggers = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-hwio-mega-trigger]'));
     if (triggers.length) {

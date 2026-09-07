@@ -249,3 +249,10 @@
 /* Text links: themes whose primary is too light for text on the page ground (er3o teal) set
    --hwio-link to their text-safe hue; the default keeps DaisyUI's primary. */
 .btn-link { color: var(--hwio-link, var(--color-primary)); }
+/* DaisyUI marks a focused menu item (header nav, drawer, the language dropdown's `.menu.dropdown-content`)
+   with a 10 % tint only and sets outline-style: none, on every `details > summary` unconditionally. That
+   fails WCAG 2.4.7; restore the system ring from the base layer. Same selector shape as DaisyUI's rule. */
+.menu :where(li > :not(ul, menu, details, .menu-title), li > details > summary):focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}
