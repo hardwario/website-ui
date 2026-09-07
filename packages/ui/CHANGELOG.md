@@ -1,5 +1,14 @@
 # @hubpav/hwio-ui
 
+## 0.6.6
+
+### Patch Changes
+
+- 2776cf0: `HWioHeader`: the current-page bar now sits on the header's bottom edge (nav items span the bar's height) and the current label colour wins over the default link colour.
+  - @hubpav/hwio-brand@0.6.6
+  - @hubpav/hwio-web-runtime@0.6.6
+  - @hubpav/hwio-web-worker@0.6.6
+
 ## 0.6.5
 
 ### Patch Changes
