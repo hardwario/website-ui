@@ -1,0 +1,12 @@
+{
+  "mode": "pre",
+  "tag": "redesign",
+  "initialVersions": {
+    "catalog": "0.0.0",
+    "@hubpav/hwio-brand": "0.7.0",
+    "@hubpav/hwio-ui": "0.7.0",
+    "@hubpav/hwio-web-runtime": "0.7.0",
+    "@hubpav/hwio-web-worker": "0.7.0"
+  },
+  "changesets": []
+}
