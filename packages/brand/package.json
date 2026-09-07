@@ -26,6 +26,7 @@
     "./vars.css": "./dist/vars.css",
     "./docusaurus.css": "./dist/docusaurus.css",
     "./fonts/*": "./dist/fonts/*",
+    "./design/*": "./dist/design/*",
     "./logos/*": "./logos/*",
     "./package.json": "./package.json"
   },

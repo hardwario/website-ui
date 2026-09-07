@@ -1,0 +1,28 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [
+      "node_modules/**",
+      ".astro/**",
+      "catalog/test-results/**",
+      "catalog/dist/er3o/**"
+    ],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-09-07T09:04:00.853Z",
+        "reason": "owner ruling R14 2026-09-07: Inter is a fixed brand constraint"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "poppins",
+        "files": [
+          "catalog/dist/**"
+        ],
+        "createdAt": "2026-09-07T09:06:58.495Z",
+        "reason": "the catalog inlines every theme's font-face (Poppins belongs to er3o); sites declare one family"
+      }
+    ]
+  }
+}

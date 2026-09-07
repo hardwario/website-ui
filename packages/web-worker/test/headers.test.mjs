@@ -41,3 +41,25 @@ test('worker: collector answers 204, canonical redirect is a single 301, assets 
   const r4 = await micro.fetch(new Request('http://hardwario.engineering/'), { ASSETS: assets });
   assert.equal(r4.status, 200);
 });
+
+test('preview hosts: no canonical redirect, noindex on every response, production untouched', async () => {
+  const assets = { fetch: async () => new Response('<html>', { status: 200, headers: { 'content-type': 'text/html' } }) };
+  const w = hwioWorker({ canonicalHost: 'www.example.com', earlyHints: ['/fonts/a.woff2'] });
+  const preview = await w.fetch(new Request('https://redesign-website.acme.workers.dev/cs/'), { ASSETS: assets });
+  assert.equal(preview.status, 200);
+  assert.equal(preview.headers.get('x-robots-tag'), 'noindex, nofollow');
+  assert.match(preview.headers.get('link') ?? '', /fonts\/a\.woff2/);
+  const prod = await w.fetch(new Request('https://www.example.com/'), { ASSETS: assets });
+  assert.equal(prod.headers.get('x-robots-tag'), null);
+  const foreign = await w.fetch(new Request('https://example.com/'), { ASSETS: assets });
+  assert.equal(foreign.status, 301);
+  const micro = hwioWorker({ canonicalHost: null });
+  const microPreview = await micro.fetch(new Request('https://redesign-x.acme.workers.dev/'), { ASSETS: assets });
+  assert.equal(microPreview.headers.get('x-robots-tag'), 'noindex, nofollow');
+});
+
+test('_headers: previewNoindex appends a host-scoped rule after the security block', () => {
+  const file = hwioRenderHeadersFile({ previewNoindex: true });
+  assert.ok(file.trimEnd().endsWith('https://:preview.:account.workers.dev/*\n  X-Robots-Tag: noindex, nofollow'));
+  assert.equal(hwioRenderHeadersFile({}).includes('workers.dev'), false);
+});

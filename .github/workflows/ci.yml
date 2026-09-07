@@ -17,6 +17,31 @@ jobs:
       - run: npm run build
       - run: npm test
       - run: npm run check -w catalog
+      # Generated artifacts are committed so a token change shows its downstream diff; a stale
+      # commit fails here.
+      - name: Generated files in sync (DESIGN.md, DaisyUI themes)
+        run: git diff --exit-code -- DESIGN.md packages/ui/src/styles/themes
+      # impeccable anti-pattern scan of the built catalog (report-only until main scans clean;
+      # then replace `exit 0` with `exit $code`). Exit 1 = the tool failed, which is an error.
+      - name: Design anti-pattern scan (impeccable)
+        run: |
+          set +e
+          npx --yes impeccable detect --json catalog/dist/ > impeccable.json
+          code=$?
+          npx --yes impeccable detect --quiet catalog/dist/
+          set -e
+          [ "$code" -ne 1 ] || { echo "::error::impeccable detect could not run"; exit 1; }
+          echo "impeccable detect exit code: $code (report-only)"
+          exit 0
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: impeccable-report
+          path: impeccable.json
+      - name: Accessibility (axe, serious and critical fail)
+        run: |
+          npx playwright install --with-deps chromium
+          npm run test:a11y -w catalog
       # Baselines are generated only in this Linux image. A commit whose message contains
       # [vrt-update] regenerates them and uploads them as the "vrt-baselines" artifact; download
       # it into catalog/tests/__screenshots__ and commit (gh run download <run> -n vrt-baselines).

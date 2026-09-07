@@ -5,3 +5,6 @@ catalog/test-results/
 catalog/playwright-report/
 *.log
 .DS_Store
+
+# impeccable: per-machine hook consent and local detector overrides (the shared config.json IS tracked)
+.impeccable/config.local.json

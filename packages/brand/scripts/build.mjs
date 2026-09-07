@@ -4,6 +4,7 @@
 import { mkdirSync, readFileSync, writeFileSync, copyFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { buildDesignMd } from './build-design-md.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, '..');
@@ -55,6 +56,8 @@ writeFileSync(join(dist, 'tokens.json'), JSON.stringify({
   palette: brand.palette,
   themes,
   layout: brand.layout,
+  typography: brand.typography,
+  rhythm: brand.rhythm,
   fonts: brand.fonts,
   logos: brand.logos,
   footerSites: brand.footerSites,
@@ -148,4 +151,7 @@ copyFileSync(join(root, 'src/sites.js'), join(dist, 'sites.js'));
 copyFileSync(join(root, 'src/sites.d.ts'), join(dist, 'sites.d.ts'));
 writeFileSync(join(dist, 'sites-data.js'), `// Generated from brand.json.\nexport const sites = ${JSON.stringify(brand.sites)};\nexport const footerSites = ${JSON.stringify(brand.footerSites)};\nexport const social = ${JSON.stringify(brand.social)};\nexport const branches = ${JSON.stringify(brand.branches)};\n`);
 
-console.log(`brand: ${Object.keys(themes).length} themes, ${Object.keys(brand.fonts.families).length} font families, ${brand.sites.length} sites -> dist/`);
+// ---- design/<theme>.md: DESIGN.md per light theme (impeccable format) + repo-root copy ----
+const designThemes = buildDesignMd(brand, themes, dist);
+
+console.log(`brand: ${Object.keys(themes).length} themes, ${Object.keys(brand.fonts.families).length} font families, ${brand.sites.length} sites, DESIGN.md for ${designThemes.join(', ')} -> dist/`);

@@ -9,8 +9,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "test:vrt": "playwright test",
-    "test:vrt:update": "playwright test --update-snapshots"
+    "test:vrt": "playwright test tests/themes.spec.ts",
+    "test:vrt:update": "playwright test tests/themes.spec.ts --update-snapshots",
+    "test:a11y": "playwright test tests/a11y.spec.ts --project desktop"
   },
   "dependencies": {
     "@hubpav/hwio-brand": "0.6.6",
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@axe-core/playwright": "^4.11.0",
     "@playwright/test": "^1.63.0",
     "typescript": "^6.0.3",
     "wrangler": "^4.129.0"
