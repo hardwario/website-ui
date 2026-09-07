@@ -11,6 +11,12 @@ export interface HWioWorkerOptions {
   earlyHints?: string[];
   /** Name of the static assets binding. */
   assetsBinding?: string;
+  /**
+   * Hostname suffixes treated as preview deployments (Workers Builds non-production branches,
+   * `wrangler versions upload --preview-alias`): the canonical redirect is skipped there and
+   * every response carries `X-Robots-Tag: noindex, nofollow`. Default: ['.workers.dev'].
+   */
+  previewHosts?: string[];
 }
 
 interface AssetsBinding { fetch: (request: Request) => Promise<Response> }
@@ -21,10 +27,11 @@ interface AssetsBinding { fetch: (request: Request) => Promise<Response> }
  * `run_worker_first: true` also get the canonical redirect and Early Hints.
  */
 export function hwioWorker(options: HWioWorkerOptions = {}) {
-  const { canonicalHost = null, cspReport = true, earlyHints = [], assetsBinding = 'ASSETS' } = options;
+  const { canonicalHost = null, cspReport = true, earlyHints = [], assetsBinding = 'ASSETS', previewHosts = ['.workers.dev'] } = options;
   return {
     async fetch(request: Request, env: Record<string, unknown>): Promise<Response> {
       const url = new URL(request.url);
+      const preview = previewHosts.some((suffix) => url.hostname.endsWith(suffix));
       if (cspReport && url.pathname === '/csp-report') {
         if (request.method === 'POST') {
           try {
@@ -36,7 +43,7 @@ export function hwioWorker(options: HWioWorkerOptions = {}) {
         }
         return new Response(null, { status: 204 });
       }
-      if (canonicalHost && (url.protocol !== 'https:' || url.hostname !== canonicalHost)) {
+      if (canonicalHost && !preview && (url.protocol !== 'https:' || url.hostname !== canonicalHost)) {
         url.protocol = 'https:';
         url.hostname = canonicalHost;
         return Response.redirect(url.toString(), 301);
@@ -44,12 +51,12 @@ export function hwioWorker(options: HWioWorkerOptions = {}) {
       const assets = env[assetsBinding] as AssetsBinding | undefined;
       if (!assets) return new Response('assets binding missing', { status: 500 });
       const res = await assets.fetch(request);
-      if (earlyHints.length && res.status === 200 && (res.headers.get('content-type') ?? '').includes('text/html')) {
-        const withHints = new Response(res.body, res);
-        hwioEarlyHintLinks(earlyHints).forEach((l) => withHints.headers.append('Link', l));
-        return withHints;
-      }
-      return res;
+      const html = res.status === 200 && (res.headers.get('content-type') ?? '').includes('text/html');
+      if (!preview && !(earlyHints.length && html)) return res;
+      const out = new Response(res.body, res);
+      if (earlyHints.length && html) hwioEarlyHintLinks(earlyHints).forEach((l) => out.headers.append('Link', l));
+      if (preview) out.headers.set('X-Robots-Tag', 'noindex, nofollow');
+      return out;
     },
   };
 }

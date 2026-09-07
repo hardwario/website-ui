@@ -241,3 +241,11 @@
 .btn-lg { height: var(--size); --fontsize: 0.9375rem; padding-inline: 1.75rem; }
 .btn-square, .btn-circle { padding-inline: 0; }
 .card .card-body { --card-p: 2rem; }
+/* DaisyUI sets .label to 60 % of the text colour, which fails AA at 14 px (4.1:1 on white). R5:
+   darken muted text only. 78 % keeps the label visibly secondary and clears 4.5:1 on every theme. */
+.label { color: color-mix(in oklab, currentColor 78%, transparent); }
+/* Same for inactive tabs (DaisyUI: 50 %, 3.1:1 on white at 14 px). */
+.tab:not(.tab-active, :hover, :focus-visible) { color: color-mix(in oklab, currentColor 78%, transparent); }
+/* Text links: themes whose primary is too light for text on the page ground (er3o teal) set
+   --hwio-link to their text-safe hue; the default keeps DaisyUI's primary. */
+.btn-link { color: var(--hwio-link, var(--color-primary)); }

@@ -20,7 +20,7 @@ const canonical = new URL(Astro.url.pathname, 'https://ui.hardwario.com').href;
         <nav aria-label="Themes" class="flex flex-wrap gap-1">
           {THEMES.map((t) => <a href={`/${t}/${fixture ? fixture + '/' : ''}`} class:list={['btn btn-xs', t === theme ? 'btn-primary' : 'btn-ghost']} aria-current={t === theme ? 'page' : undefined}>{t}</a>)}
         </nav>
-        <span class="ml-auto opacity-60">{title}</span>
+        <span class="ml-auto hwio-muted">{title}</span>
       </div>
     </header>
     <slot />

@@ -102,7 +102,9 @@
         "neutral": "night-300",
         "neutral-content": "night-content",
         "primary": "blue-light",
-        "primary-content": "night-100"
+        "primary-content": "night-100",
+        "secondary": "blue-light",
+        "secondary-content": "night-100"
       }
     },
     "hwio-forestry": {
@@ -153,7 +155,9 @@
         "--er3o-gradient-from": "#01CC9B",
         "--er3o-gradient-to": "#14A0C0",
         "--hwio-footer-hover": "#ffffff",
-        "--hwio-nav-active": "#296ea7"
+        "--hwio-nav-active": "#296ea7",
+        "--hwio-kicker-on-neutral": "#01CC9B",
+        "--hwio-link": "#0C6678"
       }
     }
   },
@@ -166,6 +170,88 @@
       "container": "1640px",
       "pad": "27px"
     }
+  },
+  "typography": {
+    "$comment": "Type ramp and rhythm as implemented in @hubpav/hwio-ui/styles.css today (direction A, R9). A test in packages/brand/test/design-md.test.mjs fails when the two drift. fontSize is the large-screen value; responsive lists the smaller breakpoints (base, md = 48rem). The 2026 redesign (R13-R16) evolves these blocks; the fixed constraints are the logo, red, navy and Inter (R14).",
+    "roles": {
+      "display": {
+        "element": "h1",
+        "fontSize": "3.5rem",
+        "responsive": {
+          "base": "2.5rem",
+          "md": "3rem"
+        },
+        "fontWeight": 700,
+        "lineHeight": 1.05,
+        "letterSpacing": "-0.03em"
+      },
+      "heading": {
+        "element": "h2",
+        "fontSize": "2.5rem",
+        "responsive": {
+          "base": "2rem"
+        },
+        "fontWeight": 700,
+        "lineHeight": 1.1,
+        "letterSpacing": "-0.025em"
+      },
+      "subheading": {
+        "element": "h3",
+        "fontSize": "1.375rem",
+        "fontWeight": 700,
+        "lineHeight": 1.2,
+        "letterSpacing": "-0.01em"
+      },
+      "title": {
+        "element": "h4",
+        "fontSize": "1.125rem",
+        "fontWeight": 700,
+        "lineHeight": 1.3,
+        "letterSpacing": "-0.005em"
+      },
+      "lead": {
+        "selector": ".hwio-lead",
+        "fontSize": "1.1875rem",
+        "fontWeight": 400,
+        "lineHeight": 1.55,
+        "letterSpacing": "0"
+      },
+      "body": {
+        "element": "body",
+        "fontSize": "1.0625rem",
+        "fontWeight": 400,
+        "lineHeight": 1.6,
+        "letterSpacing": "0"
+      },
+      "kicker": {
+        "selector": ".hwio-kicker",
+        "fontSize": "0.875rem",
+        "fontWeight": 600,
+        "lineHeight": 1.4,
+        "letterSpacing": "0"
+      },
+      "button": {
+        "selector": ".btn",
+        "fontSize": "0.9375rem",
+        "fontWeight": 600,
+        "lineHeight": 1,
+        "letterSpacing": "0"
+      }
+    }
+  },
+  "rhythm": {
+    "$comment": "Spacing rhythm as implemented in styles.css: Tailwind --spacing is 4px; .hwio-section is 20/28 units, compact 10/12 units; controls are 48px tall; card padding 32px.",
+    "unit": "8px",
+    "section": {
+      "base": "80px",
+      "lg": "112px"
+    },
+    "sectionCompact": {
+      "base": "40px",
+      "lg": "48px"
+    },
+    "control": "48px",
+    "cardPadding": "32px"
   },
   "fonts": {
     "display": "block",
