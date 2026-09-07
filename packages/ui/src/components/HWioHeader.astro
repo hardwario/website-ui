@@ -3,6 +3,11 @@
  * Sticky site header: logo slot, primary nav (flat links, or mega items whose `mega:<key>` slot opens as a
  * full-width panel under the bar), CTAs, language switcher, theme toggle, and a DaisyUI drawer for small
  * screens, where a mega item lists its `children` as a collapsible group instead.
+ *
+ * The drawer is opened and closed by real buttons (`data-hwio-drawer-toggle`), so Enter and Space work; the
+ * nav runtime keeps the checkbox, `aria-expanded` and focus in sync (into the panel on open, back to the
+ * trigger on close, Escape closes). Below `sm` the bar drops the language dropdown (the drawer carries the
+ * pills), so logo, theme toggle and the 48 px trigger fit a 320 px viewport without horizontal overflow.
  */
 import type { HWioCta, HWioLinkItem } from '../types';
 import HWioButton from './HWioButton.astro';
@@ -63,7 +68,7 @@ const linkAttrs = (item: HWioLinkItem) => (item.external ? { target: '_blank', r
 
     <div class="ml-auto flex items-center gap-2">
       {showThemeToggle && <HWioThemeToggle label={labels.theme ?? 'Theme'} />}
-      {languages.length > 1 && <HWioLanguageSwitcher items={languages} label={labels.languages ?? 'Language'} />}
+      {languages.length > 1 && <HWioLanguageSwitcher items={languages} label={labels.languages ?? 'Language'} class="max-sm:hidden" />}
       <div class={bp.ctas}>
         {ctas.map((cta) => (
           <HWioButton href={cta.href} external={cta.external} variant={CTA_VARIANT[cta.variant ?? 'primary']} size="sm" track={cta.track ?? { id: 'header-cta', location: 'header' }} class={cta.icon ? '2xl:px-4 px-2.5' : ''} aria-label={cta.icon ? cta.label : undefined} title={cta.icon ? cta.label : undefined}>
@@ -73,17 +78,18 @@ const linkAttrs = (item: HWioLinkItem) => (item.external ? { target: '_blank', r
         ))}
       </div>
       <div class={bp.drawer}>
-        <input id={id} type="checkbox" class="drawer-toggle" />
+        {/* The checkbox only drives DaisyUI's CSS; the buttons are the controls, so it leaves the tab order and the a11y tree. */}
+        <input id={id} type="checkbox" class="drawer-toggle" tabindex="-1" aria-hidden="true" />
         <div class="drawer-content">
-          <label for={id} class="btn btn-ghost btn-square drawer-button" aria-label={labels.menu} aria-controls={`${id}-panel`} aria-expanded="false" tabindex="0" role="button">
+          <button type="button" class="btn btn-ghost btn-square drawer-button" aria-label={labels.menu} aria-controls={`${id}-panel`} aria-expanded="false" data-hwio-drawer-toggle={id}>
             <HWioIcon name="menu" size="lg" />
-          </label>
+          </button>
         </div>
         <div class="drawer-side z-[60]">
           <label for={id} aria-label={labels.close} class="drawer-overlay"></label>
           <div id={`${id}-panel`} class="menu min-h-full w-80 max-w-[85vw] gap-2 bg-base-100 p-6 text-base-content">
             <div class="flex justify-end">
-              <label for={id} class="btn btn-ghost btn-square btn-sm" aria-label={labels.close} tabindex="0" role="button"><HWioIcon name="close" /></label>
+              <button type="button" class="btn btn-ghost btn-square btn-sm" aria-label={labels.close} aria-controls={`${id}-panel`} aria-expanded="false" data-hwio-drawer-toggle={id}><HWioIcon name="close" /></button>
             </div>
             <ul class="menu w-full text-base">
               {nav.map((item) => (
