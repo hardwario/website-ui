@@ -7,8 +7,8 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: npm
@@ -33,7 +33,7 @@ jobs:
           [ "$code" -ne 1 ] || { echo "::error::impeccable detect could not run"; exit 1; }
           echo "impeccable detect exit code: $code (report-only)"
           exit 0
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: impeccable-report
@@ -50,7 +50,7 @@ jobs:
         run: |
           npx playwright install --with-deps chromium
           npm run test:vrt:update -w catalog
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: contains(github.event.head_commit.message, '[vrt-update]')
         with:
           name: vrt-baselines
@@ -60,7 +60,7 @@ jobs:
         run: |
           npx playwright install --with-deps chromium
           npm run test:vrt -w catalog
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: vrt-report
