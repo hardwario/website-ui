@@ -1,5 +1,11 @@
 # @hubpav/hwio-web-runtime
 
+## 0.7.4
+
+### Patch Changes
+
+- 8ea4a97: `HWioFooter`: the `social[].icon` type accepts `'facebook'`, which `HWioIcon` has drawn since 0.6.0 (www.enerooo.cz passes it; `astro check` reported ts(2322)). Types only; the rendered output is unchanged.
+
 ## 0.7.3
 
 ### Patch Changes
