@@ -1,5 +1,15 @@
 # @hubpav/hwio-ui
 
+## 0.7.3
+
+### Patch Changes
+
+- 56cc114: `@hubpav/hwio-ui`: DaisyUI 5.7.47 (0.7.2) fills pressed buttons, so `HWioThemeToggle` (a ghost button with `aria-pressed="true"` in dark mode) showed a filled square on every site's dark theme. Ghost buttons with `aria-pressed` or `aria-checked` keep the transparent ground at rest again; hover and focus tint them as before (computed backgrounds now match DaisyUI 5.7.28 in all four states on `hwio`, `hwio-dark` and `er3o`).
+- Updated dependencies [56cc114]
+  - @hubpav/hwio-brand@0.7.3
+  - @hubpav/hwio-web-runtime@0.7.3
+  - @hubpav/hwio-web-worker@0.7.3
+
 ## 0.7.2
 
 ### Patch Changes
