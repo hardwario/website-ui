@@ -34,7 +34,7 @@
     "@hubpav/hwio-brand": "0.7.1",
     "@hubpav/hwio-web-runtime": "0.7.1",
     "@hubpav/hwio-web-worker": "0.7.1",
-    "daisyui": "5.7.28"
+    "daisyui": "5.7.47"
   },
   "peerDependencies": {
     "astro": "^7.0.0",
