@@ -2,6 +2,12 @@
 export interface HWioHeadersOptions {
   /** Consent-gated Google Tag Manager on this site (adds GTM/GA/Ads origins). */
   gtm?: boolean;
+  /**
+   * Country Google domains GA4 with Ads features calls (`www.google.<tld>/ads/ga-audiences`); a CSP
+   * source cannot wildcard the TLD, so each is listed. Only used with `gtm`. Default: the markets
+   * the sites are written for.
+   */
+  googleTlds?: string[];
   /** Cloudflare Turnstile on this site's forms. */
   turnstile?: boolean;
   /** The forms Worker endpoint origin, e.g. https://submit.hardwario.com */
@@ -38,6 +44,27 @@ export interface HWioHeadersOptions {
 
 const uniq = (list: string[]) => Array.from(new Set(list));
 
+/** Default `googleTlds`: the countries of the sites' languages (cs, sk, de, pl) plus DACH neighbours. */
+export const HWIO_GOOGLE_TLDS = ['cz', 'sk', 'de', 'at', 'ch', 'pl'];
+
+/**
+ * connect-src origins for GA4 with Ads features via GTM, after Google's tag CSP guide
+ * (developers.google.com/tag-platform/security/guides/csp). `*.google.com` also covers
+ * `analytics.google.com/g/collect`, which `*.analytics.google.com` does not match.
+ */
+export function hwioGtmConnectOrigins(tlds: string[] = HWIO_GOOGLE_TLDS): string[] {
+  return [
+    'https://www.googletagmanager.com',
+    'https://www.google-analytics.com',
+    'https://*.google-analytics.com',
+    'https://*.analytics.google.com',
+    'https://*.google.com',
+    ...tlds.map((tld) => `https://*.google.${tld}`),
+    'https://*.g.doubleclick.net',
+    'https://pagead2.googlesyndication.com',
+  ];
+}
+
 export function hwioBuildCsp(o: HWioHeadersOptions): string {
   const script = ["'self'", ...(o.unsafeInlineScripts !== false ? ["'unsafe-inline'"] : []), ...(o.scriptHashes ?? []).map((h) => `'${h}'`)];
   const connect = ["'self'"];
@@ -50,7 +77,7 @@ export function hwioBuildCsp(o: HWioHeadersOptions): string {
   }
   if (o.gtm) {
     script.push('https://www.googletagmanager.com', 'https://www.google-analytics.com', 'https://*.google-analytics.com');
-    connect.push('https://www.googletagmanager.com', 'https://www.google-analytics.com', 'https://*.google-analytics.com', 'https://*.analytics.google.com', 'https://stats.g.doubleclick.net');
+    connect.push(...hwioGtmConnectOrigins(o.googleTlds));
     frame.push('https://www.googletagmanager.com', 'https://td.doubleclick.net');
   }
   if (o.submitEndpoint) connect.push(o.submitEndpoint);

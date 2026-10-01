@@ -256,3 +256,11 @@
   outline: 2px solid var(--color-secondary);
   outline-offset: 2px;
 }
+/* DaisyUI 5.7.30+ paints a menu link carrying aria-current like .menu-active (the neutral fill). The
+   header marks the current page with its own label colour and bar (.hwio-nav-current) and the drawer
+   lists it as a plain row, so those links keep the ground; .menu-active items (the language dropdown)
+   keep DaisyUI's fill. currentColor as `color` inherits, so the nav's own colour utilities still win. */
+.menu :where(li) > [aria-current]:not([aria-current='false'], [aria-current=''], .menu-active, .btn) {
+  --menu-active-bg: transparent;
+  --menu-active-fg: currentColor;
+}
