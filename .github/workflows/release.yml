@@ -11,24 +11,27 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: npm
           registry-url: https://registry.npmjs.org
-      # Trusted publishing (OIDC token exchange) needs npm 11.5.1 or newer; Node 22 ships npm 10.
+      # Trusted publishing (OIDC token exchange) needs npm 11.5.1 or newer; the latest npm keeps it
+      # independent of the npm bundled with the runner's Node.
       - run: npm install -g npm@latest
       - run: npm --version
       - run: npm ci
       - run: npm run lint && npm run build && npm test
       # Opens/updates the "Version Packages" PR; when that PR merges, publishes
       # all four packages with npm trusted publishing (OIDC, provenance), no NPM_TOKEN.
-      - uses: changesets/action@v1
+      # v2: inputs renamed (publish -> publish-script), the token is an input, and release
+      # commits and tags go through the GitHub API.
+      - uses: changesets/action@v2
         with:
-          publish: npm run release
+          publish-script: npm run release
+          github-token: ${{ secrets.GITHUB_TOKEN }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: "true"
