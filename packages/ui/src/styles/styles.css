@@ -264,3 +264,11 @@
   --menu-active-bg: transparent;
   --menu-active-fg: currentColor;
 }
+/* DaisyUI 5.7.30+ also gives pressed buttons (aria-pressed / aria-checked) a filled ground. A ghost
+   toggle shows its state in its own content (HWioThemeToggle swaps moon and sun and sets
+   aria-pressed="true" in dark mode), so it keeps the transparent ground at rest; hover and focus
+   still tint it as before. */
+.btn-ghost:is([aria-pressed='true'], [aria-checked='true']):not(:hover, :focus-visible, .btn-active) {
+  --btn-bg: #0000;
+  --btn-border: #0000;
+}
