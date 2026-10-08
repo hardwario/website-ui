@@ -24,6 +24,34 @@ export function hwioBuildSubmitPayload(input: HWioSubmitInput) {
   };
 }
 
+export interface HWioAttributionInput {
+  /** The form opted into enrichment (`data-hs-enrich="true"`). */
+  enrich: boolean;
+  /** Marketing consent is granted. */
+  marketing: boolean;
+  /** Statistics consent is granted. */
+  statistics: boolean;
+  /** The session copy of the first-touch attribution (`hwio_attribution`). */
+  stored?: Record<string, string>;
+  /** Click ids and UTM parameters in the current page URL. */
+  page?: Record<string, string>;
+  /** GA4 client id from the `_ga` cookie. */
+  gaClientId?: string;
+}
+
+/**
+ * The attribution sent with a submission (owner decision 2026-10-08). Click ids and UTM
+ * parameters travel only with marketing consent, whether they come from the current URL or
+ * from the stored session copy (the latter on enriched forms only; the URL wins on a clash).
+ * The GA4 client id travels only with statistics consent, on enriched forms.
+ */
+export function hwioSubmitAttribution(input: HWioAttributionInput): Record<string, string> {
+  const out: Record<string, string> = {};
+  if (input.marketing) Object.assign(out, input.enrich ? input.stored : undefined, input.page);
+  if (input.enrich && input.statistics && input.gaClientId) out.ga_client_id = input.gaClientId;
+  return out;
+}
+
 /** Origin + pathname only: keeps raw query-string click ids out of HubSpot's hs_context. */
 export function hwioPageUri(location: { origin: string; pathname: string }): string {
   return location.origin + location.pathname;
