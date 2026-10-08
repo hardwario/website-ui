@@ -1,6 +1,6 @@
 import { hwioMount } from './mount.js';
 import { hwioGetAttribution, hwioGetPageAttribution } from './attribution.js';
-import { hwioBuildSubmitPayload, hwioFoldMessageContext, hwioFormEventPayload, hwioGaClientId, hwioPageUri, type HWioFormEvent } from './forms-core.js';
+import { hwioBuildSubmitPayload, hwioFoldMessageContext, hwioFormEventPayload, hwioGaClientId, hwioPageUri, hwioSubmitAttribution, type HWioFormEvent } from './forms-core.js';
 import { hwioEnsureTurnstileToken, hwioResetTurnstile, type HWioTurnstileForm } from './turnstile.js';
 
 export interface HWioSubmitResult { ok: boolean; status?: number; error?: string }
@@ -12,7 +12,8 @@ export interface HWioSubmitResult { ok: boolean; status?: number; error?: string
  *         data-hs-sending-msg data-hs-success-msg data-hs-error-msg data-form-kind data-inquiry-source>
  *   inside: [data-hs-status] element, optional .cf-turnstile, optional [data-message-field data-message-label] controls.
  * `data-hs-enrich="true"` sends the HubSpot cookie, the stored attribution and the GA4 client id,
- * each gated on the matching consent category. Click ids in the current URL are always sent.
+ * each gated on the matching consent category. Click ids and UTM parameters in the current URL
+ * are sent on every form, but only with marketing consent (owner decision 2026-10-08).
  */
 async function readHubspotCookie(): Promise<string | undefined> {
   const store = (window as Window & { cookieStore?: { get: (n: string) => Promise<{ value: string } | undefined> } }).cookieStore;
@@ -31,13 +32,17 @@ export async function hwioSubmitForm(form: HTMLFormElement, fields: Record<strin
   delete fields['cf-turnstile-response'];
 
   const enrich = form.dataset.hsEnrich === 'true';
-  const canEnrich = enrich && window.hwioConsent?.allows('marketing') === true;
-  const canMeasure = enrich && window.hwioConsent?.allows('statistics') === true;
-  const attribution: Record<string, string> = { ...(canEnrich ? hwioGetAttribution() : {}), ...hwioGetPageAttribution() };
-  if (canMeasure) {
-    const clientId = hwioGaClientId(document.cookie);
-    if (clientId) attribution.ga_client_id = clientId;
-  }
+  const marketing = window.hwioConsent?.allows('marketing') === true;
+  const statistics = window.hwioConsent?.allows('statistics') === true;
+  const canEnrich = enrich && marketing;
+  const attribution = hwioSubmitAttribution({
+    enrich,
+    marketing,
+    statistics,
+    stored: canEnrich ? hwioGetAttribution() : undefined,
+    page: marketing ? hwioGetPageAttribution() : undefined,
+    gaClientId: enrich && statistics ? hwioGaClientId(document.cookie) : undefined,
+  });
   const payload = hwioBuildSubmitPayload({
     formId,
     locale,

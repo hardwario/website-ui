@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { hwioBuildSubmitPayload, hwioPageUri, hwioGaClientId, hwioFoldMessageContext, hwioFormEventPayload } from '../dist/forms-core.js';
+import { hwioBuildSubmitPayload, hwioPageUri, hwioGaClientId, hwioFoldMessageContext, hwioFormEventPayload, hwioSubmitAttribution } from '../dist/forms-core.js';
 import { hwioAttributionFromSearch } from '../dist/attribution.js';
 
 test('submit payload matches the website-forms Worker contract', () => {
@@ -21,6 +21,28 @@ test('attribution reads only the allowlisted params and clamps to 512 chars', ()
   const out = hwioAttributionFromSearch('?utm_source=li&gclid=' + 'x'.repeat(600) + '&evil=1');
   assert.deepEqual(Object.keys(out), ['utm_source', 'gclid']);
   assert.equal(out.gclid.length, 512);
+});
+
+test('without marketing consent no click id or UTM parameter is sent, not even from the current URL', () => {
+  const page = hwioAttributionFromSearch('?gclid=g1&gbraid=gb&wbraid=wb&fbclid=f1&msclkid=m1&li_fat_id=l1&utm_source=google&utm_medium=cpc&utm_campaign=c&utm_term=t&utm_content=x');
+  const stored = { utm_source: 'linkedin', referrer: 'https://example.com/' };
+  for (const enrich of [true, false]) {
+    assert.deepEqual(hwioSubmitAttribution({ enrich, marketing: false, statistics: false, stored, page }), {});
+    assert.deepEqual(hwioSubmitAttribution({ enrich, marketing: false, statistics: true, stored, page, gaClientId: '1.2' }), enrich ? { ga_client_id: '1.2' } : {});
+  }
+});
+
+test('with marketing consent the URL ids are sent on every form, the stored copy on enriched forms only', () => {
+  const page = { gclid: 'g1', utm_source: 'google' };
+  const stored = { utm_source: 'linkedin', referrer: 'https://example.com/' };
+  assert.deepEqual(hwioSubmitAttribution({ enrich: true, marketing: true, statistics: false, stored, page }), { utm_source: 'google', referrer: 'https://example.com/', gclid: 'g1' });
+  assert.deepEqual(hwioSubmitAttribution({ enrich: false, marketing: true, statistics: false, stored, page }), { gclid: 'g1', utm_source: 'google' });
+});
+
+test('the GA4 client id needs statistics consent and an enriched form', () => {
+  assert.deepEqual(hwioSubmitAttribution({ enrich: true, marketing: false, statistics: true, gaClientId: '123.456' }), { ga_client_id: '123.456' });
+  assert.deepEqual(hwioSubmitAttribution({ enrich: true, marketing: true, statistics: false, gaClientId: '123.456' }), {});
+  assert.deepEqual(hwioSubmitAttribution({ enrich: false, marketing: true, statistics: true, gaClientId: '123.456' }), {});
 });
 
 test('GA client id extraction', () => {
