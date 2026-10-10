@@ -14,10 +14,10 @@
     "test:a11y": "playwright test tests/a11y.spec.ts --project desktop"
   },
   "dependencies": {
-    "@hubpav/hwio-brand": "0.7.5",
-    "@hubpav/hwio-ui": "0.7.5",
-    "@hubpav/hwio-web-runtime": "0.7.5",
-    "@hubpav/hwio-web-worker": "0.7.5",
+    "@hubpav/hwio-brand": "0.7.6",
+    "@hubpav/hwio-ui": "0.7.6",
+    "@hubpav/hwio-web-runtime": "0.7.6",
+    "@hubpav/hwio-web-worker": "0.7.6",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.5",
     "tailwindcss": "^4.3.3"
