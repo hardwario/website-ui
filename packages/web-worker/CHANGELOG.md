@@ -1,5 +1,9 @@
 # @hubpav/hwio-web-worker
 
+## 0.7.6
+
+No changes in this release.
+
 ## 0.7.5
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @hubpav/hwio-brand
 
+## 0.7.6
+
+### Patch Changes
+
+- 1c8fd49: Brand: the HARDWARIO LLC branch map link points to the Sunnyvale office (440 N Wolfe Rd, Sunnyvale, CA 94085) instead of Houston.
+
 ## 0.7.5
 
 ### Patch Changes
