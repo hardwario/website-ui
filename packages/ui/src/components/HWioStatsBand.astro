@@ -6,7 +6,7 @@ const COLS = { 2: 'sm:grid-cols-2', 3: 'sm:grid-cols-3', 4: 'sm:grid-cols-2 lg:g
 const cols = COLS[(Math.min(Math.max(items.length, 2), 5) as 2 | 3 | 4 | 5)];
 ---
 <section id={id} class:list={['border-y border-base-300 bg-base-100 text-base-content', className]}>
-  <div class:list={['container grid py-9', cols]}>
+  <div class:list={['container grid grid-cols-1 py-9', cols]}>
     {items.map((s, i) => {
       const numeric = typeof s.value === 'number';
       return (

@@ -6,7 +6,7 @@ const { eyebrow, title, lead, align = 'center', layout = 'stack', level = 2, cla
 const Heading = `h${level}` as 'h1' | 'h2' | 'h3';
 ---
 {layout === 'split' ? (
-  <div class:list={['grid gap-8 lg:grid-cols-[5fr_7fr] lg:items-end', className]}>
+  <div class:list={['grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-end', className]}>
     <div>
       {eyebrow && <p class="hwio-kicker mb-4">{eyebrow}</p>}
       <Heading><slot name="title">{title}</slot></Heading>

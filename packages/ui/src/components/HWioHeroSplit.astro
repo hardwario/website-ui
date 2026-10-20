@@ -8,7 +8,7 @@ const { id, eyebrow, title, accent, lead, actions = [], checklist = [], reverse 
 const VARIANT = { primary: 'primary', secondary: 'secondary', ghost: 'ghost' } as const;
 ---
 <section id={id} class:list={['bg-base-100 text-base-content', className]}>
-  <div class:list={['container grid items-center gap-12 py-16 lg:grid-cols-[7fr_5fr] lg:gap-16 lg:py-24', reverse ? 'lg:[&>*:first-child]:order-2' : '']}>
+  <div class:list={['container grid grid-cols-1 items-center gap-12 py-16 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-16 lg:py-24', reverse ? 'lg:[&>*:first-child]:order-2' : '']}>
     <div>
       {eyebrow && <p class="hwio-kicker mb-5">{eyebrow}</p>}
       <h1><slot name="title"><span class="block">{title}</span>{accent && <span class="block text-accent">{accent}</span>}</slot></h1>

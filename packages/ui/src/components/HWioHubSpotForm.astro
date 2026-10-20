@@ -17,7 +17,7 @@ interface Props {
   class?: string;
 }
 const { form, fields, labels, locale, turnstileSiteKey, layout = 'grid', class: className = '' } = Astro.props;
-const LAYOUT = { grid: 'grid gap-4 md:grid-cols-2', inline: 'flex flex-col gap-3 sm:flex-row sm:items-end' } as const;
+const LAYOUT = { grid: 'grid grid-cols-1 gap-4 md:grid-cols-2', inline: 'flex flex-col gap-3 sm:flex-row sm:items-end' } as const;
 ---
 <form
   class:list={['hwio-form', className]}

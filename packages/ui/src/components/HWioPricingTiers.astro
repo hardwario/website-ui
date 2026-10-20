@@ -5,7 +5,7 @@ import HWioIcon from './HWioIcon.astro';
 interface Tier { eyebrow?: string; name: string; price?: string; pricePrefix?: string; period?: string; description?: string; features: string[]; cta?: HWioCta; featured?: boolean; badge?: string }
 interface Props { tiers: Tier[]; class?: string }
 const { tiers, class: className = '' } = Astro.props;
-const COLS = { 1: 'grid gap-6', 2: 'grid gap-6 md:grid-cols-2', 3: 'grid gap-6 md:grid-cols-3', 4: 'grid gap-6 md:grid-cols-2 lg:grid-cols-4' } as const;
+const COLS = { 1: 'grid grid-cols-1 gap-6', 2: 'grid grid-cols-1 gap-6 md:grid-cols-2', 3: 'grid grid-cols-1 gap-6 md:grid-cols-3', 4: 'grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4' } as const;
 const cols = (Math.min(Math.max(tiers.length, 1), 4) as 1 | 2 | 3 | 4);
 ---
 <div class:list={[COLS[cols], className]}>
