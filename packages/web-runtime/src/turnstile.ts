@@ -4,9 +4,26 @@ import { hwioResolvedScheme } from './theme.js';
 const SRC = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
 
 interface TurnstileApi {
-  render: (el: HTMLElement, opts: { sitekey: string; theme?: 'light' | 'dark' | 'auto' }) => string | undefined;
+  render: (el: HTMLElement, opts: { sitekey: string; theme?: 'light' | 'dark' | 'auto'; size?: HWioTurnstileSize }) => string | undefined;
   reset: (id?: string) => void;
   remove: (id: string) => void;
+}
+
+type HWioTurnstileSize = 'normal' | 'compact' | 'flexible';
+
+/**
+ * The widget has a fixed width (normal 300 px, compact 150 x 140 px), so a phone-width card or
+ * column narrower than 300 px gets the compact one instead of a widget that runs past the screen.
+ * A `data-size` on the container wins.
+ */
+function widgetSize(container: HTMLElement): HWioTurnstileSize {
+  const requested = container.dataset.size;
+  if (requested === 'normal' || requested === 'compact' || requested === 'flexible') return requested;
+  const slot = container.parentElement;
+  if (!slot) return 'normal';
+  const style = getComputedStyle(slot);
+  const width = slot.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+  return width < 300 ? 'compact' : 'normal';
 }
 
 export type HWioTurnstileForm = HTMLFormElement & {
@@ -69,7 +86,7 @@ export function hwioTurnstileRuntime() {
       const render = (api: TurnstileApi) => {
         if (signal.aborted || !container.isConnected || state === 'rendered') return;
         state = 'rendered';
-        const id = api.render(container, { sitekey: container.dataset.sitekey ?? '', theme: hwioResolvedScheme() });
+        const id = api.render(container, { sitekey: container.dataset.sitekey ?? '', theme: hwioResolvedScheme(), size: widgetSize(container) });
         if (id !== undefined) {
           widgetIds.push(id);
           form.hwioTurnstileWidgetId = id;
