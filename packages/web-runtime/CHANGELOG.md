@@ -1,5 +1,9 @@
 # @hubpav/hwio-web-runtime
 
+## 0.7.8
+
+No changes in this release.
+
 ## 0.7.7
 
 ### Patch Changes
