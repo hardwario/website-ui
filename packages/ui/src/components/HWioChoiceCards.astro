@@ -6,7 +6,7 @@ import HWioIcon from './HWioIcon.astro';
 interface Choice { label: string; title: string; text: string; points?: string[]; cta: HWioCta }
 interface Props { items: Choice[]; lead?: number; class?: string }
 const { items, lead = 0, class: className = '' } = Astro.props;
-const COLS = { 1: 'grid gap-6', 2: 'grid gap-6 md:grid-cols-2', 3: 'grid gap-6 md:grid-cols-3' } as const;
+const COLS = { 1: 'grid grid-cols-1 gap-6', 2: 'grid grid-cols-1 gap-6 md:grid-cols-2', 3: 'grid grid-cols-1 gap-6 md:grid-cols-3' } as const;
 const cols = COLS[(Math.min(Math.max(items.length, 1), 3) as 1 | 2 | 3)];
 ---
 <div class:list={[cols, 'mx-auto max-w-[65rem]', className]}>

@@ -16,7 +16,7 @@ interface Props {
 const { id = 'contact', eyebrow, title, lead, person, tone = 'alt', class: className = '' } = Astro.props;
 ---
 <HWioSection id={id} tone={tone} class={className}>
-  <div class="grid gap-12 lg:grid-cols-[2fr_3fr]">
+  <div class="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
     <div>
       <HWioSectionHeader eyebrow={eyebrow} title={title} lead={lead} align="left" />
       {person && (

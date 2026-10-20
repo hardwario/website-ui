@@ -20,6 +20,19 @@
   --font-sans: var(--hwio-font-sans);
 }
 
+/* Long words (CS/DE/PL compounds) hyphenate instead of overflowing a narrow column. At least five
+   letters on each side of the hyphen, so no word under 10 letters ever splits; this keeps the brand
+   names whole (HARDWARIO, ProXimos, CHESTER) in Safari too, which ignores hyphenate-limit-chars and
+   reads only the -webkit- limits. A word no browser can hyphenate still breaks rather than widening
+   its grid or flex parent (`anywhere` lowers min-content). */
+@utility hwio-hyphenate {
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  hyphenate-limit-chars: 10 5 5;
+  -webkit-hyphenate-limit-before: 5;
+  -webkit-hyphenate-limit-after: 5;
+}
+
 /* One container for the fleet; width comes from the theme (hub) or the site (landing).
    Unlayered on purpose: Tailwind's built-in `container` utility caps max-width at each
    breakpoint (40/48/64/80/96rem) and would otherwise win over the theme's width. */
@@ -68,6 +81,16 @@
   @media (width >= 64rem) {
     h1 { font-size: 3.5rem; }
   }
+  /* Phones: a heading word wider than its column (a 40 px H1 gets 218-288 px) hyphenates instead
+     of running past the screen, and a token longer than the line (a URL, an ID) breaks. */
+  @media (width < 40rem) {
+    h1, h2, h3 {
+      @apply hwio-hyphenate;
+    }
+    main {
+      overflow-wrap: break-word;
+    }
+  }
   :focus-visible {
     outline: 2px solid var(--color-secondary);
     outline-offset: 2px;
@@ -83,6 +106,16 @@
 }
 
 @layer components {
+  /* Phones: a button label wider than its column wraps onto a second line instead of pushing the
+     page sideways; one-line buttons keep their height. */
+  @media (width < 40rem) {
+    .btn {
+      max-width: 100%;
+      height: auto;
+      min-height: var(--size);
+      padding-block: 0.375rem;
+    }
+  }
   /* Rhythm (direction A): 80 / 112 px sections, 40 / 48 px compact bands. */
   .hwio-section { padding-block: calc(var(--spacing) * 20); }
   .hwio-section-compact { padding-block: calc(var(--spacing) * 10); }
