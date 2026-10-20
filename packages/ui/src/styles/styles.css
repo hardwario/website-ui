@@ -20,15 +20,17 @@
   --font-sans: var(--hwio-font-sans);
 }
 
-/* Long words (CS/DE/PL compounds) hyphenate instead of overflowing a narrow column. Words under
-   10 letters stay whole where the browser supports the limit, and a word no browser can hyphenate
-   still breaks rather than widening its grid or flex parent (`anywhere` lowers min-content). */
+/* Long words (CS/DE/PL compounds) hyphenate instead of overflowing a narrow column. At least five
+   letters on each side of the hyphen, so no word under 10 letters ever splits; this keeps the brand
+   names whole (HARDWARIO, ProXimos, CHESTER) in Safari too, which ignores hyphenate-limit-chars and
+   reads only the -webkit- limits. A word no browser can hyphenate still breaks rather than widening
+   its grid or flex parent (`anywhere` lowers min-content). */
 @utility hwio-hyphenate {
   overflow-wrap: anywhere;
   hyphens: auto;
-  hyphenate-limit-chars: 10 4 4;
-  -webkit-hyphenate-limit-before: 4;
-  -webkit-hyphenate-limit-after: 4;
+  hyphenate-limit-chars: 10 5 5;
+  -webkit-hyphenate-limit-before: 5;
+  -webkit-hyphenate-limit-after: 5;
 }
 
 /* One container for the fleet; width comes from the theme (hub) or the site (landing).

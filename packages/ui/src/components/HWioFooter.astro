@@ -37,8 +37,8 @@ const linkClass = 'inline-flex items-center gap-1 text-neutral-content/80 transi
 
   <div class="container py-12 lg:py-16">
     {/* Long compound words (DE "Datenschutzerklärung", "Rechtsdokumente") are wider than a column on
-        phones and at 1024 px: hyphenate them, words under 12 letters stay whole. */}
-    <div class="grid grid-cols-2 gap-8 break-words hyphens-auto [hyphenate-limit-chars:12_5_5] md:grid-cols-3 lg:grid-cols-6">
+        phones and at 1024 px: hyphenate them; words under 10 letters (brand names) stay whole. */}
+    <div class="grid grid-cols-2 gap-8 hwio-hyphenate md:grid-cols-3 lg:grid-cols-6">
       <div class="hidden md:col-span-3 md:flex lg:col-span-1 lg:block">
         <slot name="logo" />
       </div>
