@@ -7,7 +7,7 @@ export const HWIO_ATTRIBUTION_PARAMS = ['utm_source', 'utm_medium', 'utm_campaig
 
 export type HWioAttribution = Record<string, string>;
 
-/** Pure: click identifiers present in a query string (read at submit time, never stored). */
+/** Pure: click identifiers present in a query string. */
 export function hwioAttributionFromSearch(search: string): HWioAttribution {
   const out: HWioAttribution = {};
   const params = new URLSearchParams(search);
@@ -16,6 +16,29 @@ export function hwioAttributionFromSearch(search: string): HWioAttribution {
     if (value) out[key] = value.slice(0, MAX_LEN);
   }
   return out;
+}
+
+/** Pure: first value per key wins, in the order the sources are given (earliest touch first). */
+export function hwioFirstTouch(...sources: (HWioAttribution | undefined)[]): HWioAttribution {
+  const out: HWioAttribution = {};
+  for (const source of sources) {
+    for (const [key, value] of Object.entries(source ?? {})) if (value && !out[key]) out[key] = value;
+  }
+  return out;
+}
+
+// The landing page's click ids and UTM parameters, held in memory only: nothing is written to the
+// device, and nothing leaves the browser unless a form is sent with marketing consent. The memory
+// lives as long as the page's JavaScript does, so it survives Astro ClientRouter navigations
+// (which drop the query string) and is gone after a full page load.
+let landing: HWioAttribution | undefined;
+
+/**
+ * Remembers the current URL's click ids and UTM parameters in memory (first touch). Call on every
+ * page load; the forms runtime does. No consent is needed because nothing is stored or sent.
+ */
+export function hwioRememberLandingAttribution(): void {
+  landing = hwioFirstTouch(landing, hwioAttributionFromSearch(window.location.search));
 }
 
 function read(): HWioAttribution {
@@ -34,7 +57,8 @@ function read(): HWioAttribution {
 export function hwioCaptureAttribution(): void {
   const stored = read();
   let changed = false;
-  for (const [key, value] of Object.entries(hwioAttributionFromSearch(window.location.search))) {
+  // The remembered landing values first: consent given on a later page keeps the ad click.
+  for (const [key, value] of Object.entries(hwioGetPageAttribution())) {
     if (!stored[key]) { stored[key] = value; changed = true; }
   }
   if (!stored.referrer && document.referrer) {
@@ -61,6 +85,7 @@ export function hwioGetAttribution(): HWioAttribution {
   return read();
 }
 
+/** Click ids and UTM parameters of this visit: the remembered landing values, then the current URL. */
 export function hwioGetPageAttribution(): HWioAttribution {
-  return hwioAttributionFromSearch(window.location.search);
+  return hwioFirstTouch(landing, hwioAttributionFromSearch(window.location.search));
 }

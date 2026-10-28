@@ -1,5 +1,5 @@
 import { hwioMount } from './mount.js';
-import { hwioGetAttribution, hwioGetPageAttribution } from './attribution.js';
+import { hwioGetAttribution, hwioGetPageAttribution, hwioRememberLandingAttribution } from './attribution.js';
 import { hwioBuildSubmitPayload, hwioFoldMessageContext, hwioFormEventPayload, hwioGaClientId, hwioPageUri, hwioSubmitAttribution, type HWioFormEvent } from './forms-core.js';
 import { hwioEnsureTurnstileToken, hwioResetTurnstile, type HWioTurnstileForm } from './turnstile.js';
 
@@ -12,7 +12,8 @@ export interface HWioSubmitResult { ok: boolean; status?: number; error?: string
  *         data-hs-sending-msg data-hs-success-msg data-hs-error-msg data-form-kind data-inquiry-source>
  *   inside: [data-hs-status] element, optional .cf-turnstile, optional [data-message-field data-message-label] controls.
  * `data-hs-enrich="true"` sends the HubSpot cookie, the stored attribution and the GA4 client id,
- * each gated on the matching consent category. Click ids and UTM parameters in the current URL
+ * each gated on the matching consent category. Click ids and UTM parameters of the visit (the
+ * landing page's, remembered in memory across ClientRouter navigations, then the current URL's)
  * are sent on every form, but only with marketing consent (owner decision 2026-10-08).
  */
 async function readHubspotCookie(): Promise<string | undefined> {
@@ -81,6 +82,7 @@ function pushFormEvent(form: HTMLFormElement) {
 
 export function hwioFormsRuntime() {
   function bind() {
+    hwioRememberLandingAttribution();
     document.querySelectorAll<HTMLFormElement>('form[data-hs-form]').forEach((form) => {
       if (form.dataset.hsBound === 'true') return;
       form.dataset.hsBound = 'true';
