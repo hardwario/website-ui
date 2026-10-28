@@ -297,6 +297,19 @@
   --menu-active-bg: transparent;
   --menu-active-fg: currentColor;
 }
+/* HWioHeader navDensity="tight" (desktopFrom="xl"): from 1280 to 1535 px the container is 1280 px wide
+   while the full nav and CTAs show, and long SK/PL/CS labels overflowed it. Labels drop from 15 to 14 px
+   and item padding from 12 to 8 px in that range only; the current-page bar follows the padding.
+   Unlayered so it wins over the links' px-3 and text-[15px] utilities. */
+@media (80rem <= width < 96rem) {
+  .hwio-nav-tight > li > :is(a, button) {
+    padding-inline: 0.5rem;
+    font-size: 14px;
+  }
+  .hwio-nav-tight > .hwio-nav-current::after {
+    inset-inline: 0.5rem;
+  }
+}
 /* DaisyUI 5.7.30+ also gives pressed buttons (aria-pressed / aria-checked) a filled ground. A ghost
    toggle shows its state in its own content (HWioThemeToggle swaps moon and sun and sets
    aria-pressed="true" in dark mode), so it keeps the transparent ground at rest; hover and focus

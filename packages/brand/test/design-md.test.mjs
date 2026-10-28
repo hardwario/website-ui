@@ -54,7 +54,7 @@ test('generated DESIGN.md files exist for every light theme and the root copy eq
   for (const h of ['## Overview', '## Colors', '## Typography', '## Layout', '## Elevation & Depth', '## Shapes', '## Components', "## Do's and Don'ts"]) assert.ok(hwio.includes(`\n${h}\n`), `${h} missing`);
   assert.match(hwio, /primary: "#06367a"/);
   assert.match(hwio, /accent: "#e30427"/);
-  assert.match(hwio, /The Fixed Four Rule/);
+  assert.match(hwio, /The Brand Rule/);
   assert.equal(readFileSync(join(here, '../../../DESIGN.md'), 'utf8'), hwio);
   const forestry = readFileSync(join(dist, 'hwio-forestry.md'), 'utf8');
   assert.match(forestry, /primary: "#2B7036"/);

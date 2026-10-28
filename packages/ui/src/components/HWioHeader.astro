@@ -8,6 +8,10 @@
  * nav runtime keeps the checkbox, `aria-expanded` and focus in sync (into the panel on open, back to the
  * trigger on close, Escape closes). Below `sm` the bar drops the language dropdown (the drawer carries the
  * pills), so logo, theme toggle and the 48 px trigger fit a 320 px viewport without horizontal overflow.
+ *
+ * `navDensity="tight"` with `desktopFrom="xl"`: between 1280 and 1535 px, where the container is still
+ * 1280 px wide, the nav labels drop from 15 to 14 px and the item padding from 12 to 8 px, so a long nav
+ * plus CTAs (SK/PL/CS labels) fits without sideways scroll. From 1536 px the nav is back to default.
  */
 import type { HWioCta, HWioLinkItem } from '../types';
 import HWioButton from './HWioButton.astro';
@@ -30,13 +34,15 @@ interface Props {
   labels: { nav: string; menu: string; close: string; theme?: string; languages?: string };
   /** Viewport from which the inline nav and CTAs replace the drawer (default lg; xl for long navs). */
   desktopFrom?: 'lg' | 'xl';
+  /** 'tight' (with desktopFrom xl only): smaller nav labels and padding from 1280 to 1535 px. Default 'default'. */
+  navDensity?: 'default' | 'tight';
   id?: string;
   class?: string;
 }
-const { nav, ctas = [], languages = [], showThemeToggle = true, scrollspy = false, labels, desktopFrom = 'lg', id = 'hwio-nav-drawer', class: className = '' } = Astro.props;
+const { nav, ctas = [], languages = [], showThemeToggle = true, scrollspy = false, labels, desktopFrom = 'lg', navDensity = 'default', id = 'hwio-nav-drawer', class: className = '' } = Astro.props;
 const BREAK = {
-  lg: { nav: 'hidden flex-1 self-stretch justify-center lg:flex', ctas: 'hidden items-center gap-2 lg:flex', drawer: 'drawer drawer-end w-auto lg:hidden', panels: 'hidden lg:block' },
-  xl: { nav: 'hidden flex-1 self-stretch justify-center xl:flex', ctas: 'hidden items-center gap-2 xl:flex', drawer: 'drawer drawer-end w-auto xl:hidden', panels: 'hidden xl:block' },
+  lg: { nav: 'hidden flex-1 self-stretch justify-center lg:flex', ctas: 'hidden items-center gap-2 lg:flex', drawer: 'drawer drawer-end w-auto lg:hidden', panels: 'hidden lg:block', densityTight: '' },
+  xl: { nav: 'hidden flex-1 self-stretch justify-center xl:flex', ctas: 'hidden items-center gap-2 xl:flex', drawer: 'drawer drawer-end w-auto xl:hidden', panels: 'hidden xl:block', densityTight: 'hwio-nav-tight' },
 } as const;
 const bp = BREAK[desktopFrom];
 const CTA_VARIANT = { primary: 'primary', secondary: 'secondary', ghost: 'ghost' } as const;
@@ -50,7 +56,7 @@ const linkAttrs = (item: HWioLinkItem) => (item.external ? { target: '_blank', r
     </div>
 
     <nav class={bp.nav} aria-label={labels.nav} data-hwio-scrollspy={scrollspy ? 'true' : undefined}>
-      <ul class="menu hwio-nav menu-horizontal h-full flex-nowrap items-stretch gap-0 px-0 py-0 whitespace-nowrap">
+      <ul class:list={['menu hwio-nav menu-horizontal h-full flex-nowrap items-stretch gap-0 px-0 py-0 whitespace-nowrap', navDensity === 'tight' && bp.densityTight]}>
         {nav.map((item) => (
           <li class:list={[item.current && 'hwio-nav-current']}>
             {item.mega ? (

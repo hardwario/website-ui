@@ -133,7 +133,7 @@ components:
 
 **Creative North Star: "The instrument panel"**
 
-HARDWARIO sells industrial IoT hardware to system integrators, engineers, schools and plant operators. The web family reads like a well-made instrument: calm white ground, navy for what acts, one red mark for what matters, generous measure and no decoration that does not carry information. This file documents the system as built on 2026-09-07 (direction A, "www systematised"); the 2026 redesign evolves everything but the fixed constraints below and rewrites this file from the built world.
+HARDWARIO sells industrial IoT hardware to system integrators, engineers, schools and plant operators. The web family reads like a well-made instrument: calm white ground, navy for what acts, one red mark for what matters, generous measure and no decoration that does not carry information. This file documents the system as built (direction A, "www systematised", owner ruling R9) and is regenerated from brand.json, so it matches the shipped tokens.
 
 Key characteristics:
 
@@ -142,7 +142,7 @@ Key characteristics:
 - Light is the default theme on every site; dark is a visitor's choice remembered without a consent gate (R11).
 - Copy is the product: components carry the site's own words, never placeholder text.
 
-**The Fixed Four Rule.** The HARDWARIO logo, red `#e30427`, navy `#06367a` and Inter do not change (owner ruling R14, 2026-09-07). Every other token, surface, composition and motion decision is open to the redesign.
+**The Brand Rule.** The HARDWARIO logo, navy `#06367a` as primary with red `#e30427` as accent (owner ruling R1) and Inter are the identity. www.hardwario.com's live design is the reference; a token or component look changes only with an owner ruling recorded in website-admin `DESIGN-SYSTEM.md`.
 
 ## Colors
 
@@ -224,7 +224,7 @@ Corner radii from the theme: fields 0.5rem, boxes 1rem, selectors 2rem. Borders 
 
 ## Do's and Don'ts
 
-- Do keep Inter as the only text face; the detector's `overused-font` finding for Inter is waived by owner ruling R14 in `.impeccable/config.json`.
+- Do keep Inter as the only text face.
 - Do use the theme roles for every colour; don't hard-code hex values in a site.
 - Do keep buttons sentence case and 48px tall; don't uppercase labels or shrink touch targets below 44 px.
 - Do keep dark mode a visitor's choice with the `hwio_theme` memory; don't follow the OS scheme by default (R11).

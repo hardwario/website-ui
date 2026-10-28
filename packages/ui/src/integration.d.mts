@@ -7,5 +7,11 @@ export interface HWioUiOptions {
   assets?: boolean;
   /** Font families copied into /fonts (file-name prefixes in @hubpav/hwio-brand/dist/fonts). Default ['inter']. */
   fonts?: string[];
+  /**
+   * 'used' (default): Tailwind scans only the HWio components the site imports (found in the project,
+   * its local workspace dependencies and the entry stylesheet's own `@source` directories), so pages
+   * carry no rules for components they never render. 'all': scan every component.
+   */
+  componentCss?: 'used' | 'all';
 }
 export function hwioUi(options?: HWioUiOptions): AstroIntegration;
