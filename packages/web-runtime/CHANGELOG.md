@@ -1,5 +1,11 @@
 # @hubpav/hwio-web-runtime
 
+## 0.7.11
+
+### Patch Changes
+
+- 09ff06e: The landing page's ad click ids and UTM parameters are remembered in memory (never written to the device) across Astro ClientRouter navigations, so a visitor who grants marketing consent on a later page, or sends a form there with marketing consent, keeps the ad attribution. `hwioRememberLandingAttribution()` runs in the forms runtime's bind; `hwioGetPageAttribution()` and `hwioCaptureAttribution()` include the remembered values first. Consent gating is unchanged.
+
 ## 0.7.10
 
 No changes in this release.
