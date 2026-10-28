@@ -59,3 +59,28 @@ test('message context folds into the message field and removes UI-only fields', 
 test('form event payload keeps the GTM parameter names', () => {
   assert.deepEqual(hwioFormEventPayload({ event: 'generate_lead', formId: 'g', formName: 'contact', pagePath: '/contact/' }), { event: 'generate_lead', form_id: 'g', form_name: 'contact', form_kind: 'contact', page_path: '/contact/' });
 });
+
+test('first touch: the earliest source wins per key, empty values never count', async () => {
+  const { hwioFirstTouch } = await import('../dist/attribution.js');
+  const landing = { gclid: 'landing', utm_source: 'google' };
+  const later = { gclid: 'later', utm_campaign: 'spring', utm_source: '' };
+  assert.deepEqual(hwioFirstTouch(undefined, landing, later), { gclid: 'landing', utm_source: 'google', utm_campaign: 'spring' });
+  assert.deepEqual(hwioFirstTouch(undefined, {}), {});
+});
+
+test('landing click ids survive a client-side navigation in memory and nothing is stored', async () => {
+  const storage = new Map();
+  const location = { search: '?gclid=abc&utm_source=google', host: 'www.example.com' };
+  globalThis.window = { location };
+  globalThis.document = { referrer: '' };
+  globalThis.sessionStorage = { getItem: (k) => storage.get(k) ?? null, setItem: (k, v) => storage.set(k, v), removeItem: (k) => storage.delete(k) };
+  const { hwioRememberLandingAttribution, hwioGetPageAttribution, hwioCaptureAttribution } = await import('../dist/attribution.js?memory');
+  hwioRememberLandingAttribution();
+  location.search = '';                      // ClientRouter navigation drops the query
+  hwioRememberLandingAttribution();
+  assert.equal(storage.size, 0);             // nothing written before consent
+  assert.deepEqual(hwioGetPageAttribution(), { gclid: 'abc', utm_source: 'google' });
+  hwioCaptureAttribution();                  // marketing consent granted on the later page
+  assert.deepEqual(JSON.parse(storage.get('hwio_attribution')), { gclid: 'abc', utm_source: 'google' });
+  delete globalThis.window; delete globalThis.document; delete globalThis.sessionStorage;
+});
