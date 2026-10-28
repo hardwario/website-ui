@@ -1,7 +1,6 @@
-<!-- impeccable:product-schema 1 -->
 # PRODUCT.md: the HARDWARIO web design system
 
-Durable product truth for `hardwario/website-ui`, read by the impeccable design plugin before any design work. The system is a product whose users are the people and agents who build the HARDWARIO websites; the sites themselves carry their own `PRODUCT.md` with the division's audience.
+Durable product truth for `hardwario/website-ui`, for the people and agents who change the system. The system is a product whose users are the people and agents who build the HARDWARIO websites; the sites themselves carry their own `PRODUCT.md` with the division's audience.
 
 ## Platform
 
@@ -17,7 +16,7 @@ One visual and behavioural system for every HARDWARIO-branded site, so a change 
 
 ## Positioning
 
-Not a generic UI kit. The components carry HARDWARIO's own compositions (hero, stats band, choice cards, process steps, contact with HubSpot and Turnstile) and its rules (font gate, consent, theme memory, security headers). The 2026 redesign replaces the visual world of these components; it does not replace the system.
+Not a generic UI kit. The components carry HARDWARIO's own compositions (hero, stats band, choice cards, process steps, contact with HubSpot and Turnstile) and its rules (font gate, consent, theme memory, security headers).
 
 ## Operating Context
 
@@ -25,11 +24,11 @@ Sites are read on the desk of a system integrator, a plant or facility manager, 
 
 ## Capabilities and Constraints
 
-- Fixed by owner ruling R14 (2026-09-07): the HARDWARIO logo, red `#e30427`, navy `#06367a`, Inter. Everything else is open to the redesign.
+- Identity: the HARDWARIO logo, navy `#06367a` primary with red `#e30427` accent (R1), Inter. The visual language is direction A, "www systematised" (R9): www.hardwario.com's live design is the reference. A token or component look changes only with an owner ruling recorded in `website-admin/DESIGN-SYSTEM.md`.
 - Binding rules: `font-display: block` with the pre-paint font gate (R3); sentence-case buttons (R4); muted text darkened only, red never for small body text (R5); light is the default theme, dark by choice with `hwio_theme` memory (R11); WCAG AA contrast; the dash rule and brand naming in copy; analytics only on the four sites that have it.
-- Copy is open to rewriting within `PRODUCT-CLAIMS.md`, `ENGINEERING-CLAIMS.md` and `BRAND-VOICE.md` (R15); press releases are content-immutable; every EN change lands in all locales in the same commit.
+- Copy belongs to the sites and is bound by `PRODUCT-CLAIMS.md`, `ENGINEERING-CLAIMS.md`, `BRAND-VOICE.md` and `GLOSSARY.md`; press releases are content-immutable; every EN change lands in all locales in the same commit.
 - Naming: `hwio` / `HWio` prefixes on shared names, `er3o` for ENEROOO; no `hw-`; no inline styles or template-literal class names (`policy-lint`).
-- ENEROOO (`er3o` theme) is a separate brand on the same components: palette and Poppins preserved (R7), footer graphite (R12); out of the 2026 redesign (R13).
+- ENEROOO (`er3o` theme) is a separate brand on the same components: palette and Poppins preserved (R7), footer graphite (R12); its changes need the owner's screenshot sign-off.
 
 ## Brand Commitments
 
@@ -37,7 +36,7 @@ Expert, clear, straight, enabling voice (`BRAND-VOICE.md`); serious register, wa
 
 ## Evidence on Hand
 
-Live sites at www.hardwario.com, hardwario.engineering, hardwario.studio, hardwario.academy, energeticky.report, facility.report, factory.report, forestry.report; the catalog at ui.hardwario.com; the program record in `website-admin/DESIGN-SYSTEM.md`; today's detector baselines and screenshots in `website-admin/design/redesign/before/`.
+Live sites at www.hardwario.com, hardwario.engineering, hardwario.studio, hardwario.academy, energeticky.report, facility.report, factory.report, forestry.report; the catalog at ui.hardwario.com; the program record and owner rulings in `website-admin/DESIGN-SYSTEM.md`; the catalog's visual-regression baselines in `catalog/tests/__screenshots__`.
 
 ## Product Principles
 

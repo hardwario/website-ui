@@ -1,5 +1,5 @@
-// Generates dist/design/<theme>.md, a DESIGN.md (https://impeccable.style format: YAML frontmatter
-// with machine-readable tokens, then the eight canonical sections) for every light theme, from
+// Generates dist/design/<theme>.md, a DESIGN.md (YAML frontmatter with machine-readable tokens,
+// then the eight canonical sections) for every light theme, from
 // brand.json and the prose template src/design/body.md. Also copies the default theme's file to
 // the repo root DESIGN.md. Sites copy their theme's file with website-admin's scripts/design-sync.sh.
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
@@ -15,21 +15,21 @@ const PER_THEME = {
     title: 'HARDWARIO',
     description: 'Navy and red on white with sky panels, Inter, hairline borders, 8 px rhythm, 48 px controls, sentence-case red kickers.',
     northStar: 'The instrument panel',
-    overview: 'HARDWARIO sells industrial IoT hardware to system integrators, engineers, schools and plant operators. The web family reads like a well-made instrument: calm white ground, navy for what acts, one red mark for what matters, generous measure and no decoration that does not carry information. This file documents the system as built on 2026-09-07 (direction A, "www systematised"); the 2026 redesign evolves everything but the fixed constraints below and rewrites this file from the built world.',
-    brandRules: '**The Fixed Four Rule.** The HARDWARIO logo, red `#e30427`, navy `#06367a` and Inter do not change (owner ruling R14, 2026-09-07). Every other token, surface, composition and motion decision is open to the redesign.',
+    overview: 'HARDWARIO sells industrial IoT hardware to system integrators, engineers, schools and plant operators. The web family reads like a well-made instrument: calm white ground, navy for what acts, one red mark for what matters, generous measure and no decoration that does not carry information. This file documents the system as built (direction A, "www systematised", owner ruling R9) and is regenerated from brand.json, so it matches the shipped tokens.',
+    brandRules: '**The Brand Rule.** The HARDWARIO logo, navy `#06367a` as primary with red `#e30427` as accent (owner ruling R1) and Inter are the identity. www.hardwario.com\'s live design is the reference; a token or component look changes only with an owner ruling recorded in website-admin `DESIGN-SYSTEM.md`.',
   },
   'hwio-forestry': {
     title: 'HARDWARIO (forestry.report)',
     description: 'The HARDWARIO system with the forestry green as primary and accent; Inter, hairline borders, 8 px rhythm, 48 px controls.',
     northStar: 'The instrument panel, in the forest',
-    overview: 'forestry.report is a HARDWARIO landing page for forestry managers. It shares every component and rule with the family and swaps the primary and accent roles to the forestry green so the vertical is recognisable at a glance. This file documents the system as built on 2026-09-07; the 2026 redesign evolves everything but the fixed constraints below.',
-    brandRules: '**The Fixed Four Rule.** The HARDWARIO logo, red `#e30427` (kept in the brand mark), navy `#06367a` and Inter do not change (owner ruling R14, 2026-09-07). The forestry green is a theme role, not a brand colour, and may be re-weighted by the redesign.',
+    overview: 'forestry.report is a HARDWARIO landing page for forestry managers. It shares every component and rule with the family and swaps the primary and accent roles to the forestry green so the vertical is recognisable at a glance. This file documents the theme as built and is regenerated from brand.json.',
+    brandRules: '**The Brand Rule.** The HARDWARIO logo (red `#e30427` kept in the brand mark), navy `#06367a` and Inter are the identity. The forestry green is a theme role for this vertical (primary and accent), not a brand colour.',
   },
   er3o: {
     title: 'ENEROOO',
     description: 'Teal and green on white with graphite footer, Poppins, pill fields, 24 px card radius.',
     northStar: 'The energy dashboard',
-    overview: 'ENEROOO is a separate brand on the shared component system: its palette and Poppins are preserved by owner ruling R7 and its footer graphite by R12. It is not part of the 2026 HARDWARIO redesign (R13); this file records the theme as built.',
+    overview: 'ENEROOO is a separate brand on the shared component system: its palette and Poppins are preserved by owner ruling R7 and its footer graphite by R12. This file records the theme as built.',
     brandRules: '**The Own-Brand Rule.** ENEROOO keeps its palette and Poppins (R7) and its footer graphite (R12). Changes need a screenshot sign-off by the owner.',
   },
 };
