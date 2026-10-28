@@ -3,12 +3,14 @@
 //   integrations: [hwioUi({ headers: { gtm: true, turnstile: true, submitEndpoint: 'https://submit.hardwario.com', earlyHints: ['/fonts/inter-latin.woff2', '/fonts/inter-latin-ext.woff2'] } })]
 // It (1) forces component scripts to stay external (script-src 'self' covers them), (2) serves the
 // brand fonts and logos in dev and copies them into the build output, (3) writes `_headers`
-// from one options object so security headers have a single source of truth.
+// from one options object so security headers have a single source of truth, (4) limits
+// Tailwind's scan of the package components to the ones the site imports (component-sources.mjs).
 import { copyFileSync, mkdirSync, readdirSync, writeFileSync, existsSync, readFileSync } from 'node:fs';
 import { join, dirname, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { hwioRenderHeadersFile } from '@hubpav/hwio-web-worker/headers';
+import { hwioComponentSourcesPlugin } from './component-sources.mjs';
 
 const require = createRequire(import.meta.url);
 
@@ -19,20 +21,22 @@ function brandDir() {
 const MIME = { '.woff2': 'font/woff2', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon' };
 
 /**
- * @param {{ headers?: import('@hubpav/hwio-web-worker/headers').HWioHeadersOptions | false, assets?: boolean, fonts?: string[] }} [options]
+ * @param {{ headers?: import('@hubpav/hwio-web-worker/headers').HWioHeadersOptions | false, assets?: boolean, fonts?: string[], componentCss?: 'used' | 'all' }} [options]
  *   fonts: font families (file-name prefixes in @hubpav/hwio-brand/dist/fonts) copied to /fonts; default ['inter'].
+ *   componentCss: 'used' (default) emits CSS for the components the site imports, 'all' for every component.
  * @returns {import('astro').AstroIntegration}
  */
 export function hwioUi(options = {}) {
-  const { headers = false, assets = true, fonts = ['inter'] } = options;
+  const { headers = false, assets = true, fonts = ['inter'], componentCss = 'used' } = options;
   const brand = brandDir();
   const fontsDir = join(brand, 'dist/fonts');
   const logosDir = join(brand, 'logos');
   return {
     name: '@hubpav/hwio-ui',
     hooks: {
-      'astro:config:setup': ({ updateConfig }) => {
-        updateConfig({ vite: { build: { assetsInlineLimit: 0 } } });
+      'astro:config:setup': ({ updateConfig, config, logger }) => {
+        const plugins = componentCss === 'used' ? [hwioComponentSourcesPlugin({ root: fileURLToPath(config.root), logger })] : [];
+        updateConfig({ vite: { build: { assetsInlineLimit: 0 }, plugins } });
       },
       'astro:server:setup': ({ server }) => {
         if (!assets) return;
