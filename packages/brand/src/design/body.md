@@ -58,7 +58,7 @@ Corner radii from the theme: fields {{radiusField}}, boxes {{radiusBox}}, select
 
 ## Do's and Don'ts
 
-- Do keep {{fontFamily}} as the only text face; the detector's `overused-font` finding for Inter is waived by owner ruling R14 in `.impeccable/config.json`.
+- Do keep {{fontFamily}} as the only text face.
 - Do use the theme roles for every colour; don't hard-code hex values in a site.
 - Do keep buttons sentence case and {{control}} tall; don't uppercase labels or shrink touch targets below 44 px.
 - Do keep dark mode a visitor's choice with the `hwio_theme` memory; don't follow the OS scheme by default (R11).
