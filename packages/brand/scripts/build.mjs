@@ -24,6 +24,35 @@ const mix = (hex, target, amount) => {
 };
 
 // ---- resolve themes (inheritance + palette lookups) -----------------------
+// Roles must name palette keys; extras may name a palette key (resolved to its hex) or carry a
+// literal CSS value. A theme with `guidelines: true` (the HARDWARIO family) also gets the brand
+// variables of the guidelines: the gradient, chart colours and motion timings.
+const resolveColor = (value, palette) => (typeof value === 'string' && Object.hasOwn(palette, value) && !value.startsWith('$') ? palette[value] : value);
+
+export function guidelineVars(b = brand, scheme = 'light') {
+  const p = b.palette;
+  const dark = scheme === 'dark';
+  const charts = dark ? { ...b.charts, ...b.charts.dark } : b.charts;
+  const vars = {
+    '--hwio-gradient': b.gradient.css,
+    '--hwio-gradient-figure': dark ? b.gradient.figureDark.css : b.gradient.figure.css,
+  };
+  charts.series.forEach((key, i) => { vars[`--hwio-chart-${i + 1}`] = p[key]; });
+  vars['--hwio-chart-highlight'] = p[charts.highlight];
+  vars['--hwio-chart-forecast'] = p[charts.forecast];
+  vars['--hwio-chart-failure'] = p[charts.failure];
+  vars['--hwio-chart-label'] = p[charts.label];
+  // On white, a Sky mark without a direct label carries a 1 px Blue outline (D44); not needed on dark grounds.
+  vars['--hwio-chart-outline'] = dark ? 'transparent' : p[b.charts.outline.color];
+  vars['--hwio-chart-outline-width'] = dark ? '0px' : b.charts.outline.width;
+  vars['--hwio-motion-easing'] = b.motion.easing;
+  vars['--hwio-motion-fast'] = b.motion.fast;
+  vars['--hwio-motion-base'] = b.motion.base;
+  vars['--hwio-motion-slow'] = b.motion.slow;
+  vars['--hwio-motion-reveal'] = b.motion.slow;
+  return vars;
+}
+
 export function resolveTheme(name, themes = brand.themes, palette = brand.palette, seen = []) {
   const t = themes[name];
   if (!t) throw new Error(`unknown theme ${name}`);
@@ -31,33 +60,51 @@ export function resolveTheme(name, themes = brand.themes, palette = brand.palett
   const base = t.extends ? resolveTheme(t.extends, themes, palette, [...seen, name]) : { roles: {}, extras: {} };
   const roles = { ...base.roles };
   for (const [slot, key] of Object.entries(t.roles ?? {})) {
-    if (!(key in palette)) throw new Error(`theme ${name}: role ${slot} references unknown palette key ${key}`);
+    if (!(key in palette) || key.startsWith('$')) throw new Error(`theme ${name}: role ${slot} references unknown palette key ${key}`);
     roles[slot] = palette[key];
   }
   const required = ['base-100', 'base-200', 'base-300', 'base-content', 'primary', 'primary-content', 'secondary', 'secondary-content', 'accent', 'accent-content', 'neutral', 'neutral-content', 'info', 'info-content', 'success', 'success-content', 'warning', 'warning-content', 'error', 'error-content'];
   for (const slot of required) if (!roles[slot]) throw new Error(`theme ${name}: missing role ${slot}`);
+  const guidelines = t.guidelines ?? base.guidelines ?? false;
+  const typographyKey = t.typography ?? base.typographyKey ?? 'hwio';
+  const layoutKey = t.layout ?? base.layoutKey ?? 'hub';
+  if (!brand.typography.presets[typographyKey]) throw new Error(`theme ${name}: unknown typography preset ${typographyKey}`);
+  if (!brand.layout[layoutKey]) throw new Error(`theme ${name}: unknown layout preset ${layoutKey}`);
+  const scheme = t.scheme ?? base.scheme ?? 'light';
+  const ownExtras = Object.fromEntries(Object.entries(t.extras ?? {}).map(([k, v]) => [k, resolveColor(v, palette)]));
   return {
     name,
-    scheme: t.scheme ?? base.scheme ?? 'light',
+    scheme,
     default: t.default ?? false,
     prefersdark: t.prefersdark ?? false,
     font: t.font ?? base.font,
     shape: brand.shape[t.shape ?? base.shapeKey ?? 'hwio'],
     shapeKey: t.shape ?? base.shapeKey ?? 'hwio',
+    guidelines,
+    typographyKey,
+    layoutKey,
+    layout: brand.layout[layoutKey],
     roles,
-    extras: { ...base.extras, ...(t.extras ?? {}) },
+    extras: { ...base.extras, ...(guidelines ? guidelineVars(brand, scheme) : {}), ...ownExtras },
   };
 }
 
 const themes = Object.fromEntries(Object.keys(brand.themes).map((n) => [n, resolveTheme(n)]));
 
 // ---- tokens.json ----------------------------------------------------------
+const strip = (o) => JSON.parse(JSON.stringify(o, (k, v) => (k.startsWith('$') ? undefined : v)));
 writeFileSync(join(dist, 'tokens.json'), JSON.stringify({
-  palette: brand.palette,
+  guidelines: brand.guidelines,
+  palette: strip(brand.palette),
+  gradient: strip(brand.gradient),
   themes,
-  layout: brand.layout,
-  typography: brand.typography,
-  rhythm: brand.rhythm,
+  breakpoints: strip(brand.breakpoints),
+  layout: strip(brand.layout),
+  typography: strip(brand.typography),
+  rhythm: strip(brand.rhythm),
+  motion: strip(brand.motion),
+  icons: strip(brand.icons),
+  charts: strip(brand.charts),
   fonts: brand.fonts,
   logos: brand.logos,
   footerSites: brand.footerSites,
@@ -95,21 +142,22 @@ writeFileSync(join(dist, 'vars.css'), vars);
     `--ifm-color-primary-lighter: ${mix(p, '#ffffff', 0.15)};`,
     `--ifm-color-primary-lightest: ${mix(p, '#ffffff', 0.3)};`,
   ];
-  // Docs keep brand red as the Infima primary (links, active sidebar item), which is the
-  // status quo there; the six shade variants were Docusaurus teal before this file existed.
+  // Infima's primary colours links and the active sidebar item. The Brand Guidelines reserve Blue
+  // for links (Sky on dark grounds), so the mapping follows the theme primary. No site imports this
+  // file yet (docs and stem take tokens in P7a, deferred); it keeps the mapping ready.
   const css = `/* Generated from brand.json by @hubpav/hwio-brand: Infima variables for the Docusaurus sites. */
 :root {
-  ${shades(light.roles.accent).join('\n  ')}
+  ${shades(light.roles.primary).join('\n  ')}
   --ifm-color-secondary: ${light.roles.secondary};
   --ifm-font-family-base: ${font.stack};
   --ifm-font-color-base: ${light.roles['base-content']};
   --ifm-background-color: ${light.roles['base-100']};
   --ifm-code-font-size: 95%;
   --hwio-color-ink: ${brand.palette.ink};
-  --hwio-color-muted: ${brand.palette.muted};
+  --hwio-color-muted: ${brand.palette.gray};
 }
 [data-theme='dark'] {
-  ${shades(dark.roles.accent).join('\n  ')}
+  ${shades(dark.roles.primary).join('\n  ')}
   --ifm-background-color: ${dark.roles['base-100']};
   --ifm-background-surface-color: ${dark.roles['base-200']};
   --ifm-font-color-base: ${dark.roles['base-content']};

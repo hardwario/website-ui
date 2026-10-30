@@ -1,26 +1,34 @@
 {
-  "$comment": "Source of truth for HARDWARIO web brand values. Edit here, run `npm run build`; every generated artifact (tokens.json, vars.css, docusaurus.css, the DaisyUI theme files in @hubpav/hwio-ui) is committed so a change shows its full downstream diff. Colours are hex; theme roles reference palette keys. Owner rulings 2026-09-05 (DESIGN-SYSTEM.md in website-admin): R1 navy primary + red accent, R2 dark kept (Zola neutral palette), R3 font-display block + gate, R7 enerooo palette preserved. R9 (2026-09-05): visual direction A, www systematised: type ramp 56/40/28/22/17, 8 px rhythm, hairline borders (base-300 = gray-200), 48 px controls, sentence-case red kickers.",
+  "$comment": "Source of truth for HARDWARIO web brand values. Edit here, run `npm run build`; every generated artifact (tokens.json, vars.css, docusaurus.css, the DaisyUI theme files in @hubpav/hwio-ui, DESIGN.md) is committed or rebuilt so a change shows its full downstream diff. Colours are hex; theme roles and extras may reference palette keys. Since 2026-10-30 the HARDWARIO themes follow the Brand Guidelines HBG.261028.01 (revision 4, issued 2026-10-30; the master: nothing on the web contradicts them): chapter 03 colour roles (Blue for buttons and links, Ink text, Panel, Mist and Hairline neutrals, status Green, Amber, Red and Info in Blue), the gradient (D1, D23, D33), dark mode (D35), chapter 04 type (D8, D12, D22), chapter 05 grid and icons, chapter 06 charts (D14). The web-only rules on top (responsive sizes, breakpoints, states, motion) are the web layer in website-admin DESIGN-SYSTEM.md. Owner rulings still in force: R3 font-display block + gate, R4 sentence-case buttons, R7 and R12 (ENEROOO keeps its palette, Poppins, graphite footer and the direction A type ramp on er3o), R11 light default and remembered dark. Replaced by the guidelines on 2026-10-30: R1 (navy primary), R2's palette (now D35), R9's type ramp and sentence-case kickers.",
+  "guidelines": {
+    "reference": "HBG.261028.01",
+    "revision": 4,
+    "issued": "2026-10-30",
+    "note": "Revision 4 (issued 2026-10-30) takes the owner's decisions on the web's change requests: Panel #f7f7f7 (CR-1), the web type sizes apply from 1 024 px (CR-2), chart colours on dark grounds and the gradient figure on the dark ground (D44). Revisions 2 and 3 carry the same rules otherwise.",
+    "source": "company/docs brand/hbg.261028.01-r4-en-hardwario-brand-guidelines.typ; values of record in templates/brandbook.typ (brand-* definitions)"
+  },
   "palette": {
+    "$comment": "Guideline colours carry the guideline names, so `brand-<name>` in company/docs templates/brandbook.typ maps to the key <name> here (website-admin scripts/brand-drift.py checks them). dark-* are the dark-mode values of D35. gradient-figure-end is the gradient sampled at 75 % (D23). forestry-* and er3o-* are theme colours outside the guidelines. Panel is #f7f7f7 by the owner's decision of 2026-10-30 (change request CR-1: the Red caps kicker on Panel reaches 4.5:1), the value of record since guidelines revision 4.",
     "white": "#ffffff",
-    "sky": "#F1FAFF",
-    "gray-100": "#f3f4f6",
-    "gray-200": "#e5e7eb",
-    "gray-300": "#d1d5db",
-    "gray-500": "#6b6a6a",
-    "muted": "#5c5f70",
-    "ink": "#252532",
     "red": "#e30427",
-    "rose": "#f43f5e",
     "blue": "#016ad4",
-    "blue-light": "#009cfa",
-    "blue-dark": "#06367a",
-    "night-100": "#0f0f14",
-    "night-200": "#1a1a22",
-    "night-300": "#23232f",
-    "night-content": "#e7e7ee",
-    "green": "#15803d",
-    "amber": "#b45309",
-    "error": "#dc2626",
+    "navy": "#06367a",
+    "sky": "#009cfa",
+    "gray": "#6b6a6a",
+    "ink": "#252532",
+    "panel": "#f7f7f7",
+    "mist": "#e8e8e8",
+    "hairline": "#dcdcdc",
+    "green": "#2e7d4f",
+    "amber": "#c76a00",
+    "dark-ground": "#16161d",
+    "dark-red": "#f43f5e",
+    "dark-gray": "#d1d5db",
+    "dark-mist": "#2e2e3a",
+    "dark-hairline": "#3b3b46",
+    "dark-green": "#34c47a",
+    "dark-amber": "#f59e0b",
+    "gradient-figure-end": "#3976c5",
     "forestry": "#2B7036",
     "forestry-light": "#5aa864",
     "er3o-green": "#01CC9B",
@@ -30,7 +38,28 @@
     "er3o-ink": "#061920",
     "er3o-graphite": "#404040",
     "er3o-text": "#333333",
-    "er3o-gray-50": "#f9fafb"
+    "er3o-gray-50": "#f9fafb",
+    "er3o-gray-100": "#f3f4f6",
+    "er3o-success": "#15803d",
+    "er3o-warning": "#b45309",
+    "er3o-error": "#dc2626"
+  },
+  "gradient": {
+    "$comment": "The signature (chapter 03, D1): Red to Sky, horizontal, sRGB, no other stop. It frames (a band, a short rule under a title, the strip on top of a card) and fills the one key figure of a page, 28 pt and up, with its left three quarters (D23, D33). Never behind body text, tables or photographs, never on the logo, icons or isometric faces, never reversed or vertical. On the dark ground the figure runs the full length from the light red to Sky (figureDark, D44): its lowest point is 3.88:1, enough for type of 28 px and up.",
+    "from": "red",
+    "to": "sky",
+    "angle": "90deg",
+    "css": "linear-gradient(90deg, #e30427, #009cfa)",
+    "figure": {
+      "to": "gradient-figure-end",
+      "at": 0.75,
+      "css": "linear-gradient(90deg, #e30427, #3976c5)"
+    },
+    "figureDark": {
+      "from": "dark-red",
+      "to": "sky",
+      "css": "linear-gradient(90deg, #f43f5e, #009cfa)"
+    }
   },
   "shape": {
     "hwio": {
@@ -61,30 +90,43 @@
       "prefersdark": false,
       "font": "inter",
       "shape": "hwio",
+      "typography": "hwio",
+      "layout": "grid",
+      "guidelines": true,
       "roles": {
         "base-100": "white",
-        "base-200": "sky",
-        "base-300": "gray-200",
+        "base-200": "panel",
+        "base-300": "hairline",
         "base-content": "ink",
-        "primary": "blue-dark",
+        "primary": "blue",
         "primary-content": "white",
-        "secondary": "blue",
+        "secondary": "navy",
         "secondary-content": "white",
         "accent": "red",
         "accent-content": "white",
         "neutral": "ink",
-        "neutral-content": "gray-100",
-        "info": "blue-light",
-        "info-content": "blue-dark",
+        "neutral-content": "white",
+        "info": "blue",
+        "info-content": "white",
         "success": "green",
         "success-content": "white",
         "warning": "amber",
-        "warning-content": "white",
-        "error": "error",
+        "warning-content": "ink",
+        "error": "red",
         "error-content": "white"
       },
       "extras": {
-        "--hwio-kicker-on-neutral": "#fb7185"
+        "--hwio-text-secondary": "gray",
+        "--hwio-text-secondary-on-neutral": "dark-gray",
+        "--hwio-kicker-on-neutral": "dark-gray",
+        "--hwio-link": "blue",
+        "--hwio-link-hover": "navy",
+        "--hwio-nav-hover": "blue",
+        "--hwio-footer-hover": "sky",
+        "--hwio-mist": "mist",
+        "--hwio-icon": "navy",
+        "--hwio-icon-bg": "var(--color-base-200)",
+        "--hwio-note-opacity": "1"
       }
     },
     "hwio-dark": {
@@ -93,18 +135,35 @@
       "default": false,
       "prefersdark": false,
       "roles": {
-        "base-100": "night-100",
-        "base-200": "night-200",
-        "base-300": "night-300",
-        "base-content": "night-content",
-        "accent": "rose",
-        "accent-content": "night-100",
-        "neutral": "night-300",
-        "neutral-content": "night-content",
-        "primary": "blue-light",
-        "primary-content": "night-100",
-        "secondary": "blue-light",
-        "secondary-content": "night-100"
+        "base-100": "dark-ground",
+        "base-200": "ink",
+        "base-300": "dark-hairline",
+        "base-content": "white",
+        "primary": "sky",
+        "primary-content": "dark-ground",
+        "secondary": "sky",
+        "secondary-content": "dark-ground",
+        "accent": "dark-red",
+        "accent-content": "dark-ground",
+        "neutral": "ink",
+        "neutral-content": "white",
+        "info": "sky",
+        "info-content": "dark-ground",
+        "success": "dark-green",
+        "success-content": "dark-ground",
+        "warning": "dark-amber",
+        "warning-content": "dark-ground",
+        "error": "dark-red",
+        "error-content": "dark-ground"
+      },
+      "extras": {
+        "--hwio-text-secondary": "dark-gray",
+        "--hwio-kicker-on-alt": "dark-gray",
+        "--hwio-link": "sky",
+        "--hwio-link-hover": "white",
+        "--hwio-nav-hover": "sky",
+        "--hwio-mist": "dark-mist",
+        "--hwio-icon": "white"
       }
     },
     "hwio-forestry": {
@@ -112,6 +171,9 @@
       "roles": {
         "primary": "forestry",
         "accent": "forestry"
+      },
+      "extras": {
+        "--hwio-nav-hover": "forestry"
       }
     },
     "hwio-forestry-dark": {
@@ -119,8 +181,11 @@
       "roles": {
         "primary": "forestry-light",
         "accent": "forestry-light",
-        "accent-content": "night-100",
-        "primary-content": "night-100"
+        "accent-content": "dark-ground",
+        "primary-content": "dark-ground"
+      },
+      "extras": {
+        "--hwio-nav-hover": "forestry-light"
       }
     },
     "er3o": {
@@ -129,10 +194,12 @@
       "prefersdark": false,
       "font": "poppins",
       "shape": "er3o",
+      "typography": "er3o",
+      "layout": "hub",
       "roles": {
         "base-100": "white",
         "base-200": "er3o-gray-50",
-        "base-300": "gray-100",
+        "base-300": "er3o-gray-100",
         "base-content": "er3o-text",
         "primary": "er3o-teal",
         "primary-content": "white",
@@ -144,11 +211,11 @@
         "neutral-content": "white",
         "info": "er3o-heading",
         "info-content": "white",
-        "success": "green",
+        "success": "er3o-success",
         "success-content": "white",
-        "warning": "amber",
+        "warning": "er3o-warning",
         "warning-content": "white",
-        "error": "error",
+        "error": "er3o-error",
         "error-content": "white"
       },
       "extras": {
@@ -161,7 +228,23 @@
       }
     }
   },
+  "breakpoints": {
+    "$comment": "Tailwind 4 defaults, named as in its responsive variants; the web layer in DESIGN-SYSTEM.md sets which sizes change where.",
+    "sm": "40rem",
+    "md": "48rem",
+    "lg": "64rem",
+    "xl": "80rem",
+    "2xl": "96rem"
+  },
   "layout": {
+    "$comment": "Container presets, chosen per theme. grid: the guidelines' web grid (chapter 05: twelve columns, 1 280 px wide, 24 px gutters), so the container is the 1 280 px content box plus a 24 px margin each side. hub: www's pre-guideline width, kept for er3o. landing: unused since 2026-10-13.",
+    "grid": {
+      "container": "1328px",
+      "pad": "24px",
+      "width": "1280px",
+      "columns": 12,
+      "gutter": "24px"
+    },
     "hub": {
       "container": "1275px",
       "pad": "27px"
@@ -172,70 +255,228 @@
     }
   },
   "typography": {
-    "$comment": "Type ramp and rhythm as implemented in @hubpav/hwio-ui/styles.css today (direction A, R9). A test in packages/brand/test/design-md.test.mjs fails when the two drift. fontSize is the large-screen value; responsive lists the smaller breakpoints (base, md = 48rem). The 2026 redesign (R13-R16) evolves these blocks; the fixed constraints are the logo, red, navy and Inter (R14).",
-    "roles": {
-      "display": {
-        "element": "h1",
-        "fontSize": "3.5rem",
-        "responsive": {
-          "base": "2.5rem",
-          "md": "3rem"
+    "$comment": "Type presets, chosen per theme (`typography` key) and generated into --hwio-type-<role>-{size,weight,leading,tracking,case} custom properties in each theme file, with the responsive steps as media queries at the breakpoints above. styles.css reads only these variables. A test (packages/brand/test/design-md.test.mjs) checks that styles.css uses every role and that the generated theme files carry the values.",
+    "presets": {
+      "hwio": {
+        "$comment": "Brand Guidelines chapter 04, web column: H1 60-72 px Bold, H2 40-48 px Semibold, H3 28-32 px Semibold, kicker 12-14 px Bold caps in Red (0.07 em), body 16 px Regular at 1.6, caption 12-14 px Regular in Gray. Minimum line heights 1.2 display (28 pt, about 37 px, and up), 1.3 titles, 1.4 text (D12); display tracking -1 to -2 %; Regular, Semibold (web H2 and H3 only) and Bold, no Medium (D22). The steps below lg are the web layer (DESIGN-SYSTEM.md): phones and tablets cannot carry a 60 px H1. fontSize is the value from `from`; responsive lists the smaller steps; lineHeightSteps raise or lower the line height where a role crosses 28 pt (37.3 px), since the role follows the size (chapter 04).",
+        "roles": {
+          "display": {
+            "element": "h1",
+            "fontSize": "4.5rem",
+            "responsive": {
+              "base": "2.5rem",
+              "md": "3rem",
+              "lg": "3.75rem"
+            },
+            "from": "xl",
+            "fontWeight": 700,
+            "lineHeight": 1.2,
+            "letterSpacing": "-0.02em"
+          },
+          "heading": {
+            "element": "h2",
+            "fontSize": "3rem",
+            "responsive": {
+              "base": "2rem",
+              "lg": "2.5rem"
+            },
+            "from": "xl",
+            "fontWeight": 600,
+            "lineHeight": 1.3,
+            "lineHeightSteps": {
+              "lg": 1.2
+            },
+            "letterSpacing": "-0.015em"
+          },
+          "subheading": {
+            "element": "h3",
+            "fontSize": "2rem",
+            "responsive": {
+              "base": "1.5rem",
+              "lg": "1.75rem"
+            },
+            "from": "xl",
+            "fontWeight": 600,
+            "lineHeight": 1.3,
+            "letterSpacing": "-0.01em"
+          },
+          "title": {
+            "element": "h4",
+            "fontSize": "1.25rem",
+            "fontWeight": 700,
+            "lineHeight": 1.3,
+            "letterSpacing": "0"
+          },
+          "lead": {
+            "selector": ".hwio-lead",
+            "fontSize": "1.1875rem",
+            "fontWeight": 400,
+            "lineHeight": 1.55,
+            "letterSpacing": "0"
+          },
+          "body": {
+            "element": "body",
+            "fontSize": "1rem",
+            "fontWeight": 400,
+            "lineHeight": 1.6,
+            "letterSpacing": "0"
+          },
+          "caption": {
+            "selector": ".hwio-caption",
+            "fontSize": "0.8125rem",
+            "fontWeight": 400,
+            "lineHeight": 1.4,
+            "letterSpacing": "0"
+          },
+          "kicker": {
+            "selector": ".hwio-kicker",
+            "fontSize": "0.8125rem",
+            "fontWeight": 700,
+            "lineHeight": 1.4,
+            "letterSpacing": "0.07em",
+            "textTransform": "uppercase"
+          },
+          "chip": {
+            "selector": ".hwio-chip",
+            "fontSize": "0.75rem",
+            "fontWeight": 700,
+            "lineHeight": 1.4,
+            "letterSpacing": "0.07em",
+            "textTransform": "uppercase"
+          },
+          "figure": {
+            "selector": ".hwio-figure",
+            "fontSize": "2.5rem",
+            "fontWeight": 700,
+            "lineHeight": 1.2,
+            "letterSpacing": "-0.02em"
+          },
+          "button": {
+            "selector": ".btn",
+            "fontSize": "0.9375rem",
+            "fontWeight": 700,
+            "lineHeight": 1,
+            "letterSpacing": "0"
+          }
         },
-        "fontWeight": 700,
-        "lineHeight": 1.05,
-        "letterSpacing": "-0.03em"
-      },
-      "heading": {
-        "element": "h2",
-        "fontSize": "2.5rem",
-        "responsive": {
-          "base": "2rem"
+        "weights": {
+          "nav": 400,
+          "label": 700,
+          "strong": 700,
+          "footerTitle": 700
         },
-        "fontWeight": 700,
-        "lineHeight": 1.1,
-        "letterSpacing": "-0.025em"
+        "vars": {
+          "--hwio-choice-title-size": "var(--hwio-type-subheading-size)",
+          "--hwio-choice-title-leading": "var(--hwio-type-subheading-leading)",
+          "--hwio-choice-title-tracking": "var(--hwio-type-subheading-tracking)"
+        }
       },
-      "subheading": {
-        "element": "h3",
-        "fontSize": "1.375rem",
-        "fontWeight": 700,
-        "lineHeight": 1.2,
-        "letterSpacing": "-0.01em"
-      },
-      "title": {
-        "element": "h4",
-        "fontSize": "1.125rem",
-        "fontWeight": 700,
-        "lineHeight": 1.3,
-        "letterSpacing": "-0.005em"
-      },
-      "lead": {
-        "selector": ".hwio-lead",
-        "fontSize": "1.1875rem",
-        "fontWeight": 400,
-        "lineHeight": 1.55,
-        "letterSpacing": "0"
-      },
-      "body": {
-        "element": "body",
-        "fontSize": "1.0625rem",
-        "fontWeight": 400,
-        "lineHeight": 1.6,
-        "letterSpacing": "0"
-      },
-      "kicker": {
-        "selector": ".hwio-kicker",
-        "fontSize": "0.875rem",
-        "fontWeight": 600,
-        "lineHeight": 1.4,
-        "letterSpacing": "0"
-      },
-      "button": {
-        "selector": ".btn",
-        "fontSize": "0.9375rem",
-        "fontWeight": 600,
-        "lineHeight": 1,
-        "letterSpacing": "0"
+      "er3o": {
+        "$comment": "Direction A (R9, 2026-09-05) as shipped until 0.7.11, kept for er3o: ENEROOO has its own brand manual (PLAN 4.7) and its look stays unchanged until then.",
+        "roles": {
+          "display": {
+            "element": "h1",
+            "fontSize": "3.5rem",
+            "responsive": {
+              "base": "2.5rem",
+              "md": "3rem"
+            },
+            "from": "lg",
+            "fontWeight": 700,
+            "lineHeight": 1.05,
+            "letterSpacing": "-0.03em"
+          },
+          "heading": {
+            "element": "h2",
+            "fontSize": "2.5rem",
+            "responsive": {
+              "base": "2rem"
+            },
+            "from": "md",
+            "fontWeight": 700,
+            "lineHeight": 1.1,
+            "letterSpacing": "-0.025em"
+          },
+          "subheading": {
+            "element": "h3",
+            "fontSize": "1.375rem",
+            "fontWeight": 700,
+            "lineHeight": 1.2,
+            "letterSpacing": "-0.01em"
+          },
+          "title": {
+            "element": "h4",
+            "fontSize": "1.125rem",
+            "fontWeight": 700,
+            "lineHeight": 1.3,
+            "letterSpacing": "-0.005em"
+          },
+          "lead": {
+            "selector": ".hwio-lead",
+            "fontSize": "1.1875rem",
+            "fontWeight": 400,
+            "lineHeight": 1.55,
+            "letterSpacing": "0"
+          },
+          "body": {
+            "element": "body",
+            "fontSize": "1.0625rem",
+            "fontWeight": 400,
+            "lineHeight": 1.6,
+            "letterSpacing": "0"
+          },
+          "caption": {
+            "selector": ".hwio-caption",
+            "fontSize": "0.875rem",
+            "fontWeight": 400,
+            "lineHeight": 1.4,
+            "letterSpacing": "0"
+          },
+          "kicker": {
+            "selector": ".hwio-kicker",
+            "fontSize": "0.875rem",
+            "fontWeight": 600,
+            "lineHeight": 1.4,
+            "letterSpacing": "0",
+            "textTransform": "none"
+          },
+          "chip": {
+            "selector": ".hwio-chip",
+            "fontSize": "0.875rem",
+            "fontWeight": 500,
+            "letterSpacing": "0",
+            "textTransform": "none"
+          },
+          "figure": {
+            "selector": ".hwio-figure",
+            "fontSize": "2.5rem",
+            "responsive": {
+              "base": "2.25rem"
+            },
+            "from": "lg",
+            "fontWeight": 700,
+            "lineHeight": 1,
+            "letterSpacing": "-0.03em"
+          },
+          "button": {
+            "selector": ".btn",
+            "fontSize": "0.9375rem",
+            "fontWeight": 600,
+            "lineHeight": 1,
+            "letterSpacing": "0"
+          }
+        },
+        "weights": {
+          "nav": 500,
+          "label": 600,
+          "strong": 600,
+          "footerTitle": 500
+        },
+        "vars": {
+          "--hwio-choice-title-size": "1.75rem",
+          "--hwio-choice-title-leading": "1.15",
+          "--hwio-choice-title-tracking": "-0.02em"
+        }
       }
     }
   },
@@ -252,6 +493,54 @@
     },
     "control": "48px",
     "cardPadding": "32px"
+  },
+  "motion": {
+    "$comment": "Chapter 10, Motion and video (still a proposal in revision 4): calm ease-out curves, 200-400 ms in interfaces, nothing bounces or spins. Generated into --hwio-motion-* on the HARDWARIO themes.",
+    "easing": "ease-out",
+    "fast": "200ms",
+    "base": "300ms",
+    "slow": "400ms"
+  },
+  "icons": {
+    "$comment": "Chapter 05, Icons: Lucide only, outline on a 24 px grid with a 2 px stroke, one colour, Navy; White on dark grounds; 16, 24 or 32 px on screen; they label, never decorate. HWioIcon still draws Heroicons outlines: swapping the glyphs changes www.enerooo.cz too, so it follows with PLAN 4.4 or 4.7.",
+    "set": "lucide",
+    "color": "navy",
+    "colorOnDark": "white",
+    "stroke": "2px",
+    "grid": "24px",
+    "sizes": [
+      "16px",
+      "24px",
+      "32px"
+    ]
+  },
+  "charts": {
+    "$comment": "Chapter 06, Charts, D14 and D44 (revision 4): on white the series are Blue, Sky and Gray in this order, three at most, the one highlighted value in bold Navy, a forecast in Mist, Red for a failure and nothing else. Sky marks (2.9:1 on white) are always labelled directly in Ink; a Sky mark without a label gets a 1 px Blue outline. On dark grounds the series are Sky, Blue and the light gray, the highlight is bold White and failures are the light red.",
+    "series": [
+      "blue",
+      "sky",
+      "gray"
+    ],
+    "highlight": "navy",
+    "forecast": "mist",
+    "failure": "red",
+    "label": "ink",
+    "outline": {
+      "color": "blue",
+      "width": "1px",
+      "appliesTo": "sky"
+    },
+    "dark": {
+      "series": [
+        "sky",
+        "blue",
+        "dark-gray"
+      ],
+      "highlight": "white",
+      "forecast": "dark-mist",
+      "failure": "dark-red",
+      "label": "white"
+    }
   },
   "fonts": {
     "display": "block",

@@ -15,12 +15,12 @@ const cols = COLS[(Math.min(Math.max(items.length, 1), 3) as 1 | 2 | 3)];
     return (
       <article class:list={['card card-border flex h-full flex-col bg-base-100 border-t-[3px]', isLead ? 'border-t-accent' : 'border-t-base-300']}>
         <div class="card-body gap-0 p-10">
-          <p class:list={['mb-4 text-sm font-semibold', isLead ? 'text-accent' : 'hwio-muted']}>{c.label}</p>
-          <h3 class="mb-3.5 text-[1.75rem] leading-[1.15] tracking-[-0.02em]">{c.title}</h3>
+          <p class:list={['hwio-weight-label mb-4 text-sm', isLead ? 'text-accent' : 'hwio-muted']}>{c.label}</p>
+          <h3 class="hwio-choice-title mb-3.5">{c.title}</h3>
           <p class="hwio-muted mb-6">{c.text}</p>
           {c.points && c.points.length > 0 && (
             <ul class="hwio-muted mb-8 flex flex-col gap-3 text-[15px]">
-              {c.points.map((pt) => <li class="flex items-start gap-3"><HWioIcon name="check" class="mt-0.5 shrink-0 text-accent" />{pt}</li>)}
+              {c.points.map((pt) => <li class="flex items-start gap-3"><HWioIcon name="check" class="hwio-icon mt-0.5 shrink-0" />{pt}</li>)}
             </ul>
           )}
           <div class="mt-auto"><HWioButton href={c.cta.href} external={c.cta.external} variant={isLead ? 'primary' : 'secondary'} arrow={isLead} track={c.cta.track}>{c.cta.label}</HWioButton></div>

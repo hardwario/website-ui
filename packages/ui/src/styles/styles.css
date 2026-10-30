@@ -57,30 +57,25 @@
     overflow-x: hidden;
     background-color: var(--color-base-100);
     color: var(--color-base-content);
-    font-size: 1.0625rem; /* 17 px body (direction A) */
-    line-height: 1.6;
+    font-size: var(--hwio-type-body-size, 1.0625rem);
+    line-height: var(--hwio-type-body-leading, 1.6);
   }
   button:not(:disabled),
   [role='button']:not(:disabled) {
     cursor: pointer;
   }
-  /* Type ramp (direction A): 56 / 40 / 28 / 22 / 17 on large screens, tighter tracking as size grows. */
+  /* Type ramp from the theme's type preset (--hwio-type-<role>-*, generated from brand.json with
+     the responsive steps as media queries). HARDWARIO themes: the Brand Guidelines' web scale
+     (H1 60-72 px Bold, H2 40-48 px and H3 28-32 px Semibold, line heights 1.2 / 1.3 / 1.4 at
+     least). er3o keeps direction A. The fallbacks are direction A's phone values. */
   h1, h2, h3, h4, h5, h6 {
-    font-weight: 700;
+    font-weight: var(--hwio-type-title-weight, 700);
     text-wrap: balance;
   }
-  h1 { font-size: 2.5rem; line-height: 1.05; letter-spacing: -0.03em; }
-  h2 { font-size: 2rem; line-height: 1.1; letter-spacing: -0.025em; }
-  h3 { font-size: 1.375rem; line-height: 1.2; letter-spacing: -0.01em; }
-  h4 { font-size: 1.125rem; line-height: 1.3; letter-spacing: -0.005em; }
-  @media (width >= 48rem) {
-    h1 { font-size: 3rem; }
-    h2 { font-size: 2.5rem; }
-    h3 { font-size: 1.375rem; }
-  }
-  @media (width >= 64rem) {
-    h1 { font-size: 3.5rem; }
-  }
+  h1 { font-size: var(--hwio-type-display-size, 2.5rem); font-weight: var(--hwio-type-display-weight, 700); line-height: var(--hwio-type-display-leading, 1.05); letter-spacing: var(--hwio-type-display-tracking, -0.03em); }
+  h2 { font-size: var(--hwio-type-heading-size, 2rem); font-weight: var(--hwio-type-heading-weight, 700); line-height: var(--hwio-type-heading-leading, 1.1); letter-spacing: var(--hwio-type-heading-tracking, -0.025em); }
+  h3 { font-size: var(--hwio-type-subheading-size, 1.375rem); font-weight: var(--hwio-type-subheading-weight, 700); line-height: var(--hwio-type-subheading-leading, 1.2); letter-spacing: var(--hwio-type-subheading-tracking, -0.01em); }
+  h4 { font-size: var(--hwio-type-title-size, 1.125rem); line-height: var(--hwio-type-title-leading, 1.3); letter-spacing: var(--hwio-type-title-tracking, -0.005em); }
   /* Phones: a heading word wider than its column (a 40 px H1 gets 218-288 px) hyphenates instead
      of running past the screen, and a token longer than the line (a URL, an ID) breaks. */
   @media (width < 40rem) {
@@ -143,30 +138,89 @@
     background: var(--hwio-nav-active, var(--color-primary));
   }
 
+  /* Kicker: Red caps over a title on the HARDWARIO themes (Brand Guidelines chapter 04 and 05);
+     sentence case on er3o. On Ink (neutral panels, and the dark theme's surfaces) it takes the
+     light gray, as the guidelines' dark-mode example sets the caps label on an Ink card. */
   .hwio-kicker,
   .hwio-eyebrow {
     color: var(--color-accent);
-    font-size: 0.875rem;
-    font-weight: 600;
-    line-height: 1.4;
+    font-size: var(--hwio-type-kicker-size, 0.875rem);
+    font-weight: var(--hwio-type-kicker-weight, 600);
+    line-height: var(--hwio-type-kicker-leading, 1.4);
+    letter-spacing: var(--hwio-type-kicker-tracking, 0);
+    text-transform: var(--hwio-type-kicker-case, none);
+  }
+  .hwio-tone-alt .hwio-kicker,
+  .hwio-tone-alt .hwio-eyebrow {
+    color: var(--hwio-kicker-on-alt, var(--color-accent));
   }
   .hwio-tone-neutral .hwio-kicker,
   .hwio-tone-neutral .hwio-eyebrow {
     color: var(--hwio-kicker-on-neutral, var(--color-accent));
   }
+  /* Secondary text: Gray on light grounds, the light gray on dark ones (chapter 03, D35). */
   .hwio-muted {
-    color: color-mix(in oklab, var(--color-base-content) 72%, transparent);
+    color: var(--hwio-text-secondary, color-mix(in oklab, var(--color-base-content) 72%, transparent));
   }
   .hwio-tone-neutral .hwio-muted {
-    color: color-mix(in oklab, var(--color-neutral-content) 75%, transparent);
+    color: var(--hwio-text-secondary-on-neutral, color-mix(in oklab, var(--color-neutral-content) 75%, transparent));
   }
   .hwio-lead {
-    font-size: 1.1875rem;
-    line-height: 1.55;
-    color: color-mix(in oklab, var(--color-base-content) 72%, transparent);
+    font-size: var(--hwio-type-lead-size, 1.1875rem);
+    line-height: var(--hwio-type-lead-leading, 1.55);
+    color: var(--hwio-text-secondary, color-mix(in oklab, var(--color-base-content) 72%, transparent));
   }
   .hwio-tone-neutral .hwio-lead {
-    color: color-mix(in oklab, var(--color-neutral-content) 75%, transparent);
+    color: var(--hwio-text-secondary-on-neutral, color-mix(in oklab, var(--color-neutral-content) 75%, transparent));
+  }
+  /* Caption: 12-14 px Regular in Gray (chapter 04). */
+  .hwio-caption {
+    font-size: var(--hwio-type-caption-size, 0.875rem);
+    line-height: var(--hwio-type-caption-leading, 1.4);
+    color: var(--hwio-text-secondary, color-mix(in oklab, var(--color-base-content) 72%, transparent));
+  }
+  .hwio-tone-neutral .hwio-caption {
+    color: var(--hwio-text-secondary-on-neutral, color-mix(in oklab, var(--color-neutral-content) 75%, transparent));
+  }
+  /* Figures (stats): display type, so 1.2 line height at least on the HARDWARIO themes. */
+  .hwio-figure {
+    font-size: var(--hwio-type-figure-size, 2.25rem);
+    font-weight: var(--hwio-type-figure-weight, 700);
+    line-height: var(--hwio-type-figure-leading, 1);
+    letter-spacing: var(--hwio-type-figure-tracking, -0.03em);
+  }
+  /* The choice-card title: the H3 role on the HARDWARIO themes, direction A's 28 px on er3o. */
+  .hwio-choice-title {
+    font-size: var(--hwio-choice-title-size, 1.75rem);
+    line-height: var(--hwio-choice-title-leading, 1.15);
+    letter-spacing: var(--hwio-choice-title-tracking, -0.02em);
+  }
+  /* Icons: one colour, Navy (White on dark grounds) on the HARDWARIO themes (chapter 05). */
+  .hwio-icon {
+    color: var(--hwio-icon, var(--color-accent));
+  }
+  .hwio-icon-tile {
+    background-color: var(--hwio-icon-bg, color-mix(in oklab, var(--color-accent) 8%, transparent));
+    color: var(--hwio-icon, var(--color-accent));
+  }
+  /* Weights the guidelines allow: Regular, Semibold (web H2 and H3) and Bold, no Medium (D22). */
+  .hwio-weight-nav { font-weight: var(--hwio-weight-nav, 500); }
+  .hwio-weight-label { font-weight: var(--hwio-weight-label, 600); }
+  .hwio-weight-footer-title { font-weight: var(--hwio-weight-footer-title, 500); }
+  /* Secondary notes (consent texts): Gray at full opacity on the HARDWARIO themes, so a link inside
+     keeps its contrast; er3o keeps the text colour at 80 % opacity. */
+  .hwio-note {
+    color: var(--hwio-text-secondary, currentColor);
+    opacity: var(--hwio-note-opacity, 0.8);
+  }
+  /* An inline text link outside prose: Blue on the HARDWARIO themes (chapter 03 reserves Blue for links). */
+  .hwio-link {
+    color: var(--hwio-link, var(--color-accent));
+  }
+  @media (hover: hover) {
+    .hwio-link:hover {
+      color: var(--hwio-link-hover, color-mix(in oklab, var(--hwio-link, var(--color-accent)) 80%, #000));
+    }
   }
   .hwio-hairline { border-color: var(--color-base-300); }
   /* Inverse button for ink/neutral panels (navy on ink has no contrast). */
@@ -186,8 +240,10 @@
     padding: calc(var(--spacing) * 1.5) calc(var(--spacing) * 3);
     border-radius: 9999px;
     background: color-mix(in oklab, var(--color-base-content) 6%, transparent);
-    font-size: var(--text-sm);
-    font-weight: 500;
+    font-size: var(--hwio-type-chip-size, var(--text-sm));
+    font-weight: var(--hwio-type-chip-weight, 500);
+    letter-spacing: var(--hwio-type-chip-tracking, 0);
+    text-transform: var(--hwio-type-chip-case, none);
   }
   /* Honeypot: off-screen, never display:none (bots check that), no inline style attribute. */
   .hwio-hp {
@@ -212,7 +268,7 @@
     transform: translateY(24px);
   }
   [data-hwio-reveal] {
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    transition: opacity var(--hwio-motion-reveal, 0.6s) ease-out, transform var(--hwio-motion-reveal, 0.6s) ease-out;
   }
   [data-hwio-reveal][data-hwio-revealed] {
     opacity: 1;
@@ -263,11 +319,11 @@
 }
 
 /* Brand overrides of DaisyUI defaults. Unlayered on purpose: DaisyUI lives in the utilities layer
-   and would otherwise win. Direction A: 15 px/600 sentence-case buttons, 48 px tall, 8 px radius,
-   28 px padding on large buttons at the same height; card padding 32 px. */
+   and would otherwise win. 15 px sentence-case buttons (Bold on the HARDWARIO themes, 600 on er3o),
+   48 px tall, 8 px radius, 28 px padding on large buttons at the same height; card padding 32 px. */
 .btn {
-  --fontsize: 0.9375rem;
-  font-weight: 600;
+  --fontsize: var(--hwio-type-button-size, 0.9375rem);
+  font-weight: var(--hwio-type-button-weight, 600);
   padding-inline: 1.5rem;
 }
 .btn-sm { --fontsize: 0.875rem; padding-inline: 1rem; }
@@ -277,6 +333,12 @@
 /* DaisyUI sets .label to 60 % of the text colour, which fails AA at 14 px (4.1:1 on white). R5:
    darken muted text only. 78 % keeps the label visibly secondary and clears 4.5:1 on every theme. */
 .label { color: color-mix(in oklab, currentColor 78%, transparent); }
+/* Table heads: DaisyUI sets 60 % of the text colour (4.1:1 on white at 14 px) in Semibold; on the
+   HARDWARIO themes secondary text (Gray, 5.3:1) in Bold (D22), unchanged on er3o. */
+.table :where(thead, tfoot) {
+  color: var(--hwio-text-secondary, color-mix(in oklab, var(--color-base-content) 60%, transparent));
+  font-weight: var(--hwio-weight-label, 600);
+}
 /* Same for inactive tabs (DaisyUI: 50 %, 3.1:1 on white at 14 px). */
 .tab:not(.tab-active, :hover, :focus-visible) { color: color-mix(in oklab, currentColor 78%, transparent); }
 /* Text links: themes whose primary is too light for text on the page ground (er3o teal) set

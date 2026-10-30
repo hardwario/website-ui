@@ -11,4 +11,6 @@
 
 /* Catalog chrome only: fixtures render the real components untouched. */
 .catalog-stage { container-type: inline-size; }
-.catalog-stage[data-theme] { font-family: var(--hwio-font-sans); }
+/* Each stage carries its theme's body type: <body> takes the light theme's values from <html>, so a
+   stage under another theme (er3o's 17 px direction A body) sets its own. */
+.catalog-stage[data-theme] { font-family: var(--hwio-font-sans); font-size: var(--hwio-type-body-size); line-height: var(--hwio-type-body-leading); }
