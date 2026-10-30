@@ -1,5 +1,9 @@
 # @hubpav/hwio-web-worker
 
+## 0.8.0
+
+No changes in this release.
+
 ## 0.7.11
 
 No changes in this release.
