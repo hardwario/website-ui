@@ -153,7 +153,7 @@ components:
 
 **Creative North Star: "Devices that bring industrial assets online"**
 
-HARDWARIO designs and manufactures the devices that bring industrial assets online. The web family follows the Brand Guidelines HBG.261028.01 revision 3 (issued 2026-10-30; the rules of revision 2), the master for every HARDWARIO surface: a page is mostly white with Ink type, Blue gives structure (buttons and links), Red marks (kickers) and highlights the one thing per page, and the gradient frames. Web-only rules on top of the guidelines (responsive sizes, breakpoints, states, motion, dark-mode behaviour) are the web layer in website-admin `DESIGN-SYSTEM.md`. This file is regenerated from brand.json, so it matches the shipped tokens.
+HARDWARIO designs and manufactures the devices that bring industrial assets online. The web family follows the Brand Guidelines HBG.261028.01 revision 4 (issued 2026-10-30), the master for every HARDWARIO surface: a page is mostly white with Ink type, Blue gives structure (buttons and links), Red marks (kickers) and highlights the one thing per page, and the gradient frames. Web-only rules on top of the guidelines (responsive sizes, breakpoints, states, motion, dark-mode behaviour) are the web layer in website-admin `DESIGN-SYSTEM.md`. This file is regenerated from brand.json, so it matches the shipped tokens.
 
 Key characteristics:
 
@@ -184,9 +184,9 @@ Roles follow the DaisyUI 5 vocabulary so every `@hubpav/hwio-ui` component and e
 
 **The Token Rule.** A colour, radius or type change is a `brand.json` edit and a `website-ui` pull request, never site-local CSS. Sites consume roles (`bg-primary`, `text-base-content`) and the `--hwio-*` variables, not hex values.
 
-**The One Accent Rule.** The accent carries the kicker and the one highlight of a page; it never fills large surfaces and never sets small body text (R5). In charts and dashboards Red means a failure and nothing else; a highlight there is Navy, the series Blue, Sky and Gray (`--hwio-chart-*`).
+**The One Accent Rule.** The accent carries the kicker and the one highlight of a page; it never fills large surfaces and never sets small body text (R5). In charts and dashboards Red means a failure and nothing else (the light red in dark mode). On white the series are Blue, Sky and Gray with a bold Navy highlight; Sky marks are labelled directly in Ink, and an unlabelled Sky mark gets a 1 px Blue outline. On dark grounds the series are Sky, Blue and the light gray with a bold White highlight (`--hwio-chart-*`, D44).
 
-**The Gradient Rule.** `--hwio-gradient` (Red to Sky, 90°) frames: a band along an edge, a short rule under a title, the strip on top of a card. `--hwio-gradient-figure` (its left three quarters) fills the one key figure of a page, 28 pt and up. Never behind body text, tables or photographs, never on icons, never reversed or vertical.
+**The Gradient Rule.** `--hwio-gradient` (Red to Sky, 90°) frames: a band along an edge, a short rule under a title, the strip on top of a card. `--hwio-gradient-figure` fills the one key figure of a page, 28 pt and up: the left three quarters of the gradient on white, the light red to Sky over the full length on the dark ground (D44). Never behind body text, tables or photographs, never on icons, never reversed or vertical.
 
 ### Dark theme (`hwio-dark`)
 

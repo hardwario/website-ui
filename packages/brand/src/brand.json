@@ -1,14 +1,14 @@
 {
-  "$comment": "Source of truth for HARDWARIO web brand values. Edit here, run `npm run build`; every generated artifact (tokens.json, vars.css, docusaurus.css, the DaisyUI theme files in @hubpav/hwio-ui, DESIGN.md) is committed or rebuilt so a change shows its full downstream diff. Colours are hex; theme roles and extras may reference palette keys. Since 2026-10-30 the HARDWARIO themes follow the Brand Guidelines HBG.261028.01 (revision 3, issued 2026-10-30, with the rules of revision 2; the master: nothing on the web contradicts them): chapter 03 colour roles (Blue for buttons and links, Ink text, Panel, Mist and Hairline neutrals, status Green, Amber, Red and Info in Blue), the gradient (D1, D23, D33), dark mode (D35), chapter 04 type (D8, D12, D22), chapter 05 grid and icons, chapter 06 charts (D14). The web-only rules on top (responsive sizes, breakpoints, states, motion) are the web layer in website-admin DESIGN-SYSTEM.md. Owner rulings still in force: R3 font-display block + gate, R4 sentence-case buttons, R7 and R12 (ENEROOO keeps its palette, Poppins, graphite footer and the direction A type ramp on er3o), R11 light default and remembered dark. Replaced by the guidelines on 2026-10-30: R1 (navy primary), R2's palette (now D35), R9's type ramp and sentence-case kickers.",
+  "$comment": "Source of truth for HARDWARIO web brand values. Edit here, run `npm run build`; every generated artifact (tokens.json, vars.css, docusaurus.css, the DaisyUI theme files in @hubpav/hwio-ui, DESIGN.md) is committed or rebuilt so a change shows its full downstream diff. Colours are hex; theme roles and extras may reference palette keys. Since 2026-10-30 the HARDWARIO themes follow the Brand Guidelines HBG.261028.01 (revision 4, issued 2026-10-30; the master: nothing on the web contradicts them): chapter 03 colour roles (Blue for buttons and links, Ink text, Panel, Mist and Hairline neutrals, status Green, Amber, Red and Info in Blue), the gradient (D1, D23, D33), dark mode (D35), chapter 04 type (D8, D12, D22), chapter 05 grid and icons, chapter 06 charts (D14). The web-only rules on top (responsive sizes, breakpoints, states, motion) are the web layer in website-admin DESIGN-SYSTEM.md. Owner rulings still in force: R3 font-display block + gate, R4 sentence-case buttons, R7 and R12 (ENEROOO keeps its palette, Poppins, graphite footer and the direction A type ramp on er3o), R11 light default and remembered dark. Replaced by the guidelines on 2026-10-30: R1 (navy primary), R2's palette (now D35), R9's type ramp and sentence-case kickers.",
   "guidelines": {
     "reference": "HBG.261028.01",
-    "revision": 3,
+    "revision": 4,
     "issued": "2026-10-30",
-    "note": "Revision 3 changes no rule against revision 2 (approved by the owner on 2026-10-29). Panel is #f7f7f7 by the owner's decision of 2026-10-30 (CR-1), the value of record for revision 4, which also states that the web type sizes apply from 1 024 px (CR-2).",
-    "source": "company/docs brand/hbg.261028.01-r3-en-hardwario-brand-guidelines.typ; values of record in templates/brandbook.typ (brand-* definitions)"
+    "note": "Revision 4 (issued 2026-10-30) takes the owner's decisions on the web's change requests: Panel #f7f7f7 (CR-1), the web type sizes apply from 1 024 px (CR-2), chart colours on dark grounds and the gradient figure on the dark ground (D44). Revisions 2 and 3 carry the same rules otherwise.",
+    "source": "company/docs brand/hbg.261028.01-r4-en-hardwario-brand-guidelines.typ; values of record in templates/brandbook.typ (brand-* definitions)"
   },
   "palette": {
-    "$comment": "Guideline colours carry the guideline names, so `brand-<name>` in company/docs templates/brandbook.typ maps to the key <name> here (website-admin scripts/brand-drift.py checks them). dark-* are the dark-mode values of D35. gradient-figure-end is the gradient sampled at 75 % (D23). forestry-* and er3o-* are theme colours outside the guidelines. Panel is #f7f7f7 by the owner's decision of 2026-10-30 (change request CR-1: the Red caps kicker on Panel reaches 4.5:1), the value of record from guidelines revision 4.",
+    "$comment": "Guideline colours carry the guideline names, so `brand-<name>` in company/docs templates/brandbook.typ maps to the key <name> here (website-admin scripts/brand-drift.py checks them). dark-* are the dark-mode values of D35. gradient-figure-end is the gradient sampled at 75 % (D23). forestry-* and er3o-* are theme colours outside the guidelines. Panel is #f7f7f7 by the owner's decision of 2026-10-30 (change request CR-1: the Red caps kicker on Panel reaches 4.5:1), the value of record since guidelines revision 4.",
     "white": "#ffffff",
     "red": "#e30427",
     "blue": "#016ad4",
@@ -45,7 +45,7 @@
     "er3o-error": "#dc2626"
   },
   "gradient": {
-    "$comment": "The signature (chapter 03, D1): Red to Sky, horizontal, sRGB, no other stop. It frames (a band, a short rule under a title, the strip on top of a card) and fills the one key figure of a page, 28 pt and up, with its left three quarters (D23, D33). Never behind body text, tables or photographs, never on the logo, icons or isometric faces, never reversed or vertical.",
+    "$comment": "The signature (chapter 03, D1): Red to Sky, horizontal, sRGB, no other stop. It frames (a band, a short rule under a title, the strip on top of a card) and fills the one key figure of a page, 28 pt and up, with its left three quarters (D23, D33). Never behind body text, tables or photographs, never on the logo, icons or isometric faces, never reversed or vertical. On the dark ground the figure runs the full length from the light red to Sky (figureDark, D44): its lowest point is 3.88:1, enough for type of 28 px and up.",
     "from": "red",
     "to": "sky",
     "angle": "90deg",
@@ -54,6 +54,11 @@
       "to": "gradient-figure-end",
       "at": 0.75,
       "css": "linear-gradient(90deg, #e30427, #3976c5)"
+    },
+    "figureDark": {
+      "from": "dark-red",
+      "to": "sky",
+      "css": "linear-gradient(90deg, #f43f5e, #009cfa)"
     }
   },
   "shape": {
@@ -490,7 +495,7 @@
     "cardPadding": "32px"
   },
   "motion": {
-    "$comment": "Chapter 10, Motion and video (still a proposal in revision 3): calm ease-out curves, 200-400 ms in interfaces, nothing bounces or spins. Generated into --hwio-motion-* on the HARDWARIO themes.",
+    "$comment": "Chapter 10, Motion and video (still a proposal in revision 4): calm ease-out curves, 200-400 ms in interfaces, nothing bounces or spins. Generated into --hwio-motion-* on the HARDWARIO themes.",
     "easing": "ease-out",
     "fast": "200ms",
     "base": "300ms",
@@ -510,7 +515,7 @@
     ]
   },
   "charts": {
-    "$comment": "Chapter 06, Charts, and D14: series Blue, Sky and Gray in this order, three at most; the one highlighted value in bold Navy; a forecast in Mist; Red means a failure and nothing else. The guidelines define no chart colours for dark grounds (Navy is 1.6:1 on the dark ground): an open change request.",
+    "$comment": "Chapter 06, Charts, D14 and D44 (revision 4): on white the series are Blue, Sky and Gray in this order, three at most, the one highlighted value in bold Navy, a forecast in Mist, Red for a failure and nothing else. Sky marks (2.9:1 on white) are always labelled directly in Ink; a Sky mark without a label gets a 1 px Blue outline. On dark grounds the series are Sky, Blue and the light gray, the highlight is bold White and failures are the light red.",
     "series": [
       "blue",
       "sky",
@@ -518,7 +523,24 @@
     ],
     "highlight": "navy",
     "forecast": "mist",
-    "failure": "red"
+    "failure": "red",
+    "label": "ink",
+    "outline": {
+      "color": "blue",
+      "width": "1px",
+      "appliesTo": "sky"
+    },
+    "dark": {
+      "series": [
+        "sky",
+        "blue",
+        "dark-gray"
+      ],
+      "highlight": "white",
+      "forecast": "dark-mist",
+      "failure": "dark-red",
+      "label": "white"
+    }
   },
   "fonts": {
     "display": "block",

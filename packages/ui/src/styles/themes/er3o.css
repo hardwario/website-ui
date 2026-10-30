@@ -46,6 +46,9 @@
   --hwio-chart-failure: initial;
   --hwio-chart-forecast: initial;
   --hwio-chart-highlight: initial;
+  --hwio-chart-label: initial;
+  --hwio-chart-outline: initial;
+  --hwio-chart-outline-width: initial;
   --hwio-footer-hover: #ffffff;
   --hwio-gradient: initial;
   --hwio-gradient-figure: initial;

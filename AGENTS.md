@@ -35,8 +35,8 @@ shows its downstream diff in `packages/ui/src/styles/themes/*.css`.
   nodes with `data-hwio-<name>-bound`, and never touch `window` at import time.
 - **Inline bootstraps** (`packages/web-runtime/scripts/inline-scripts.mjs`) must stay static:
   anything per site is read from `data-hwio-*` attributes on `<html>` (see `hwioHtmlAttrs`).
-- **The Brand Guidelines are the master** (HBG.261028.01 revision 3, issued 2026-10-30 with the rules
-  of revision 2, in the private company/docs repo): the HARDWARIO themes carry their values (Blue `#016ad4` buttons and
+- **The Brand Guidelines are the master** (HBG.261028.01 revision 4, issued 2026-10-30, in the private
+  company/docs repo): the HARDWARIO themes carry their values (Blue `#016ad4` buttons and
   links, Ink text, Red kickers, Panel/Mist/Hairline neutrals, status Green/Amber/Red, the gradient,
   the web type scale, dark mode D35). Web-only rules on top of them (responsive sizes, breakpoints,
   states, motion) are the web layer in website-admin `DESIGN-SYSTEM.md`; a web need that would

@@ -20,6 +20,11 @@ test('the ratios of record in the guidelines hold (chapter 03, D23, D35)', () =>
   assert.equal(floor(ratio(p['gradient-figure-end'], p.white)), 4.5);
   assert.equal(floor(ratio(p['dark-red'], p['dark-ground'])), 4.9);
   assert.equal(floor(ratio(p.sky, p['dark-ground'])), 6.1);
+  // D44: charts and the figure on the dark ground.
+  assert.equal(floor(ratio(p.blue, p['dark-ground'])), 3.4);
+  assert.equal(floor(ratio(p['dark-gray'], p['dark-ground'])), 12.2);
+  assert.equal(floor(ratio(p.white, p['dark-ground'])), 18.0);
+  assert.ok(ratio(p.navy, p['dark-ground']) < 3, 'Navy is no highlight on dark grounds');
 });
 
 test('every text/background pair of every theme meets WCAG AA or is a listed, decided exception', () => {

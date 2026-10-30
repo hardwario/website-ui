@@ -70,10 +70,16 @@ export function pairs(t) {
       ['white on the gradient, left three quarters (chapter 03)', '#ffffff', worst(g0, g1, 0.75, '#ffffff', 'bg'), 4.5],
       // The key figure is 28 pt and up (large text, 3:1); D23 keeps 4.5:1 on white.
       ['gradient figure, weakest point, on page', worst(f0, f1, 1, r['base-100'], 'fg'), r['base-100'], t.scheme === 'light' ? 4.5 : 3],
-      ['chart series 1 on page (non-text)', t.extras['--hwio-chart-1'], r['base-100'], 3],
-      ['chart series 2 on page (non-text)', t.extras['--hwio-chart-2'], r['base-100'], 3],
-      ['chart series 3 on page (non-text)', t.extras['--hwio-chart-3'], r['base-100'], 3],
-      ['chart highlight on page (non-text)', t.extras['--hwio-chart-highlight'], r['base-100'], 3],
+      // A series mark counts by its edge: an unlabelled Sky mark on white carries a 1 px Blue outline
+      // (D44), so its outline faces the page; every other mark faces the page with its own fill.
+      ...[1, 2, 3].map((i) => {
+        const fill = t.extras[`--hwio-chart-${i}`];
+        const outlined = t.extras['--hwio-chart-outline-width'] !== '0px' && fill.toLowerCase() === '#009cfa';
+        return [`chart series ${i} mark on page (non-text${outlined ? ', 1 px outline' : ''})`, outlined ? t.extras['--hwio-chart-outline'] : fill, r['base-100'], 3];
+      }),
+      ['chart highlight on page (bold text)', t.extras['--hwio-chart-highlight'], r['base-100'], 4.5],
+      ['chart direct label on page', t.extras['--hwio-chart-label'], r['base-100'], 4.5],
+      ['chart failure on page (non-text)', t.extras['--hwio-chart-failure'], r['base-100'], 3],
     );
   }
   return out.map(([label, fg, bg, need]) => ({ label, fg, bg, need, ratio: ratio(fg, bg) }));
@@ -83,19 +89,9 @@ export function pairs(t) {
 export const ACCEPTED = {
   hwio: {
     'warning alert / badge': 'Amber is never a ground for text (chapter 03); status messages sit on the 12 % tint (D34)',
-    'chart series 2 on page (non-text)': 'CR-4, accepted as interim (owner, 2026-10-30): Sky marks reach 2.9:1 on white; chapter 06 asks for direct labels, which carry the values',
-  },
-  'hwio-dark': {
-    'chart highlight on page (non-text)': 'CR-4, accepted as interim (owner, 2026-10-30): the light chart colours with direct labels until the guidelines define dark ones',
-    'gradient figure, weakest point, on page': 'CR-5, accepted as interim (owner, 2026-10-30): the figure gradient unchanged until a component uses it',
   },
   'hwio-forestry': {
     'warning alert / badge': 'Amber is never a ground for text (chapter 03); status messages sit on the 12 % tint (D34)',
-    'chart series 2 on page (non-text)': 'CR-4, accepted as interim (owner, 2026-10-30): Sky marks reach 2.9:1 on white; chapter 06 asks for direct labels, which carry the values',
-  },
-  'hwio-forestry-dark': {
-    'chart highlight on page (non-text)': 'CR-4, accepted as interim (owner, 2026-10-30): the light chart colours with direct labels until the guidelines define dark ones',
-    'gradient figure, weakest point, on page': 'CR-5, accepted as interim (owner, 2026-10-30): the figure gradient unchanged until a component uses it',
   },
   er3o: {
     'filled primary button': 'R7: ENEROOO keeps its teal; the filled button carries the er3o gradient (unchanged, PLAN 4.7)',

@@ -29,16 +29,22 @@ const mix = (hex, target, amount) => {
 // variables of the guidelines: the gradient, chart colours and motion timings.
 const resolveColor = (value, palette) => (typeof value === 'string' && Object.hasOwn(palette, value) && !value.startsWith('$') ? palette[value] : value);
 
-export function guidelineVars(b = brand) {
+export function guidelineVars(b = brand, scheme = 'light') {
   const p = b.palette;
+  const dark = scheme === 'dark';
+  const charts = dark ? { ...b.charts, ...b.charts.dark } : b.charts;
   const vars = {
     '--hwio-gradient': b.gradient.css,
-    '--hwio-gradient-figure': b.gradient.figure.css,
+    '--hwio-gradient-figure': dark ? b.gradient.figureDark.css : b.gradient.figure.css,
   };
-  b.charts.series.forEach((key, i) => { vars[`--hwio-chart-${i + 1}`] = p[key]; });
-  vars['--hwio-chart-highlight'] = p[b.charts.highlight];
-  vars['--hwio-chart-forecast'] = p[b.charts.forecast];
-  vars['--hwio-chart-failure'] = p[b.charts.failure];
+  charts.series.forEach((key, i) => { vars[`--hwio-chart-${i + 1}`] = p[key]; });
+  vars['--hwio-chart-highlight'] = p[charts.highlight];
+  vars['--hwio-chart-forecast'] = p[charts.forecast];
+  vars['--hwio-chart-failure'] = p[charts.failure];
+  vars['--hwio-chart-label'] = p[charts.label];
+  // On white, a Sky mark without a direct label carries a 1 px Blue outline (D44); not needed on dark grounds.
+  vars['--hwio-chart-outline'] = dark ? 'transparent' : p[b.charts.outline.color];
+  vars['--hwio-chart-outline-width'] = dark ? '0px' : b.charts.outline.width;
   vars['--hwio-motion-easing'] = b.motion.easing;
   vars['--hwio-motion-fast'] = b.motion.fast;
   vars['--hwio-motion-base'] = b.motion.base;
@@ -64,10 +70,11 @@ export function resolveTheme(name, themes = brand.themes, palette = brand.palett
   const layoutKey = t.layout ?? base.layoutKey ?? 'hub';
   if (!brand.typography.presets[typographyKey]) throw new Error(`theme ${name}: unknown typography preset ${typographyKey}`);
   if (!brand.layout[layoutKey]) throw new Error(`theme ${name}: unknown layout preset ${layoutKey}`);
+  const scheme = t.scheme ?? base.scheme ?? 'light';
   const ownExtras = Object.fromEntries(Object.entries(t.extras ?? {}).map(([k, v]) => [k, resolveColor(v, palette)]));
   return {
     name,
-    scheme: t.scheme ?? base.scheme ?? 'light',
+    scheme,
     default: t.default ?? false,
     prefersdark: t.prefersdark ?? false,
     font: t.font ?? base.font,
@@ -78,7 +85,7 @@ export function resolveTheme(name, themes = brand.themes, palette = brand.palett
     layoutKey,
     layout: brand.layout[layoutKey],
     roles,
-    extras: { ...(guidelines && !t.extends ? guidelineVars() : {}), ...base.extras, ...ownExtras },
+    extras: { ...base.extras, ...(guidelines ? guidelineVars(brand, scheme) : {}), ...ownExtras },
   };
 }
 

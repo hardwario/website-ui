@@ -49,6 +49,9 @@
   --hwio-chart-failure: #e30427;
   --hwio-chart-forecast: #e8e8e8;
   --hwio-chart-highlight: #06367a;
+  --hwio-chart-label: #252532;
+  --hwio-chart-outline: #016ad4;
+  --hwio-chart-outline-width: 1px;
   --hwio-footer-hover: #009cfa;
   --hwio-gradient: linear-gradient(90deg, #e30427, #009cfa);
   --hwio-gradient-figure: linear-gradient(90deg, #e30427, #3976c5);
