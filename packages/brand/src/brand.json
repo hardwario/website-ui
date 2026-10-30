@@ -1,10 +1,11 @@
 {
-  "$comment": "Source of truth for HARDWARIO web brand values. Edit here, run `npm run build`; every generated artifact (tokens.json, vars.css, docusaurus.css, the DaisyUI theme files in @hubpav/hwio-ui, DESIGN.md) is committed or rebuilt so a change shows its full downstream diff. Colours are hex; theme roles and extras may reference palette keys. Since 2026-10-30 the HARDWARIO themes follow the Brand Guidelines HBG.261028.01 revision 2 (issued 2026-10-30, the master: nothing on the web contradicts them): chapter 03 colour roles (Blue for buttons and links, Ink text, Panel, Mist and Hairline neutrals, status Green, Amber, Red and Info in Blue), the gradient (D1, D23, D33), dark mode (D35), chapter 04 type (D8, D12, D22), chapter 05 grid and icons, chapter 06 charts (D14). The web-only rules on top (responsive sizes, breakpoints, states, motion) are the web layer in website-admin DESIGN-SYSTEM.md. Owner rulings still in force: R3 font-display block + gate, R4 sentence-case buttons, R7 and R12 (ENEROOO keeps its palette, Poppins, graphite footer and the direction A type ramp on er3o), R11 light default and remembered dark. Replaced by the guidelines on 2026-10-30: R1 (navy primary), R2's palette (now D35), R9's type ramp and sentence-case kickers.",
+  "$comment": "Source of truth for HARDWARIO web brand values. Edit here, run `npm run build`; every generated artifact (tokens.json, vars.css, docusaurus.css, the DaisyUI theme files in @hubpav/hwio-ui, DESIGN.md) is committed or rebuilt so a change shows its full downstream diff. Colours are hex; theme roles and extras may reference palette keys. Since 2026-10-30 the HARDWARIO themes follow the Brand Guidelines HBG.261028.01 (revision 3, issued 2026-10-30, with the rules of revision 2; the master: nothing on the web contradicts them): chapter 03 colour roles (Blue for buttons and links, Ink text, Panel, Mist and Hairline neutrals, status Green, Amber, Red and Info in Blue), the gradient (D1, D23, D33), dark mode (D35), chapter 04 type (D8, D12, D22), chapter 05 grid and icons, chapter 06 charts (D14). The web-only rules on top (responsive sizes, breakpoints, states, motion) are the web layer in website-admin DESIGN-SYSTEM.md. Owner rulings still in force: R3 font-display block + gate, R4 sentence-case buttons, R7 and R12 (ENEROOO keeps its palette, Poppins, graphite footer and the direction A type ramp on er3o), R11 light default and remembered dark. Replaced by the guidelines on 2026-10-30: R1 (navy primary), R2's palette (now D35), R9's type ramp and sentence-case kickers.",
   "guidelines": {
     "reference": "HBG.261028.01",
-    "revision": 2,
+    "revision": 3,
     "issued": "2026-10-30",
-    "source": "company/docs brand/hbg.261028.01-r2-en-hardwario-brand-guidelines.typ; values of record in templates/brandbook.typ (brand-* definitions)"
+    "note": "Revision 3 changes no rule against revision 2 (approved by the owner on 2026-10-29); the values here are the same in both.",
+    "source": "company/docs brand/hbg.261028.01-r3-en-hardwario-brand-guidelines.typ; values of record in templates/brandbook.typ (brand-* definitions)"
   },
   "palette": {
     "$comment": "Guideline colours carry the guideline names, so `brand-<name>` in company/docs templates/brandbook.typ maps to the key <name> here (website-admin scripts/brand-drift.py checks them). dark-* are the dark-mode values of D35. gradient-figure-end is the gradient sampled at 75 % (D23). forestry-* and er3o-* are theme colours outside the guidelines.",
@@ -489,7 +490,7 @@
     "cardPadding": "32px"
   },
   "motion": {
-    "$comment": "Chapter 10, Motion and video (a proposal in revision 2): calm ease-out curves, 200-400 ms in interfaces, nothing bounces or spins. Generated into --hwio-motion-* on the HARDWARIO themes.",
+    "$comment": "Chapter 10, Motion and video (still a proposal in revision 3): calm ease-out curves, 200-400 ms in interfaces, nothing bounces or spins. Generated into --hwio-motion-* on the HARDWARIO themes.",
     "easing": "ease-out",
     "fast": "200ms",
     "base": "300ms",

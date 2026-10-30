@@ -153,7 +153,7 @@ components:
 
 **Creative North Star: "Devices that bring industrial assets online"**
 
-HARDWARIO designs and manufactures the devices that bring industrial assets online. The web family follows the Brand Guidelines HBG.261028.01 revision 2 (issued 2026-10-30), the master for every HARDWARIO surface: a page is mostly white with Ink type, Blue gives structure (buttons and links), Red marks (kickers) and highlights the one thing per page, and the gradient frames. Web-only rules on top of the guidelines (responsive sizes, breakpoints, states, motion, dark-mode behaviour) are the web layer in website-admin `DESIGN-SYSTEM.md`. This file is regenerated from brand.json, so it matches the shipped tokens.
+HARDWARIO designs and manufactures the devices that bring industrial assets online. The web family follows the Brand Guidelines HBG.261028.01 revision 3 (issued 2026-10-30; the rules of revision 2), the master for every HARDWARIO surface: a page is mostly white with Ink type, Blue gives structure (buttons and links), Red marks (kickers) and highlights the one thing per page, and the gradient frames. Web-only rules on top of the guidelines (responsive sizes, breakpoints, states, motion, dark-mode behaviour) are the web layer in website-admin `DESIGN-SYSTEM.md`. This file is regenerated from brand.json, so it matches the shipped tokens.
 
 Key characteristics:
 
