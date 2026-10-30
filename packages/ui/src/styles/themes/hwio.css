@@ -5,24 +5,24 @@
   prefersdark: false;
   color-scheme: light;
   --color-base-100: #ffffff;
-  --color-base-200: #F1FAFF;
-  --color-base-300: #e5e7eb;
+  --color-base-200: #f5f5f5;
+  --color-base-300: #dcdcdc;
   --color-base-content: #252532;
-  --color-primary: #06367a;
+  --color-primary: #016ad4;
   --color-primary-content: #ffffff;
-  --color-secondary: #016ad4;
+  --color-secondary: #06367a;
   --color-secondary-content: #ffffff;
   --color-accent: #e30427;
   --color-accent-content: #ffffff;
   --color-neutral: #252532;
-  --color-neutral-content: #f3f4f6;
-  --color-info: #009cfa;
-  --color-info-content: #06367a;
-  --color-success: #15803d;
+  --color-neutral-content: #ffffff;
+  --color-info: #016ad4;
+  --color-info-content: #ffffff;
+  --color-success: #2e7d4f;
   --color-success-content: #ffffff;
-  --color-warning: #b45309;
-  --color-warning-content: #ffffff;
-  --color-error: #dc2626;
+  --color-warning: #c76a00;
+  --color-warning-content: #252532;
+  --color-error: #e30427;
   --color-error-content: #ffffff;
   --radius-selector: 2rem;
   --radius-field: 0.5rem;
@@ -36,7 +36,112 @@
 
 :root, [data-theme="hwio"] {
   --hwio-font-sans: 'Inter', 'Inter Fallback', ui-sans-serif, system-ui, sans-serif;
-  --hwio-container: 1275px;
-  --hwio-container-pad: 27px;
-  --hwio-kicker-on-neutral: #fb7185;
+  --hwio-container: 1328px;
+  --hwio-container-pad: 24px;
+  --hwio-grid-columns: 12;
+  --hwio-grid-width: 1280px;
+  --hwio-grid-gutter: 24px;
+  --er3o-gradient-from: initial;
+  --er3o-gradient-to: initial;
+  --hwio-chart-1: #016ad4;
+  --hwio-chart-2: #009cfa;
+  --hwio-chart-3: #6b6a6a;
+  --hwio-chart-failure: #e30427;
+  --hwio-chart-forecast: #e8e8e8;
+  --hwio-chart-highlight: #06367a;
+  --hwio-footer-hover: #009cfa;
+  --hwio-gradient: linear-gradient(90deg, #e30427, #009cfa);
+  --hwio-gradient-figure: linear-gradient(90deg, #e30427, #3976c5);
+  --hwio-icon: #06367a;
+  --hwio-icon-bg: var(--color-base-200);
+  --hwio-kicker-on-alt: initial;
+  --hwio-kicker-on-neutral: #d1d5db;
+  --hwio-link: #016ad4;
+  --hwio-link-hover: #06367a;
+  --hwio-mist: #e8e8e8;
+  --hwio-motion-base: 300ms;
+  --hwio-motion-easing: ease-out;
+  --hwio-motion-fast: 200ms;
+  --hwio-motion-reveal: 400ms;
+  --hwio-motion-slow: 400ms;
+  --hwio-nav-active: initial;
+  --hwio-nav-hover: #016ad4;
+  --hwio-note-opacity: 1;
+  --hwio-text-secondary: #6b6a6a;
+  --hwio-text-secondary-on-neutral: #d1d5db;
+  /* Type preset "hwio" */
+  --hwio-type-display-size: 2.5rem;
+  --hwio-type-display-weight: 700;
+  --hwio-type-display-leading: 1.2;
+  --hwio-type-display-tracking: -0.02em;
+  --hwio-type-heading-size: 2rem;
+  --hwio-type-heading-weight: 600;
+  --hwio-type-heading-leading: 1.3;
+  --hwio-type-heading-tracking: -0.015em;
+  --hwio-type-subheading-size: 1.5rem;
+  --hwio-type-subheading-weight: 600;
+  --hwio-type-subheading-leading: 1.3;
+  --hwio-type-subheading-tracking: -0.01em;
+  --hwio-type-title-size: 1.25rem;
+  --hwio-type-title-weight: 700;
+  --hwio-type-title-leading: 1.3;
+  --hwio-type-title-tracking: 0;
+  --hwio-type-lead-size: 1.1875rem;
+  --hwio-type-lead-weight: 400;
+  --hwio-type-lead-leading: 1.55;
+  --hwio-type-lead-tracking: 0;
+  --hwio-type-body-size: 1rem;
+  --hwio-type-body-weight: 400;
+  --hwio-type-body-leading: 1.6;
+  --hwio-type-body-tracking: 0;
+  --hwio-type-caption-size: 0.8125rem;
+  --hwio-type-caption-weight: 400;
+  --hwio-type-caption-leading: 1.4;
+  --hwio-type-caption-tracking: 0;
+  --hwio-type-kicker-size: 0.8125rem;
+  --hwio-type-kicker-weight: 700;
+  --hwio-type-kicker-leading: 1.4;
+  --hwio-type-kicker-tracking: 0.07em;
+  --hwio-type-kicker-case: uppercase;
+  --hwio-type-chip-size: 0.75rem;
+  --hwio-type-chip-weight: 700;
+  --hwio-type-chip-leading: 1.4;
+  --hwio-type-chip-tracking: 0.07em;
+  --hwio-type-chip-case: uppercase;
+  --hwio-type-figure-size: 2.5rem;
+  --hwio-type-figure-weight: 700;
+  --hwio-type-figure-leading: 1.2;
+  --hwio-type-figure-tracking: -0.02em;
+  --hwio-type-button-size: 0.9375rem;
+  --hwio-type-button-weight: 700;
+  --hwio-type-button-leading: 1;
+  --hwio-type-button-tracking: 0;
+  --hwio-weight-nav: 400;
+  --hwio-weight-label: 700;
+  --hwio-weight-strong: 700;
+  --hwio-weight-footer-title: 700;
+  --hwio-choice-title-size: var(--hwio-type-subheading-size);
+  --hwio-choice-title-leading: var(--hwio-type-subheading-leading);
+  --hwio-choice-title-tracking: var(--hwio-type-subheading-tracking);
+}
+
+@media (width >= 48rem) {
+  :root, [data-theme="hwio"] {
+    --hwio-type-display-size: 3rem;
+  }
+}
+@media (width >= 64rem) {
+  :root, [data-theme="hwio"] {
+    --hwio-type-display-size: 3.75rem;
+    --hwio-type-heading-size: 2.5rem;
+    --hwio-type-heading-leading: 1.2;
+    --hwio-type-subheading-size: 1.75rem;
+  }
+}
+@media (width >= 80rem) {
+  :root, [data-theme="hwio"] {
+    --hwio-type-display-size: 4.5rem;
+    --hwio-type-heading-size: 3rem;
+    --hwio-type-subheading-size: 2rem;
+  }
 }

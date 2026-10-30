@@ -60,12 +60,12 @@ const linkAttrs = (item: HWioLinkItem) => (item.external ? { target: '_blank', r
         {nav.map((item) => (
           <li class:list={[item.current && 'hwio-nav-current']}>
             {item.mega ? (
-              <button type="button" class="px-3 text-[15px] font-medium text-base-content/80 hover:text-accent" data-hwio-mega-trigger={item.mega} aria-expanded="false" aria-haspopup="true" aria-controls={`${id}-mega-${item.mega}`}>
+              <button type="button" class="hwio-weight-nav px-3 text-[15px] text-base-content/80 hover:text-[var(--hwio-nav-hover,var(--color-accent))]" data-hwio-mega-trigger={item.mega} aria-expanded="false" aria-haspopup="true" aria-controls={`${id}-mega-${item.mega}`}>
                 {item.label}
                 <HWioIcon name="chevron-down" size="sm" class="opacity-50 transition-transform duration-200" />
               </button>
             ) : (
-              <a href={item.href} class="px-3 text-[15px] font-medium text-base-content/80 hover:text-accent aria-[current=page]:text-[var(--hwio-nav-active,var(--color-primary))]" aria-current={item.current ? 'page' : undefined} data-track={item.track?.id} data-track-location={item.track?.location ?? 'header'}>{item.label}</a>
+              <a href={item.href} class="hwio-weight-nav px-3 text-[15px] text-base-content/80 hover:text-[var(--hwio-nav-hover,var(--color-accent))] aria-[current=page]:text-[var(--hwio-nav-active,var(--color-primary))]" aria-current={item.current ? 'page' : undefined} data-track={item.track?.id} data-track-location={item.track?.location ?? 'header'}>{item.label}</a>
             )}
           </li>
         ))}

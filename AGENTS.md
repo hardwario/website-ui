@@ -35,10 +35,21 @@ shows its downstream diff in `packages/ui/src/styles/themes/*.css`.
   nodes with `data-hwio-<name>-bound`, and never touch `window` at import time.
 - **Inline bootstraps** (`packages/web-runtime/scripts/inline-scripts.mjs`) must stay static:
   anything per site is read from `data-hwio-*` attributes on `<html>` (see `hwioHtmlAttrs`).
-- **Owner rulings baked in** (2026-09-05): navy `#06367a` primary with red `#e30427` accent;
-  dark mode as `hwio-dark` on the Zola neutral palette; `font-display: block` plus the
-  pre-paint font gate; sentence-case buttons; enerooo keeps its palette and Poppins on `er3o`.
-  Changing any of these is a `brand.json` edit plus an owner ruling in `website-admin`.
+- **The Brand Guidelines are the master** (HBG.261028.01 revision 2, issued 2026-10-30, in the
+  private company/docs repo): the HARDWARIO themes carry their values (Blue `#016ad4` buttons and
+  links, Ink text, Red kickers, Panel/Mist/Hairline neutrals, status Green/Amber/Red, the gradient,
+  the web type scale, dark mode D35). Web-only rules on top of them (responsive sizes, breakpoints,
+  states, motion) are the web layer in website-admin `DESIGN-SYSTEM.md`; a web need that would
+  contradict the guidelines is a change request to the owner, never a local fix. Owner rulings
+  still baked in: `font-display: block` plus the pre-paint font gate (R3); sentence-case buttons
+  (R4); light default and remembered dark (R11); enerooo keeps its palette, Poppins, graphite footer
+  and the direction A type ramp on `er3o` (R7, R12). Changing any of these is a `brand.json` edit
+  plus an owner ruling in `website-admin`. `npm test` computes every theme's contrast pairs
+  (`packages/brand/scripts/contrast.mjs`); a pair below WCAG AA must be listed with its decision.
+- **Theme variables, not literals, for anything the themes differ in.** Type sizes, weights and the
+  secondary text colour come from `--hwio-type-*`, `--hwio-weight-*` and `--hwio-*` variables that
+  each theme file sets (a theme that does not use one sets it to `initial`); components read them
+  with the pre-guideline value as the fallback, so `er3o` keeps its look.
 
 ## Working here
 

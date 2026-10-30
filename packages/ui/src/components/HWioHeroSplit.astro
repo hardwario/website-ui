@@ -20,7 +20,7 @@ const VARIANT = { primary: 'primary', secondary: 'secondary', ghost: 'ghost' } a
       )}
       {checklist.length > 0 && (
         <ul class="hwio-muted mt-8 flex flex-wrap gap-x-8 gap-y-3 text-[15px]">
-          {checklist.map((c) => <li class="inline-flex items-center gap-2"><HWioIcon name="check" size="sm" class="text-accent" />{c}</li>)}
+          {checklist.map((c) => <li class="inline-flex items-center gap-2"><HWioIcon name="check" size="sm" class="hwio-icon" />{c}</li>)}
         </ul>
       )}
       <slot name="extra" />

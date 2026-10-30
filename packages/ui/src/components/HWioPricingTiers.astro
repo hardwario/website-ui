@@ -26,7 +26,7 @@ const cols = (Math.min(Math.max(tiers.length, 1), 4) as 1 | 2 | 3 | 4);
         )}
         {tier.description && <p class="opacity-80">{tier.description}</p>}
         <ul class="my-4 space-y-2 text-sm">
-          {tier.features.map((f) => <li class="flex items-start gap-2"><HWioIcon name="check" size="sm" class="mt-0.5 shrink-0 text-accent" /><span>{f}</span></li>)}
+          {tier.features.map((f) => <li class="flex items-start gap-2"><HWioIcon name="check" size="sm" class="hwio-icon mt-0.5 shrink-0" /><span>{f}</span></li>)}
         </ul>
         {tier.cta && <div class="card-actions mt-auto"><HWioButton href={tier.cta.href} external={tier.cta.external} variant={tier.featured ? 'primary' : 'secondary'} class="w-full" track={tier.cta.track}>{tier.cta.label}</HWioButton></div>}
       </div>

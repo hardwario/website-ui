@@ -11,10 +11,10 @@ const cols = COLS[(Math.min(Math.max(items.length, 2), 5) as 2 | 3 | 4 | 5)];
       const numeric = typeof s.value === 'number';
       return (
         <div class:list={['px-8 py-2', i > 0 ? 'sm:border-l sm:border-base-300' : '']}>
-          <div class="mb-2.5 text-[2.25rem] font-bold leading-none tracking-[-0.03em] lg:text-[2.5rem]">
+          <div class="hwio-figure mb-2.5">
             <span class="hwio-stat-value" data-hwio-counter={animate && numeric ? 'true' : undefined} data-target={numeric ? String(s.value) : undefined} data-suffix={s.suffix ?? ''}>{s.value}{s.suffix ?? ''}</span>
           </div>
-          <div class="text-[15px] font-semibold">{s.label}</div>
+          <div class="hwio-weight-label text-[15px]">{s.label}</div>
           {s.description && <div class="hwio-muted mt-0.5 text-sm">{s.description}</div>}
         </div>
       );

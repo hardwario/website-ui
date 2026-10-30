@@ -9,7 +9,7 @@ const ld = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: i
 <div class:list={['space-y-3', className]}>
   {items.map((item) => (
     <details class="collapse collapse-arrow border border-base-300 bg-base-100" name={name}>
-      <summary class="collapse-title font-semibold">{item.q}</summary>
+      <summary class="collapse-title hwio-weight-label">{item.q}</summary>
       <div class="collapse-content space-y-3 opacity-90">{html ? <div set:html={paragraphs(item.a).join('')} /> : paragraphs(item.a).map((p) => <p>{p}</p>)}</div>
     </details>
   ))}
