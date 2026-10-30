@@ -4,11 +4,11 @@
     "reference": "HBG.261028.01",
     "revision": 3,
     "issued": "2026-10-30",
-    "note": "Revision 3 changes no rule against revision 2 (approved by the owner on 2026-10-29); the values here are the same in both.",
+    "note": "Revision 3 changes no rule against revision 2 (approved by the owner on 2026-10-29). Panel is #f7f7f7 by the owner's decision of 2026-10-30 (CR-1), the value of record for revision 4, which also states that the web type sizes apply from 1 024 px (CR-2).",
     "source": "company/docs brand/hbg.261028.01-r3-en-hardwario-brand-guidelines.typ; values of record in templates/brandbook.typ (brand-* definitions)"
   },
   "palette": {
-    "$comment": "Guideline colours carry the guideline names, so `brand-<name>` in company/docs templates/brandbook.typ maps to the key <name> here (website-admin scripts/brand-drift.py checks them). dark-* are the dark-mode values of D35. gradient-figure-end is the gradient sampled at 75 % (D23). forestry-* and er3o-* are theme colours outside the guidelines.",
+    "$comment": "Guideline colours carry the guideline names, so `brand-<name>` in company/docs templates/brandbook.typ maps to the key <name> here (website-admin scripts/brand-drift.py checks them). dark-* are the dark-mode values of D35. gradient-figure-end is the gradient sampled at 75 % (D23). forestry-* and er3o-* are theme colours outside the guidelines. Panel is #f7f7f7 by the owner's decision of 2026-10-30 (change request CR-1: the Red caps kicker on Panel reaches 4.5:1), the value of record from guidelines revision 4.",
     "white": "#ffffff",
     "red": "#e30427",
     "blue": "#016ad4",
@@ -16,7 +16,7 @@
     "sky": "#009cfa",
     "gray": "#6b6a6a",
     "ink": "#252532",
-    "panel": "#f5f5f5",
+    "panel": "#f7f7f7",
     "mist": "#e8e8e8",
     "hairline": "#dcdcdc",
     "green": "#2e7d4f",

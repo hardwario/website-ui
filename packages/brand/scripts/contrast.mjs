@@ -82,21 +82,20 @@ export function pairs(t) {
 // Pairs below their requirement that are known and accepted, with the decision behind each.
 export const ACCEPTED = {
   hwio: {
-    'kicker on alt section (base-200)': 'CR-1: the guidelines allow Red on Panel for short caps labels (4.46:1)',
     'warning alert / badge': 'Amber is never a ground for text (chapter 03); status messages sit on the 12 % tint (D34)',
-    'chart series 2 on page (non-text)': 'CR-4: Sky marks reach 2.9:1 on white; chapter 06 asks for direct labels, which carry the values',
+    'chart series 2 on page (non-text)': 'CR-4, accepted as interim (owner, 2026-10-30): Sky marks reach 2.9:1 on white; chapter 06 asks for direct labels, which carry the values',
   },
   'hwio-dark': {
-    'chart highlight on page (non-text)': 'CR-4: the guidelines define no chart colours for dark grounds',
-    'gradient figure, weakest point, on page': 'CR-5: the guidelines define the gradient figure on white only',
+    'chart highlight on page (non-text)': 'CR-4, accepted as interim (owner, 2026-10-30): the light chart colours with direct labels until the guidelines define dark ones',
+    'gradient figure, weakest point, on page': 'CR-5, accepted as interim (owner, 2026-10-30): the figure gradient unchanged until a component uses it',
   },
   'hwio-forestry': {
     'warning alert / badge': 'Amber is never a ground for text (chapter 03); status messages sit on the 12 % tint (D34)',
-    'chart series 2 on page (non-text)': 'CR-4: Sky marks reach 2.9:1 on white; chapter 06 asks for direct labels, which carry the values',
+    'chart series 2 on page (non-text)': 'CR-4, accepted as interim (owner, 2026-10-30): Sky marks reach 2.9:1 on white; chapter 06 asks for direct labels, which carry the values',
   },
   'hwio-forestry-dark': {
-    'chart highlight on page (non-text)': 'CR-4: the guidelines define no chart colours for dark grounds',
-    'gradient figure, weakest point, on page': 'CR-5: the guidelines define the gradient figure on white only',
+    'chart highlight on page (non-text)': 'CR-4, accepted as interim (owner, 2026-10-30): the light chart colours with direct labels until the guidelines define dark ones',
+    'gradient figure, weakest point, on page': 'CR-5, accepted as interim (owner, 2026-10-30): the figure gradient unchanged until a component uses it',
   },
   er3o: {
     'filled primary button': 'R7: ENEROOO keeps its teal; the filled button carries the er3o gradient (unchanged, PLAN 4.7)',

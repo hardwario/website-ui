@@ -11,7 +11,7 @@ colors:
   neutral: "#252532"
   neutral-content: "#ffffff"
   base-100: "#ffffff"
-  base-200: "#f5f5f5"
+  base-200: "#f7f7f7"
   base-300: "#dcdcdc"
   base-content: "#252532"
   info: "#016ad4"
@@ -175,7 +175,7 @@ Roles follow the DaisyUI 5 vocabulary so every `@hubpav/hwio-ui` component and e
 | `accent` / `accent-content` | `#ffffff` on `#e30427` | kickers and the one highlight per page; never large fills, never small body text |
 | `neutral` / `neutral-content` | `#ffffff` on `#252532` | Ink panels and the footer |
 | `base-100` / `base-content` | `#252532` on `#ffffff` | page ground |
-| `base-200` / `base-content` | `#252532` on `#f5f5f5` | Panel: cards, zones, alternate sections |
+| `base-200` / `base-content` | `#252532` on `#f7f7f7` | Panel: cards, zones, alternate sections |
 | `base-300` / `base-content` | `#252532` on `#dcdcdc` | Hairline: rules and thin frames |
 | `info` / `info-content` | `#ffffff` on `#016ad4` | info: a note, nothing to do (Blue, a proposal in the guidelines, D34) |
 | `success` / `success-content` | `#ffffff` on `#2e7d4f` | done, passed, in limits |

@@ -13,7 +13,9 @@ test('the ratios of record in the guidelines hold (chapter 03, D23, D35)', () =>
   const floor = (v) => Math.floor(v * 10) / 10;
   assert.equal(floor(ratio(p.ink, p.white)), 15.1);
   assert.equal(floor(ratio(p.blue, p.white)), 5.2);
-  assert.equal(floor(ratio(p.gray, p.panel)), 4.9);
+  assert.equal(floor(ratio(p.gray, p.panel)), 5.0);
+  // Panel #f7f7f7 (owner, CR-1): the Red caps kicker on Panel reaches AA.
+  assert.ok(ratio(p.red, p.panel) >= 4.5);
   assert.equal(floor(ratio(p.sky, p.white)), 2.9);
   assert.equal(floor(ratio(p['gradient-figure-end'], p.white)), 4.5);
   assert.equal(floor(ratio(p['dark-red'], p['dark-ground'])), 4.9);

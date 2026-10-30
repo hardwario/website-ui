@@ -4,12 +4,6 @@
 // themes are excused; every other serious or critical finding still fails the test.
 export interface AxeException { rule: string; themes: string[]; selector: string; reason: string }
 
-export const AXE_EXCEPTIONS: AxeException[] = [
-  {
-    rule: 'color-contrast',
-    themes: ['hwio'],
-    selector: '.hwio-tone-alt .hwio-kicker, .hwio-tone-alt .hwio-eyebrow',
-    reason:
-      'Red kicker on Panel, 4.46:1 against the 4.5:1 of WCAG AA. The Brand Guidelines HBG.261028.01 (chapter 03, Proportions and contrast) allow Red on Panel for short caps labels; change request CR-1, open with the owner.',
-  },
-];
+// Empty since 2026-10-30: the one entry (the Red kicker on Panel, 4.46:1) went when the owner set
+// Panel to #f7f7f7 (change request CR-1), where the kicker reaches 4.5:1.
+export const AXE_EXCEPTIONS: AxeException[] = [];
