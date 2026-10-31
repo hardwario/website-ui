@@ -1,0 +1,45 @@
+---
+// HWioMegaLinks as HWioHeader's mega panels show them (the panel is desktop-only; here the panels are
+// drawn open, one under the other). Copy from the www relaunch navigation (owner review 2026-10-30)
+// plus a Czech group for long labels and diacritics.
+import HWioMegaLinks from '@hubpav/hwio-ui/components/HWioMegaLinks.astro';
+const products = [
+  { label: 'CHESTER', href: '#chester', description: 'Low-power platform for monitoring over LTE, LoRaWAN or BLE', image: '/images/chester-wm-bus-dual-antenna-right-600.webp' },
+  { label: 'STICKER', href: '#sticker', description: 'Compact LoRaWAN sensor, configured over NFC or remotely', image: '/images/sticker-clime-stand-right-300.webp' },
+  { label: 'EMBER', href: '#ember', description: 'Rugged IP67 LoRaWAN gateway for private and public networks', image: '/images/ember-right-300.webp' },
+  { label: 'GAUGER', href: '#gauger', description: 'Pulse counter for production lines with Modbus TCP output', image: '/images/gauger-right-300.webp' },
+];
+---
+<section class="bg-base-100 py-12" aria-label="Menu panels">
+  <div class="container space-y-8">
+    <div class="rounded-2xl border border-base-300 p-8">
+      <div class="grid grid-cols-1 gap-10 lg:grid-cols-12">
+        <HWioMegaLinks class="lg:col-span-8" title="Products" all={{ label: 'All products', href: '#products' }} columns={2} items={products} />
+        <HWioMegaLinks class="lg:col-span-4" title="Documents" items={[
+          { label: 'Product datasheets', href: '#datasheets' },
+          { label: 'Product manuals', href: '#manuals' },
+          { label: 'Declarations of conformity', href: '#declarations' },
+        ]} />
+      </div>
+    </div>
+    <div class="rounded-2xl border border-base-300 p-8">
+      <div class="grid grid-cols-1 gap-10 md:grid-cols-3">
+        <HWioMegaLinks title="Learn" items={[
+          { label: 'Documentation', href: 'https://docs.hardwario.com/', external: true, description: 'Guides and references' },
+          { label: 'Tutorials', href: '#tutorials', description: 'Step-by-step projects' },
+          { label: 'Product datasheets', href: '#datasheets', description: 'Product specifications' },
+        ]} />
+        <HWioMegaLinks title="Read" items={[
+          { label: 'Case studies', href: '#cases', description: 'Customers and projects' },
+          { label: 'Blog', href: '#blog', description: 'Technology and know-how' },
+          { label: 'Press releases', href: '#press', description: 'Company news and results' },
+        ]} />
+        <HWioMegaLinks title="Komunita" items={[
+          { label: 'Fórum', href: '#forum', description: 'Otázky a odpovědi' },
+          { label: 'Prohlášení o shodě', href: '#declarations', description: 'Dokumenty CE a UKCA' },
+          { label: 'Podpora', href: '#support', description: 'Pomoc s našimi produkty' },
+        ]} />
+      </div>
+    </div>
+  </div>
+</section>

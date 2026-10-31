@@ -1,17 +1,24 @@
 ---
-/** Two-column hero (direction A): kicker, headline with optional accent line, lead, actions, checklist; media on a soft sky glow. */
+/**
+ * Two-column hero (direction A): kicker, headline with optional accent line, lead, actions, checklist; media on a soft sky glow.
+ * `titleSize="long"` sets a long opening statement (more than about eight words) at 36 to 52 px so it reads in three
+ * calm lines (.hwio-h1-long, change request CR-7, pending the Brand Guidelines). Up to two key words of the title may
+ * carry the figure gradient through the `title` slot (<span class="hwio-grad">, change request CR-8), instead of a key
+ * figure on the same page. `enter` eases the text column and then the media in once the font gate has shown the page.
+ */
 import type { HWioCta } from '../types';
 import HWioButton from './HWioButton.astro';
 import HWioIcon from './HWioIcon.astro';
-interface Props { id?: string; eyebrow?: string; title: string; accent?: string; lead?: string; actions?: HWioCta[]; checklist?: string[]; reverse?: boolean; glow?: boolean; class?: string }
-const { id, eyebrow, title, accent, lead, actions = [], checklist = [], reverse = false, glow = true, class: className = '' } = Astro.props;
+interface Props { id?: string; eyebrow?: string; title: string; accent?: string; lead?: string; actions?: HWioCta[]; checklist?: string[]; reverse?: boolean; glow?: boolean; titleSize?: 'default' | 'long'; enter?: boolean; class?: string }
+const { id, eyebrow, title, accent, lead, actions = [], checklist = [], reverse = false, glow = true, titleSize = 'default', enter = false, class: className = '' } = Astro.props;
+const TITLE_SIZE = { default: '', long: 'hwio-h1-long' } as const;
 const VARIANT = { primary: 'primary', secondary: 'secondary', ghost: 'ghost' } as const;
 ---
 <section id={id} class:list={['bg-base-100 text-base-content', className]}>
   <div class:list={['container grid grid-cols-1 items-center gap-12 py-16 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-16 lg:py-24', reverse ? 'lg:[&>*:first-child]:order-2' : '']}>
-    <div>
+    <div class:list={[enter && 'hwio-enter']}>
       {eyebrow && <p class="hwio-kicker mb-5">{eyebrow}</p>}
-      <h1><slot name="title"><span class="block">{title}</span>{accent && <span class="block text-accent">{accent}</span>}</slot></h1>
+      <h1 class:list={[TITLE_SIZE[titleSize]]}><slot name="title"><span class="block">{title}</span>{accent && <span class="block text-accent">{accent}</span>}</slot></h1>
       {lead && <p class="hwio-lead mt-7 max-w-[37.5rem] text-xl">{lead}</p>}
       {actions.length > 0 && (
         <div class="mt-9 flex flex-wrap gap-3">
@@ -25,7 +32,7 @@ const VARIANT = { primary: 'primary', secondary: 'secondary', ghost: 'ghost' } a
       )}
       <slot name="extra" />
     </div>
-    <div class:list={['relative flex items-center justify-center', glow ? 'hwio-hero-glow aspect-square rounded-3xl' : '']}><slot name="media" /></div>
+    <div class:list={['relative flex items-center justify-center', glow ? 'hwio-hero-glow aspect-square rounded-3xl' : '', enter && 'hwio-enter-media']}><slot name="media" /></div>
   </div>
 </section>
 <style>

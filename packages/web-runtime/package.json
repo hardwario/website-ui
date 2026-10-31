@@ -25,7 +25,11 @@
     "./track": "./dist/track.js",
     "./reveal": "./dist/reveal.js",
     "./counter": "./dist/counter.js",
+    "./count-core": "./dist/count-core.js",
     "./nav": "./dist/nav.js",
+    "./dropdown": "./dist/dropdown.js",
+    "./popup": "./dist/popup.js",
+    "./iso": "./dist/iso.js",
     "./accordion": "./dist/accordion.js",
     "./inline": "./dist/inline.js",
     "./package.json": "./package.json"

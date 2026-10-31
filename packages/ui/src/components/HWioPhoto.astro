@@ -1,0 +1,36 @@
+---
+/**
+ * A photograph at a fixed aspect ratio, filling its frame (object-fit: cover; `focus` picks the
+ * part that stays in view). Photographs come from the artwork library, clearance public (Brand
+ * Guidelines chapter 08: photographs prove). For a product on a transparent ground use HWioCutout.
+ */
+import type { HWioAspect, HWioMedia } from '../types';
+interface Props {
+  image: HWioMedia;
+  aspect?: HWioAspect;
+  rounded?: 'none' | 'xl' | '2xl';
+  focus?: 'center' | 'top' | 'bottom' | 'left' | 'right';
+  /** Above the fold: load at once with high priority. */
+  eager?: boolean;
+  class?: string;
+  imgClass?: string;
+}
+const { image, aspect = '4/3', rounded = '2xl', focus = 'center', eager = false, class: className = '', imgClass = '' } = Astro.props;
+const ASPECT = { '1/1': 'aspect-square', '4/3': 'aspect-[4/3]', '3/2': 'aspect-[3/2]', '16/9': 'aspect-video', '4/5': 'aspect-[4/5]', '3/4': 'aspect-[3/4]' } as const;
+const ROUNDED = { none: 'rounded-none', xl: 'rounded-xl', '2xl': 'rounded-2xl' } as const;
+const FOCUS = { center: 'object-center', top: 'object-top', bottom: 'object-bottom', left: 'object-left', right: 'object-right' } as const;
+---
+<div class:list={['relative overflow-hidden bg-base-200', ASPECT[aspect], ROUNDED[rounded], className]}>
+  <img
+    src={image.src}
+    srcset={image.srcset}
+    sizes={image.sizes}
+    alt={image.alt}
+    width={image.width}
+    height={image.height}
+    loading={eager ? 'eager' : 'lazy'}
+    decoding="async"
+    fetchpriority={eager ? 'high' : undefined}
+    class:list={['absolute inset-0 h-full w-full object-cover', FOCUS[focus], imgClass]}
+  />
+</div>

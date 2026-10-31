@@ -1,0 +1,15 @@
+---
+/**
+ * Starts the scroll reveal on the page (@hubpav/hwio-web-runtime/reveal). Render it once, in the layout
+ * of pages that mark content with `data-hwio-reveal` (HWioSection `reveal`, HWioApplicationTile
+ * `reveal`, a site's own markup). Renders nothing.
+ *
+ * Fail-safe: content waiting for its reveal hides only after this runtime has started; without it the
+ * content simply shows. Each element fades in and settles once, the first time it enters the viewport;
+ * `data-hwio-reveal-delay="<ms>"` staggers siblings. Under prefers-reduced-motion everything shows at once.
+ */
+---
+<script>
+  import { hwioRevealRuntime } from '@hubpav/hwio-web-runtime/reveal';
+  hwioRevealRuntime();
+</script>
