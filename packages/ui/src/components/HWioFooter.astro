@@ -2,6 +2,8 @@
 /**
  * Site footer on the neutral surface: social bar, logo slot, link columns, branches, legal row
  * with the cookie-settings button, the cross-site strip, copyright and tagline. All strings are props.
+ * The bottom line (owner, 2026-10-30) centres the copyright and the tagline together, a middle dot
+ * between them; on phones they stack, centred, without the dot.
  */
 import type { HWioLinkItem } from '../types';
 import HWioIcon from './HWioIcon.astro';
@@ -90,9 +92,10 @@ const linkClass = 'inline-flex items-center gap-1 text-neutral-content/80 transi
   )}
 
   <div class="border-t border-neutral-content/10">
-    <div class="container flex flex-col items-center justify-between gap-4 py-6 text-sm opacity-80 md:flex-row">
+    <div class="container flex flex-col items-center justify-center gap-1 py-6 text-center text-sm opacity-80 md:flex-row md:gap-0">
       <p>{copyright}</p>
-      {tagline && <p class="text-center">{tagline}</p>}
+      {tagline && <span aria-hidden="true" class="mx-3 hidden md:inline">·</span>}
+      {tagline && <p>{tagline}</p>}
     </div>
   </div>
 </footer>

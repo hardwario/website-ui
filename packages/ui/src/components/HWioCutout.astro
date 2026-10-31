@@ -1,0 +1,58 @@
+---
+/**
+ * A product cut-out (transparent ground) shown whole in a fixed frame, with the one shadow recipe every
+ * product carries (.hwio-product-shadow: a tight contact shadow plus a soft ambient one; owner,
+ * 2026-10-30). `baseline` stands it on the frame's common bottom line with a blurred floor ellipse, so
+ * a row of products lines up as one family. `ground="panel"` puts it on the Panel ground (cards,
+ * tiles), `plain` on the page. `backdrop` places it in front of a quiet isometric room in light tones
+ * (the artwork library's backdrops, with their dark-theme drawing) when no field photograph exists.
+ */
+import type { HWioAspect, HWioBackdrop, HWioMedia } from '../types';
+interface Props {
+  image: HWioMedia;
+  aspect?: HWioAspect;
+  ground?: 'panel' | 'plain';
+  baseline?: boolean;
+  /** Air around the product inside the frame: sm 8 %, md 10 %, lg 12 % of the frame width. */
+  inset?: 'sm' | 'md' | 'lg';
+  backdrop?: HWioBackdrop;
+  rounded?: 'none' | 'xl' | '2xl';
+  eager?: boolean;
+  class?: string;
+  imgClass?: string;
+}
+const { image, aspect = '1/1', ground = 'panel', baseline = false, inset = 'md', backdrop, rounded = '2xl', eager = false, class: className = '', imgClass = '' } = Astro.props;
+const ASPECT = { '1/1': 'aspect-square', '4/3': 'aspect-[4/3]', '3/2': 'aspect-[3/2]', '16/9': 'aspect-video', '4/5': 'aspect-[4/5]', '3/4': 'aspect-[3/4]' } as const;
+const ROUNDED = { none: 'rounded-none', xl: 'rounded-xl', '2xl': 'rounded-2xl' } as const;
+const PAD = { sm: 'p-[8%]', md: 'p-[10%]', lg: 'p-[12%]' } as const;
+// On a baseline the product sits 6 % higher than its inset, above the floor shadow, aligned to the bottom.
+const PAD_BASELINE = { sm: 'px-[8%] pt-[8%] pb-[14%] object-bottom', md: 'px-[10%] pt-[10%] pb-[16%] object-bottom', lg: 'px-[12%] pt-[12%] pb-[18%] object-bottom' } as const;
+const FLOOR = { sm: 'bottom-[10.5%]', md: 'bottom-[12.5%]', lg: 'bottom-[14.5%]' } as const;
+// In front of a room the product stands a little smaller, the same on every such tile.
+const PAD_BACKDROP = 'pt-[14%] px-[18%] pb-[10%]';
+const BACKDROP_PAD_BASELINE = 'pt-[14%] px-[18%] pb-[10%] object-bottom';
+const padding = backdrop ? (baseline ? BACKDROP_PAD_BASELINE : PAD_BACKDROP) : baseline ? PAD_BASELINE[inset] : PAD[inset];
+---
+<div class:list={['relative overflow-hidden', ASPECT[aspect], ROUNDED[rounded], ground === 'panel' && 'hwio-cutout-ground', className]}>
+  {backdrop && (backdrop.dark ? (
+    <>
+      <img src={backdrop.light} alt="" aria-hidden="true" loading={eager ? 'eager' : 'lazy'} decoding="async" class="hwio-backdrop hwio-backdrop-light" />
+      <img src={backdrop.dark} alt="" aria-hidden="true" loading="lazy" decoding="async" class="hwio-backdrop hwio-backdrop-dark" />
+    </>
+  ) : (
+    <img src={backdrop.light} alt="" aria-hidden="true" loading={eager ? 'eager' : 'lazy'} decoding="async" class="hwio-backdrop" />
+  ))}
+  <img
+    src={image.src}
+    srcset={image.srcset}
+    sizes={image.sizes}
+    alt={image.alt}
+    width={image.width}
+    height={image.height}
+    loading={eager ? 'eager' : 'lazy'}
+    decoding="async"
+    fetchpriority={eager ? 'high' : undefined}
+    class:list={['hwio-product-shadow absolute inset-0 z-[1] h-full w-full object-contain', padding, imgClass]}
+  />
+  {baseline && <span class:list={['hwio-product-floor', FLOOR[inset]]} aria-hidden="true"></span>}
+</div>

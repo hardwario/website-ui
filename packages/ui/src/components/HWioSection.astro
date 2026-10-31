@@ -1,4 +1,5 @@
 ---
+/** Section with the system rhythm, tone and container. `reveal` fades it in once in view; the reveal runs only with HWioReveal on the page (fail-safe: without it the section simply shows). */
 import type { HWioTone } from '../types';
 interface Props { id?: string; tone?: HWioTone; spacing?: 'normal' | 'compact' | 'none'; container?: boolean; as?: 'section' | 'div' | 'article'; reveal?: boolean; class?: string; [key: string]: unknown }
 const TONE = { base: 'bg-base-100 text-base-content hwio-tone-base', alt: 'bg-base-200 text-base-content hwio-tone-alt', neutral: 'bg-neutral text-neutral-content hwio-tone-neutral' } as const;

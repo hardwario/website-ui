@@ -1,0 +1,26 @@
+---
+// HWioStoryCard (field photograph under the guidelines' scrim) and HWioApplicationTile (photograph or
+// product cut-out; a row on phones). Copy from the www relaunch pages (owner review 2026-10-30).
+import HWioStoryCard from '@hubpav/hwio-ui/components/HWioStoryCard.astro';
+import HWioApplicationTile from '@hubpav/hwio-ui/components/HWioApplicationTile.astro';
+const NBSP = '\u00a0';
+const bridge = { src: '/images/statotest-vilemov-railway-bridge-green-truss-600.webp', alt: 'The green steel truss of the Vilémov railway bridge on its stone piers, monitored by Statotest', width: 600, height: 702 };
+const grainlink = { src: '/images/grainlink-chester-grainlink-c3-solar-railing-sky-600.webp', alt: 'CHESTER GrainLink unit and its solar panel on the railing of a grain bin in winter', width: 600, height: 450 };
+const wmbus = { src: '/images/chester-wm-bus-dual-antenna-right-600.webp', alt: 'CHESTER wM-Bus in its box with two antennas', width: 600, height: 450 };
+const ember = { src: '/images/ember-right-300.webp', alt: 'EMBER LoRaWAN gateway', width: 300, height: 225 };
+const gauger = { src: '/images/gauger-right-300.webp', alt: 'GAUGER pulse counter', width: 300, height: 225 };
+---
+<section class="bg-base-100 py-12" aria-label="Customer stories and applications">
+  <div class="container">
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+      <HWioStoryCard href="#statotest" kicker="Statotest" title="Bridge monitoring as a service, on its own firmware" linkLabel="Read case study" image={bridge} focus="top" eager track={{ id: 'case-statotest', location: 'catalog' }} />
+      <HWioStoryCard href="#grainlink" kicker="GrainLink" title={`More than 1${NBSP}000 units on grain bins in North America`} linkLabel="Read case study" image={grainlink} eager track={{ id: 'case-grainlink', location: 'catalog' }} />
+    </div>
+    <div class="mt-14 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-12 lg:grid-cols-4">
+      <HWioApplicationTile href="#grain" title="Grain bin monitoring" line={`More than 1${NBSP}000 GrainLink units in North America.`} image={grainlink} references={['GrainLink']} eager track={{ id: 'application-grain', location: 'catalog' }} />
+      <HWioApplicationTile href="#meters" title="Remote meter reading" line="Heat and water meters read over wireless M-Bus." image={wmbus} cutout backdrop={{ light: '/images/iso-meter-room-backdrop.svg', dark: '/images/iso-meter-room-backdrop-dark-theme.svg' }} eager track={{ id: 'application-meters', location: 'catalog' }} />
+      <HWioApplicationTile href="#machines" title="Machine monitoring" line="Machine status, from factory lines to excavators." image={gauger} cutout eager track={{ id: 'application-machines', location: 'catalog' }} />
+      <HWioApplicationTile href="#rooms" title="Technické místnosti" line="Kotelny a rozvaděče pro EKOTERM a E.ON." image={ember} cutout references={['EKOTERM', 'E.ON']} eager track={{ id: 'application-rooms', location: 'catalog' }} />
+    </div>
+  </div>
+</section>

@@ -1,4 +1,10 @@
 ---
+/**
+ * Language switcher: `pills` (a joined row of language codes, for the drawer) or `dropdown` (a
+ * `<details>` menu). The dropdown closes on a click outside, on Escape (focus back on its summary),
+ * when focus leaves it and when another popup opens (a mega panel, the drawer, another dropdown);
+ * opening it closes an open mega panel (@hubpav/hwio-web-runtime/dropdown).
+ */
 import HWioIcon from './HWioIcon.astro';
 interface Item { code: string; label: string; href: string; current?: boolean }
 interface Props { items: Item[]; label: string; variant?: 'pills' | 'dropdown'; class?: string }
@@ -12,7 +18,7 @@ const current = items.find((i) => i.current);
     ))}
   </nav>
 ) : (
-  <details class:list={['dropdown dropdown-end', className]}>
+  <details class:list={['dropdown dropdown-end', className]} data-hwio-dropdown>
     <summary class="btn btn-ghost btn-sm gap-1" title={label}>
       <HWioIcon name="globe" size="sm" />
       {/* The accessible name contains the visible code (WCAG 2.5.3), so the label is visually hidden text, not aria-label. */}
@@ -27,3 +33,7 @@ const current = items.find((i) => i.current);
     </ul>
   </details>
 )}
+<script>
+  import { hwioDropdownRuntime } from '@hubpav/hwio-web-runtime/dropdown';
+  hwioDropdownRuntime();
+</script>

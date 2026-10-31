@@ -4,6 +4,9 @@ import HWioIcon from './HWioIcon.astro';
 /**
  * Link or button on DaisyUI `btn`. Labels are slot content (sites own their copy; owner rule:
  * imperative verb, no article). `track` writes the measurement attributes data-track / data-track-location.
+ * `arrow` (the page's primary call to action only) adds an arrow that nudges 3 px on hover and focus
+ * (.hwio-arrow; no nudge under reduced motion). An external link shows the external glyph after the label
+ * unless `externalIcon={false}` (HWioHeader's icon-only CTAs place it beside the label themselves).
  */
 interface Props {
   href?: string;
@@ -12,6 +15,8 @@ interface Props {
   size?: 'sm' | 'md' | 'lg' | 'wide';
   track?: HWioTrack;
   arrow?: boolean;
+  /** Show the external-link glyph after the label of an external link (default true). */
+  externalIcon?: boolean;
   type?: 'button' | 'submit';
   class?: string;
   [key: string]: unknown;
@@ -25,19 +30,19 @@ const VARIANT = {
   link: 'btn btn-link',
 } as const;
 const SIZE = { sm: 'btn-sm', md: '', lg: 'btn-lg', wide: 'btn-wide' } as const;
-const { href, external = false, variant = 'primary', size = 'md', track, arrow = false, type = 'button', class: className = '', ...rest } = Astro.props;
+const { href, external = false, variant = 'primary', size = 'md', track, arrow = false, externalIcon = true, type = 'button', class: className = '', ...rest } = Astro.props;
 const classes = [VARIANT[variant], SIZE[size], className];
 const trackAttrs = track ? { 'data-track': track.id, 'data-track-location': track.location } : {};
 ---
 {href ? (
   <a href={href} class:list={classes} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined} {...trackAttrs} {...rest}>
     <slot />
-    {arrow && <HWioIcon name="arrow-right" size="sm" />}
-    {external && !arrow && <HWioIcon name="external" size="sm" />}
+    {arrow && <HWioIcon name="arrow-right" size="sm" class="hwio-arrow" />}
+    {external && externalIcon && !arrow && <HWioIcon name="external" size="sm" />}
   </a>
 ) : (
   <button type={type} class:list={classes} {...trackAttrs} {...rest}>
     <slot />
-    {arrow && <HWioIcon name="arrow-right" size="sm" />}
+    {arrow && <HWioIcon name="arrow-right" size="sm" class="hwio-arrow" />}
   </button>
 )}

@@ -21,6 +21,15 @@ export interface HWioMedia {
   sizes?: string;
 }
 
+/** Frame proportions shared by HWioPhoto, HWioCutout and the cards built on them. */
+export type HWioAspect = '1/1' | '4/3' | '3/2' | '16/9' | '4/5' | '3/4';
+
+/** A drawn isometric room behind a product cut-out (artwork library), with its dark-theme drawing. */
+export interface HWioBackdrop {
+  light: string;
+  dark?: string;
+}
+
 export interface HWioCta extends HWioLinkItem {
   /** Visual weight; primary is the DaisyUI btn-primary fill. */
   variant?: 'primary' | 'secondary' | 'ghost';

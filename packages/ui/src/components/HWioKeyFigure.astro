@@ -1,0 +1,45 @@
+---
+/**
+ * A figure with its label. `gradient` fills the type with the figure gradient: the one key figure of a
+ * page (Brand Guidelines chapter 03, 40 px and up; D33, D44 on the dark ground). Every other figure stays
+ * Ink, and so does the key figure on a page whose hero H1 carries gradient words (CR-8). Pass numbers
+ * with a non-breaking space before units and in thousands ("7\u00a0000+").
+ *
+ * `count` counts the figure up once when it enters the viewport (800 ms, ease-out) and ends on the exact
+ * `value` text; without JavaScript or under reduced motion the value simply shows.
+ */
+interface Props {
+  value: string;
+  label: string;
+  gradient?: boolean;
+  /** md 40 px; lg 40 / 48 px; xl 48 / 72 px (from lg). */
+  size?: 'md' | 'lg' | 'xl';
+  /** Count-up: to, from (default 0), template around the number ("{n}+", "Since {n}"), thousands separator. */
+  count?: { to: number; from?: number; template?: string; group?: string };
+  class?: string;
+}
+const { value, label, gradient = false, size = 'lg', count, class: className = '' } = Astro.props;
+const SIZE = {
+  md: 'text-[2.5rem]',
+  lg: 'text-[2.5rem] lg:text-[3rem]',
+  xl: 'text-[3rem] lg:text-[4.5rem]',
+} as const;
+const countAttrs = count
+  ? {
+      'data-hwio-count': String(count.to),
+      'data-hwio-count-from': count.from === undefined ? undefined : String(count.from),
+      'data-hwio-count-template': count.template,
+      'data-hwio-count-group': count.group,
+    }
+  : {};
+---
+<div class:list={['min-w-0', className]}>
+  <p class:list={['font-bold leading-[1.2] tracking-[-0.02em] tabular-nums text-balance', SIZE[size]]}>
+    <span class:list={[gradient && 'hwio-key-figure']} {...countAttrs}>{value}</span>
+  </p>
+  <p class="hwio-muted mt-2 max-w-[22rem] text-[0.9375rem] leading-[1.45]">{label}</p>
+</div>
+<script>
+  import { hwioCounterRuntime } from '@hubpav/hwio-web-runtime/counter';
+  hwioCounterRuntime();
+</script>

@@ -1,4 +1,5 @@
 import { hwioMount } from './mount.js';
+import { hwioAnnouncePopup, hwioOnPopup } from './popup.js';
 
 /**
  * Header behaviours: drives the DaisyUI drawer from its [data-hwio-drawer-toggle] buttons (Enter and
@@ -7,8 +8,10 @@ import { hwioMount } from './mount.js';
  * opens HWioHeader's mega panels
  * ([data-hwio-mega-trigger] buttons and their [data-hwio-mega-panel]; hover with intent on pointer
  * devices, click, ArrowDown into the panel, Escape / outside click / focus leaving close; one at a
- * time), and marks the nav link whose section is in view ([data-hwio-scrollspy] nav with same-page
- * anchors) with aria-current="location".
+ * time; the click that follows a hover-open keeps the panel open, the next one closes it), and marks the nav link whose section is in view ([data-hwio-scrollspy] nav with same-page
+ * anchors) with aria-current="location". Opening a mega panel or the drawer announces it
+ * (`hwio:popupopen`, popup.ts), so an open dropdown (HWioLanguageSwitcher) closes; a dropdown that
+ * opens closes the mega panels the same way.
  */
 export function hwioNavRuntime() {
   let controller: AbortController | null = null;
@@ -35,6 +38,7 @@ export function hwioNavRuntime() {
       const apply = (restoreFocus: boolean) => {
         sync();
         if (input.checked) {
+          if (side) hwioAnnouncePopup(side);
           const first = side?.querySelector<HTMLElement>('button, a[href], input:not([type="hidden"]), select, textarea, summary, [tabindex]:not([tabindex="-1"])');
           if (first) focusWhenVisible(first);
         } else if (restoreFocus) {
@@ -62,19 +66,34 @@ export function hwioNavRuntime() {
       let closeTimer: ReturnType<typeof setTimeout> | null = null;
       const cancelClose = () => { if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; } };
       const set = (pair: { trigger: HTMLElement; panel: HTMLElement }, open: boolean) => { pair.trigger.setAttribute('aria-expanded', String(open)); pair.panel.hidden = !open; };
-      const closeAll = () => { cancelClose(); pairs.forEach((p) => set(p, false)); };
-      const openOne = (pair: { trigger: HTMLElement; panel: HTMLElement }) => { cancelClose(); pairs.forEach((p) => set(p, p === pair)); };
-      const scheduleClose = () => { cancelClose(); closeTimer = setTimeout(closeAll, 180); };
+      // A panel that hover has just opened stays open on the click that follows (pointer users click the
+      // item they point at); the next click closes it. Without this, hover opened it and the click shut it.
+      let hoverOpened: HTMLElement | null = null;
+      const closeAll = () => { cancelClose(); hoverOpened = null; pairs.forEach((p) => set(p, false)); };
       const isOpen = (pair: { trigger: HTMLElement }) => pair.trigger.getAttribute('aria-expanded') === 'true';
+      const openOne = (pair: { trigger: HTMLElement; panel: HTMLElement }) => {
+        cancelClose();
+        const wasOpen = isOpen(pair);
+        pairs.forEach((p) => set(p, p === pair));
+        if (!wasOpen) hwioAnnouncePopup(pair.panel);
+      };
+      const scheduleClose = () => { cancelClose(); closeTimer = setTimeout(closeAll, 180); };
       pairs.forEach((pair) => {
         const { trigger, panel } = pair;
-        trigger.addEventListener('click', () => (isOpen(pair) ? closeAll() : openOne(pair)), { signal });
+        trigger.addEventListener('click', () => {
+          if (isOpen(pair) && hoverOpened === trigger) { hoverOpened = null; return; }
+          if (isOpen(pair)) closeAll(); else openOne(pair);
+        }, { signal });
         trigger.addEventListener('keydown', (e) => {
           if (e.key !== 'ArrowDown') return;
           e.preventDefault(); openOne(pair); panel.querySelector<HTMLElement>('a[href], button')?.focus();
         }, { signal });
         if (hoverable) {
-          trigger.addEventListener('mouseenter', () => openOne(pair), { signal });
+          trigger.addEventListener('mouseenter', () => {
+            const wasOpen = isOpen(pair);
+            openOne(pair);
+            hoverOpened = wasOpen ? null : trigger;
+          }, { signal });
           trigger.addEventListener('mouseleave', scheduleClose, { signal });
           panel.addEventListener('mouseenter', cancelClose, { signal });
           panel.addEventListener('mouseleave', scheduleClose, { signal });
@@ -88,6 +107,10 @@ export function hwioNavRuntime() {
         const node = e.target as Node;
         if (!pairs.some((p) => p.trigger.contains(node) || p.panel.contains(node))) closeAll();
       }, { signal });
+      // Another popup (a language dropdown, the drawer) opened: close the panels unless it sits in one.
+      hwioOnPopup((owner) => {
+        if (!pairs.some((p) => p.panel === owner || p.panel.contains(owner))) closeAll();
+      }, signal);
     }
     const nav = document.querySelector<HTMLElement>('[data-hwio-scrollspy]');
     if (!nav || !('IntersectionObserver' in window)) return;
