@@ -1,5 +1,14 @@
 # @hubpav/hwio-ui
 
+## 0.9.1
+
+### Patch Changes
+
+- Updated dependencies [52c6bf2]
+  - @hubpav/hwio-web-runtime@0.9.1
+  - @hubpav/hwio-brand@0.9.1
+  - @hubpav/hwio-web-worker@0.9.1
+
 ## 0.9.0
 
 ### Minor Changes
