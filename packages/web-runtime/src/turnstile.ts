@@ -57,20 +57,49 @@ function loadApi(): Promise<TurnstileApi> {
   return window.__hwioTurnstileLoader;
 }
 
+interface HWioTurnstileWidget { container: HTMLElement; form: HWioTurnstileForm; id: string }
+
+function draw(api: TurnstileApi, container: HTMLElement): string | undefined {
+  return api.render(container, { sitekey: container.dataset.sitekey ?? '', theme: hwioResolvedScheme(), size: widgetSize(container) });
+}
+
+function storeId(form: HWioTurnstileForm, id: string) {
+  form.hwioTurnstileWidgetId = id;
+  form.hwTurnstileWidgetId = id; // legacy-ok
+}
+
 /**
  * Lazy explicit Turnstile: the third-party script loads on first form interaction (focus or
  * pointer-enter) and the widget id is stored on its form so the submit handler resets exactly
  * the token it consumed. Markup: <div class="cf-turnstile" data-sitekey="..."> inside a <form>.
+ *
+ * The widget takes the page's scheme when it renders, and Turnstile cannot change the theme of a
+ * rendered widget, so a switch of the site theme (hwio:themechange) redraws every widget in the
+ * new scheme; the redrawn widget issues a fresh token.
  */
 export function hwioTurnstileRuntime() {
   let controller: AbortController | null = null;
-  let widgetIds: string[] = [];
+  let widgets: HWioTurnstileWidget[] = [];
+  let themeBound = false;
 
   function cleanup() {
     controller?.abort();
     controller = null;
-    widgetIds.forEach((id) => { try { window.turnstile?.remove(id); } catch { /* gone */ } });
-    widgetIds = [];
+    themeBound = false;
+    widgets.forEach(({ id }) => { try { window.turnstile?.remove(id); } catch { /* gone */ } });
+    widgets = [];
+  }
+
+  function redraw() {
+    const api = window.turnstile;
+    if (!api) return;
+    widgets = widgets.filter((w) => w.container.isConnected).map((w) => {
+      try { api.remove(w.id); } catch { /* gone */ }
+      const id = draw(api, w.container);
+      if (id === undefined) return w;
+      storeId(w.form, id);
+      return { ...w, id };
+    });
   }
 
   function bind() {
@@ -78,6 +107,10 @@ export function hwioTurnstileRuntime() {
     if (!containers.length) return;
     controller ??= new AbortController();
     const { signal } = controller;
+    if (!themeBound) {
+      themeBound = true;
+      window.addEventListener('hwio:themechange', redraw, { signal });
+    }
     containers.forEach((container) => {
       const form = container.closest('form') as HWioTurnstileForm | null;
       if (!form) return;
@@ -86,11 +119,10 @@ export function hwioTurnstileRuntime() {
       const render = (api: TurnstileApi) => {
         if (signal.aborted || !container.isConnected || state === 'rendered') return;
         state = 'rendered';
-        const id = api.render(container, { sitekey: container.dataset.sitekey ?? '', theme: hwioResolvedScheme(), size: widgetSize(container) });
+        const id = draw(api, container);
         if (id !== undefined) {
-          widgetIds.push(id);
-          form.hwioTurnstileWidgetId = id;
-          form.hwTurnstileWidgetId = id; // legacy-ok
+          widgets.push({ container, form, id });
+          storeId(form, id);
         }
       };
       const load = () => {
