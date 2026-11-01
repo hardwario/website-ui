@@ -593,3 +593,16 @@
   --btn-bg: #0000;
   --btn-border: #0000;
 }
+/* Forms on the brand type scale (owner, 2026-11-01; website-admin DESIGN-SYSTEM.md, web layer type table: "Form
+   label 15 Bold", "Form field text 16 Regular"). DaisyUI's 12 px Semibold field labels and 14 px fields sat below
+   the body text, and iPhones zoom into a focused field whose text is under 16 px. Unlayered, so it wins over
+   DaisyUI's component layer. */
+.fieldset-legend {
+  font-size: 0.9375rem;
+  font-weight: var(--hwio-weight-label, 700);
+}
+.input,
+.select,
+.textarea {
+  font-size: 1rem;
+}
