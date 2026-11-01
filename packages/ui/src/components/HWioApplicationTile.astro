@@ -1,0 +1,49 @@
+---
+/**
+ * Application tile: a picture, a title of three or four words and one line, optionally the references
+ * that run it. The whole tile links to the application page (its title underlines on hover and focus).
+ * On phones the tile becomes a row (thumbnail beside the text), so a set of eight stays one short list.
+ * `cutout` shows a product cut-out whole on the Panel ground (with an optional isometric `backdrop`)
+ * instead of a photograph. `reveal` fades the tile in once in view (needs HWioReveal on the page);
+ * `revealDelay` (ms) staggers a row.
+ */
+import type { HWioBackdrop, HWioMedia, HWioTrack } from '../types';
+import HWioCutout from './HWioCutout.astro';
+import HWioPhoto from './HWioPhoto.astro';
+interface Props {
+  href: string;
+  title: string;
+  line: string;
+  image: HWioMedia;
+  cutout?: boolean;
+  backdrop?: HWioBackdrop;
+  /** Names of the customers or projects that run it, shown under the line, separated by middle dots. */
+  references?: string[];
+  headingLevel?: 'h2' | 'h3' | 'h4';
+  track?: HWioTrack;
+  reveal?: boolean;
+  revealDelay?: number;
+  eager?: boolean;
+  class?: string;
+}
+const { href, title, line, image, cutout = false, backdrop, references = [], headingLevel = 'h3', track, reveal = false, revealDelay, eager = false, class: className = '' } = Astro.props;
+const Heading = headingLevel;
+const hover = 'transition-transform duration-300 ease-out group-hover:scale-[1.02] motion-reduce:transition-none';
+---
+<a
+  href={href}
+  class:list={['hwio-card-link group grid grid-cols-[6rem_minmax(0,1fr)] content-start items-center gap-4 text-base-content sm:grid-cols-1 sm:items-start sm:gap-5', className]}
+  data-track={track?.id}
+  data-track-location={track?.location}
+  data-hwio-reveal={reveal ? 'true' : undefined}
+  data-hwio-reveal-delay={reveal && revealDelay ? String(revealDelay) : undefined}
+>
+  {cutout
+    ? <HWioCutout image={image} aspect="4/3" rounded="xl" inset="lg" backdrop={backdrop} eager={eager} imgClass={hover} />
+    : <HWioPhoto image={image} aspect="4/3" rounded="xl" eager={eager} imgClass={hover} />}
+  <div class="min-w-0">
+    <Heading class="hwio-role-title hwio-card-title">{title}</Heading>
+    <p class="hwio-muted mt-1.5 text-[0.9375rem] leading-[1.5]">{line}</p>
+    {references.length > 0 && <p class="hwio-muted mt-3 text-[0.8125rem] leading-[1.4]">{references.join(' · ')}</p>}
+  </div>
+</a>

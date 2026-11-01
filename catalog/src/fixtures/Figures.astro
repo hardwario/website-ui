@@ -1,0 +1,19 @@
+---
+// HWioKeyFigure: a proof band of three figures that count up once in view (the VRT runs with reduced
+// motion, so it shows the final text). The first is the page's one key figure in the gradient; the
+// others stay Ink. Copy from the www relaunch homepage (owner review 2026-10-30).
+import HWioKeyFigure from '@hubpav/hwio-ui/components/HWioKeyFigure.astro';
+const NBSP = '\u00a0';
+---
+<section class="bg-base-100 py-12" aria-labelledby="figures-heading">
+  <div class="container">
+    <div class="border-y border-base-300 py-12">
+      <h2 id="figures-heading" class="hwio-kicker">In the field</h2>
+      <div class="mt-8 grid grid-cols-1 gap-10 sm:grid-cols-3 sm:gap-6">
+        <HWioKeyFigure value={`7${NBSP}000+`} gradient size="xl" count={{ to: 7000, template: '{n}+', group: NBSP }} label="devices in the field" />
+        <HWioKeyFigure value="30+" size="xl" count={{ to: 30, template: '{n}+' }} label="countries they run in" />
+        <HWioKeyFigure value="Since 2016" size="xl" count={{ to: 2016, from: 2000, template: 'Since {n}' }} label="making them in Liberec" />
+      </div>
+    </div>
+  </div>
+</section>

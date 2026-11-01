@@ -262,17 +262,49 @@
   [data-hs-status].hs-status-success { color: var(--color-success); }
   [data-hs-status].hs-status-error { color: var(--color-error); }
 
-  /* Scroll reveal: visible at rest for no-JS, animates in once the runtime marks it. */
-  .js [data-hwio-reveal]:not([data-hwio-revealed]) {
+  /* Scroll reveal, fail-safe (owner, 2026-10-30): content waiting for its reveal hides only once the
+     reveal runtime has started (html.hwio-reveal-on, set by @hubpav/hwio-web-runtime/reveal). Without
+     JavaScript, before the runtime runs, or if it never loads, everything shows. Hiding is instant;
+     revealing fades in and settles once (web layer: ease-out, 400 ms at most, 24 px travel). A page
+     can calm it with --hwio-reveal-duration and --hwio-reveal-travel. Stagger siblings with
+     data-hwio-reveal-delay="<ms>" (the runtime applies it). */
+  html.hwio-reveal-on [data-hwio-reveal]:not([data-hwio-revealed]) {
     opacity: 0;
-    transform: translateY(24px);
-  }
-  [data-hwio-reveal] {
-    transition: opacity var(--hwio-motion-reveal, 0.6s) ease-out, transform var(--hwio-motion-reveal, 0.6s) ease-out;
+    transform: translateY(var(--hwio-reveal-travel, 24px));
   }
   [data-hwio-reveal][data-hwio-revealed] {
     opacity: 1;
     transform: none;
+    transition:
+      opacity var(--hwio-reveal-duration, var(--hwio-motion-reveal, 0.6s)) var(--hwio-motion-easing, ease-out),
+      transform var(--hwio-reveal-duration, var(--hwio-motion-reveal, 0.6s)) var(--hwio-motion-easing, ease-out);
+  }
+
+  /* Entrance of a hero once the font gate has shown the page: the children of .hwio-enter fade in and
+     settle 12 px, 60 ms apart; .hwio-enter-media follows. Pure CSS that always ends visible, and it
+     runs only after the gate has set .fonts-ready (no gate, no animation). */
+  @keyframes hwio-enter {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: none; }
+  }
+  .fonts-ready .hwio-enter > * {
+    animation: hwio-enter var(--hwio-motion-base, 300ms) var(--hwio-motion-easing, ease-out) both;
+  }
+  .fonts-ready .hwio-enter > :nth-child(2) { animation-delay: 60ms; }
+  .fonts-ready .hwio-enter > :nth-child(3) { animation-delay: 120ms; }
+  .fonts-ready .hwio-enter > :nth-child(n + 4) { animation-delay: 180ms; }
+  .fonts-ready .hwio-enter-media {
+    animation: hwio-enter var(--hwio-motion-base, 300ms) var(--hwio-motion-easing, ease-out) 120ms both;
+  }
+
+  /* The arrow of a call to action moves 3 px on hover and keyboard focus (HWioButton's arrow carries
+     it; a site marks its own arrow glyph with .hwio-arrow). */
+  .hwio-arrow {
+    display: inline-block;
+    transition: transform var(--hwio-motion-fast, 200ms) var(--hwio-motion-easing, ease-out);
+  }
+  :is(a, button):is(:hover, :focus-visible) .hwio-arrow {
+    transform: translateX(3px);
   }
 
   /* Count-up: reserve the width of the final value so the layout never jumps. */
@@ -311,10 +343,162 @@
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
   }
 
+  /* Type roles for elements whose tag is not the role's tag (a card title in an <h3>, a <p> set as H2). */
+  .hwio-role-heading {
+    font-size: var(--hwio-type-heading-size, 2rem);
+    font-weight: var(--hwio-type-heading-weight, 700);
+    line-height: var(--hwio-type-heading-leading, 1.1);
+    letter-spacing: var(--hwio-type-heading-tracking, -0.025em);
+  }
+  .hwio-role-subheading {
+    font-size: var(--hwio-type-subheading-size, 1.375rem);
+    font-weight: var(--hwio-type-subheading-weight, 700);
+    line-height: var(--hwio-type-subheading-leading, 1.2);
+    letter-spacing: var(--hwio-type-subheading-tracking, -0.01em);
+  }
+  .hwio-role-title {
+    font-size: var(--hwio-type-title-size, 1.125rem);
+    font-weight: var(--hwio-type-title-weight, 700);
+    line-height: var(--hwio-type-title-leading, 1.3);
+    letter-spacing: var(--hwio-type-title-tracking, -0.005em);
+  }
+
+  /* A long H1 (more than about eight words, an opening statement) at 36 / 44 / 48 / 52 px instead of
+     the web scale's 40 / 48 / 60 / 72 px, so it reads in three calm lines beside the hero media.
+     CHANGE REQUEST CR-7 (owner, 2026-10-30), pending the Brand Guidelines: "a long H1 may go down
+     to 48 to 56 px". Opt-in per heading; HWioHeroSplit sets it with titleSize="long". */
+  .hwio-h1-long {
+    font-size: 2.25rem;
+    line-height: var(--hwio-type-display-leading, 1.2);
+    letter-spacing: -0.02em;
+  }
+  @media (width >= 48rem) {
+    .hwio-h1-long { font-size: 2.75rem; }
+  }
+  @media (width >= 64rem) {
+    .hwio-h1-long { font-size: 3rem; }
+  }
+  @media (width >= 80rem) {
+    .hwio-h1-long { font-size: 3.25rem; }
+  }
+
+  /* The page's one gradient moment (Brand Guidelines chapter 03; D23, D33, D44): the figure gradient
+     fills the type of the key figure (.hwio-key-figure, 40 px and up) or, instead of a key figure,
+     of up to two key words of a hero H1 (.hwio-grad). The theme variable is the gradient's left three
+     quarters on white (4.5:1) and light red to Sky on the dark ground. Each word carries its own
+     gradient. .hwio-grad is CHANGE REQUEST CR-8 (owner, 2026-10-30), pending the guidelines. Themes
+     without the gradient (er3o) show plain text: the fill, not `color`, turns transparent, so the
+     fallback's currentColor is still the text colour. */
+  .hwio-key-figure,
+  .hwio-grad {
+    background-image: var(--hwio-gradient-figure, linear-gradient(currentColor, currentColor));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+  @media (forced-colors: active) {
+    .hwio-key-figure,
+    .hwio-grad {
+      background-image: none;
+      -webkit-text-fill-color: CanvasText;
+    }
+  }
+
+  /* Linked cards (web layer, States): the title underlines on hover and keyboard focus; no shadow. */
+  .hwio-card-link:is(:hover, :focus-visible) .hwio-card-title {
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+    text-decoration-thickness: 1px;
+  }
+
+  /* White type over a photograph only on the guidelines' scrim (chapter 08): clear over the top
+     third, 45 % black at 60 %, 92 % at the bottom. */
+  .hwio-scrim {
+    background-image: linear-gradient(180deg, rgb(0 0 0 / 0) 33%, rgb(0 0 0 / 0.45) 60%, rgb(0 0 0 / 0.92) 100%);
+  }
+
+  /* Product cut-outs (owner, 2026-10-30; Brand Guidelines chapter 08): one shadow recipe for every
+     product, so a row reads as one family: a tight contact shadow plus a soft ambient one; lighter on
+     the dark ground. On a common baseline (HWioCutout baseline) a blurred floor ellipse. A cut-out
+     sits whole on the Panel ground (.hwio-cutout-ground) or on the page. */
+  .hwio-product-shadow {
+    filter: drop-shadow(0 2px 2px rgb(37 37 50 / 0.16)) drop-shadow(0 12px 16px rgb(37 37 50 / 0.12));
+  }
+  [data-theme$='-dark'] .hwio-product-shadow {
+    filter: drop-shadow(0 6px 12px rgb(0 0 0 / 0.35));
+  }
+  .hwio-product-floor {
+    position: absolute;
+    left: 20%;
+    right: 20%;
+    height: 7%;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgb(37 37 50 / 0.18), rgb(37 37 50 / 0));
+    pointer-events: none;
+  }
+  [data-theme$='-dark'] .hwio-product-floor {
+    display: none;
+  }
+  .hwio-cutout-ground {
+    background-color: var(--color-base-200);
+  }
+  /* A drawn isometric room behind a cut-out (HWioCutout backdrop): it fills the frame (the kit's SVG
+     carries a 1 pt margin, hidden by the slight scale); the dark-theme drawing on the dark ground. */
+  .hwio-backdrop {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.012);
+    pointer-events: none;
+  }
+  .hwio-backdrop-dark { display: none; }
+  [data-theme$='-dark'] .hwio-backdrop-light { display: none; }
+  [data-theme$='-dark'] .hwio-backdrop-dark { display: block; }
+
+  /* Menu panels (HWioMegaLinks) and the drawer's second lines (owner, 2026-10-30): a caps group title
+     in Gray, link labels that never wrap, descriptions small (13 px), Regular, Gray and balanced. */
+  .hwio-mega-title {
+    color: var(--hwio-text-secondary, color-mix(in oklab, var(--color-base-content) 72%, transparent));
+    font-size: var(--hwio-type-kicker-size, 0.875rem);
+    font-weight: var(--hwio-type-kicker-weight, 600);
+    line-height: var(--hwio-type-kicker-leading, 1.4);
+    letter-spacing: var(--hwio-type-kicker-tracking, 0);
+    text-transform: var(--hwio-type-kicker-case, none);
+  }
+  .hwio-mega-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    white-space: nowrap;
+    color: var(--color-base-content);
+    font-size: 0.9375rem;
+    font-weight: var(--hwio-weight-label, 600);
+    line-height: 1.35;
+    transition: color var(--hwio-motion-fast, 200ms) var(--hwio-motion-easing, ease-out);
+  }
+  a:is(:hover, :focus-visible) .hwio-mega-label {
+    color: var(--hwio-nav-hover, var(--color-primary));
+  }
+  .hwio-menu-desc {
+    color: var(--hwio-text-secondary, color-mix(in oklab, var(--color-base-content) 72%, transparent));
+    font-size: 0.8125rem;
+    font-weight: 400;
+    line-height: 1.45;
+    text-wrap: balance;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     [data-hwio-reveal] { opacity: 1 !important; transform: none !important; transition: none !important; }
     .hwio-marquee-track { animation: none; transform: none; will-change: auto; }
     .hwio-marquee-track > [aria-hidden='true'] { display: none; }
+    .fonts-ready .hwio-enter > *,
+    .fonts-ready .hwio-enter-media { animation: none; }
+    .hwio-arrow,
+    :is(a, button):is(:hover, :focus-visible) .hwio-arrow { transition: none; transform: none; }
   }
 }
 
@@ -371,6 +555,35 @@
   .hwio-nav-tight > .hwio-nav-current::after {
     inset-inline: 0.5rem;
   }
+  header:has(.hwio-nav-tight) .hwio-utility > summary.btn {
+    --fontsize: 14px;
+    font-size: 14px;
+  }
+}
+/* Header utilities (owner, 2026-10-30): HWioHeader's theme toggle and language dropdown read as quiet
+   utilities beside the nav, not as buttons: the nav's weight (Regular on the HARDWARIO themes), size
+   and 80 % ink, the nav's hover colour, the toggle's icon at 18 px (HWioIcon's 1.5 stroke), the
+   chevron as faint as the nav chevrons. Unlayered, because DaisyUI's .btn sits in the utilities layer. */
+.hwio-utility.btn,
+.hwio-utility > summary.btn {
+  --fontsize: 0.9375rem;
+  font-size: 0.9375rem;
+  font-weight: var(--hwio-weight-nav, 500);
+  letter-spacing: 0;
+  color: color-mix(in oklab, var(--color-base-content) 80%, transparent);
+  border-color: transparent;
+  box-shadow: none;
+}
+.hwio-utility.btn:hover,
+.hwio-utility > summary.btn:hover {
+  color: var(--hwio-nav-hover, var(--color-accent));
+}
+.hwio-utility.btn > svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+.hwio-utility > summary.btn > svg:last-child {
+  opacity: 0.5;
 }
 /* DaisyUI 5.7.30+ also gives pressed buttons (aria-pressed / aria-checked) a filled ground. A ghost
    toggle shows its state in its own content (HWioThemeToggle swaps moon and sun and sets

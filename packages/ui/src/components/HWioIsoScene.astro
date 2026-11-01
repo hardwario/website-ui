@@ -1,0 +1,93 @@
+---
+/**
+ * An isometric scene drawn with the Brand Guidelines' kit (the artwork library's illustrations/isometric,
+ * `make isometric`), inlined so CSS and the runtime reach its parts. Isometric drawings explain;
+ * photographs prove. Pass the light-theme SVG as a string (`import scene from './scene.svg?raw'`) and a
+ * description for screen readers; the scene carries no text of its own.
+ *
+ * Motion (@hubpav/hwio-web-runtime/iso): in view, the scene builds itself once: `.iso-object` groups
+ * settle in drawing order, then each `.iso-trace` draws from pad to pad and the `.iso-radio` links fade
+ * in. Without JavaScript or under reduced motion it shows complete. `animate={false}` keeps it still.
+ *
+ * Dark theme: the kit's -dark-theme.svg is the same drawing with the plate neutrals and the link colours
+ * swapped (verified byte for byte on 2026-10-30), so one inlined copy and the swaps below render both.
+ * A drawing outside the kit's palette keeps its colours in dark mode.
+ */
+interface Props {
+  svg: string;
+  label: string;
+  animate?: boolean;
+  class?: string;
+}
+const { svg, label, animate = true, class: className = '' } = Astro.props;
+const escapeAttr = (text: string) => text.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const markup = svg
+  .replace(/^\s*<\?xml[^>]*>\s*/, '')
+  .replace(/<svg\b([^>]*?)\sdata-theme="[^"]*"/, '<svg$1')
+  .replace(/<svg\b/, `<svg role="img" aria-label="${escapeAttr(label)}"`);
+---
+<div class:list={['hwio-iso-frame', className]} data-hwio-iso={animate ? 'true' : undefined} set:html={markup} />
+<style is:global>
+  .hwio-iso-frame svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  /* Dark theme: the kit's -dark-theme.svg colours (plate neutrals, link Red and Gray). */
+  [data-theme$='-dark'] .hwio-iso-frame [fill='#dcdcdc'] { fill: #1d1d26; }
+  [data-theme$='-dark'] .hwio-iso-frame [stroke='#dcdcdc'] { stroke: #1d1d26; }
+  [data-theme$='-dark'] .hwio-iso-frame [fill='#dddddd'] { fill: #1e1e27; }
+  [data-theme$='-dark'] .hwio-iso-frame [stroke='#dddddd'] { stroke: #1e1e27; }
+  [data-theme$='-dark'] .hwio-iso-frame [fill='#e0e0e0'] { fill: #1f1f2a; }
+  [data-theme$='-dark'] .hwio-iso-frame [stroke='#e0e0e0'] { stroke: #1f1f2a; }
+  [data-theme$='-dark'] .hwio-iso-frame [fill='#e1e1e1'] { fill: #20202b; }
+  [data-theme$='-dark'] .hwio-iso-frame [stroke='#e1e1e1'] { stroke: #20202b; }
+  [data-theme$='-dark'] .hwio-iso-frame [fill='#e3e3e3'] { fill: #22222d; }
+  [data-theme$='-dark'] .hwio-iso-frame [stroke='#e3e3e3'] { stroke: #22222d; }
+  [data-theme$='-dark'] .hwio-iso-frame [fill='#e4e4e4'] { fill: #23232e; }
+  [data-theme$='-dark'] .hwio-iso-frame [stroke='#e4e4e4'] { stroke: #23232e; }
+  [data-theme$='-dark'] .hwio-iso-frame [fill='#e7e7e7'] { fill: #242431; }
+  [data-theme$='-dark'] .hwio-iso-frame [stroke='#e7e7e7'] { stroke: #242431; }
+  [data-theme$='-dark'] .hwio-iso-frame [fill='#e8e8e8'] { fill: #252532; }
+  [data-theme$='-dark'] .hwio-iso-frame [stroke='#e8e8e8'] { stroke: #252532; }
+  [data-theme$='-dark'] .hwio-iso-frame [fill='#f7f7f7'] { fill: #2e2e3a; }
+  [data-theme$='-dark'] .hwio-iso-frame .iso-link [fill='#e30427'] { fill: #f43f5e; }
+  [data-theme$='-dark'] .hwio-iso-frame .iso-link [stroke='#e30427'] { stroke: #f43f5e; }
+  [data-theme$='-dark'] .hwio-iso-frame .iso-link [fill='#6b6a6a'] { fill: #8c8b8b; }
+  [data-theme$='-dark'] .hwio-iso-frame .iso-link [stroke='#6b6a6a'] { stroke: #8c8b8b; }
+
+  /* Build states, set by the runtime only when motion is allowed (no JavaScript: the full scene). */
+  .hwio-iso-anim .iso-object {
+    opacity: 0;
+    transform: translateY(4px);
+    transform-box: fill-box;
+  }
+  .hwio-iso-anim g.iso-radio {
+    opacity: 0;
+  }
+  .hwio-iso-anim .iso-trace:not(.iso-radio) {
+    /* pathLength="1" on every trace: 1px is the whole path. */
+    stroke-dasharray: 1px;
+    stroke-dashoffset: 1px;
+  }
+  .hwio-iso-anim .iso-pad {
+    opacity: 0;
+  }
+  /* Transitions only on play, so hiding the parts at bind time is instant. */
+  .hwio-iso-anim.hwio-iso-play .iso-object { opacity: 1; transform: none; transition: opacity 300ms ease-out, transform 300ms ease-out; }
+  .hwio-iso-anim.hwio-iso-play g.iso-radio { opacity: 1; transition: opacity 300ms ease-out; }
+  .hwio-iso-anim.hwio-iso-play .iso-trace:not(.iso-radio) { stroke-dashoffset: 0px; transition: stroke-dashoffset 700ms ease-out; }
+  .hwio-iso-anim.hwio-iso-play .iso-pad { opacity: 1; transition: opacity 200ms ease-out; }
+  @media (prefers-reduced-motion: reduce) {
+    .hwio-iso-anim .iso-object,
+    .hwio-iso-anim g.iso-radio,
+    .hwio-iso-anim .iso-pad { opacity: 1; transform: none; transition: none; }
+    .hwio-iso-anim .iso-trace:not(.iso-radio) { stroke-dashoffset: 0px; transition: none; }
+  }
+</style>
+<script>
+  import { hwioIsoRuntime } from '@hubpav/hwio-web-runtime/iso';
+  hwioIsoRuntime();
+</script>

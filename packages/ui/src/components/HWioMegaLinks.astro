@@ -1,0 +1,54 @@
+---
+/**
+ * A group of links for HWioHeader's `mega:<key>` panels (owner, 2026-10-30): an optional caps title
+ * with an "all" link on its line, then links with a one-line description. Labels never wrap; the
+ * descriptions are small (13 px), Regular, Gray and balanced, so siblings read as equals. `columns` is
+ * fixed: the panel shows only from the header's desktop breakpoint, and a column count that grows with
+ * the viewport (three at 2xl) squeezed descriptions into broken lines. Products may carry a thumbnail
+ * (a cut-out with the shared product shadow).
+ */
+import type { HWioLinkItem } from '../types';
+import HWioIcon from './HWioIcon.astro';
+interface Item extends HWioLinkItem {
+  description?: string;
+  /** A product thumbnail (cut-out on a transparent ground); decorative, the label names the product. */
+  image?: string;
+}
+interface Props {
+  title?: string;
+  all?: HWioLinkItem;
+  items: Item[];
+  columns?: 1 | 2 | 3;
+  /** data-track-location for the links (default "header-menu"). */
+  trackLocation?: string;
+  class?: string;
+}
+const { title, all, items, columns = 1, trackLocation = 'header-menu', class: className = '' } = Astro.props;
+const COLUMNS = { 1: 'grid-cols-1', 2: 'grid-cols-2', 3: 'grid-cols-3' } as const;
+const linkAttrs = (item: HWioLinkItem) => (item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {});
+---
+<div class:list={['min-w-0', className]}>
+  {(title || all) && (
+    <div class="mb-4 flex items-baseline justify-between gap-6 px-3">
+      {title && <p class="hwio-mega-title">{title}</p>}
+      {all && <a href={all.href} {...linkAttrs(all)} class="hwio-link hwio-weight-label whitespace-nowrap text-sm" data-track={all.track?.id} data-track-location={all.track?.location ?? trackLocation}>{all.label}</a>}
+    </div>
+  )}
+  <ul class:list={['grid gap-x-6 gap-y-1', COLUMNS[columns]]}>
+    {items.map((item) => (
+      <li class="min-w-0">
+        <a href={item.href} {...linkAttrs(item)} class="flex items-start gap-4 rounded-xl px-3 py-2.5 transition-colors hover:bg-base-200" aria-current={item.current ? 'page' : undefined} data-track={item.track?.id} data-track-location={item.track?.location ?? trackLocation}>
+          {item.image && (
+            <span class="flex h-20 w-16 shrink-0 items-center justify-center">
+              <img src={item.image} alt="" loading="lazy" decoding="async" class="hwio-product-shadow max-h-full max-w-full object-contain" />
+            </span>
+          )}
+          <span class="min-w-0 flex-1">
+            <span class="hwio-mega-label">{item.label}{item.external && <HWioIcon name="arrow-up-right" size="sm" class="opacity-50" />}</span>
+            {item.description && <span class="hwio-menu-desc mt-0.5 block">{item.description}</span>}
+          </span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>

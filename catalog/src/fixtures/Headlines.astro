@@ -1,0 +1,19 @@
+---
+// A long opening statement (HWioHeroSplit titleSize="long", change request CR-7) with two key words in
+// the figure gradient (.hwio-grad, change request CR-8) and the hero entrance (enter). Copy from the www
+// relaunch homepage (owner review 2026-10-30).
+import HWioHeroSplit from '@hubpav/hwio-ui/components/HWioHeroSplit.astro';
+import HWioCutout from '@hubpav/hwio-ui/components/HWioCutout.astro';
+const NBSP = '\u00a0';
+---
+<HWioHeroSplit
+  title="We design and manufacture the devices that bring industrial assets online."
+  titleSize="long"
+  enter
+  glow={false}
+  lead={`More than 7${NBSP}000 of our devices report from grain bins, meters, bridges, machines and buildings in more than 30${NBSP}countries.`}
+  actions={[{ label: 'Explore products', href: '#products' }, { label: 'See applications', href: '#applications' }]}
+>
+  <Fragment slot="title">We design and manufacture the <span class="hwio-grad">devices</span> that bring industrial assets <span class="hwio-grad">online.</span></Fragment>
+  <HWioCutout slot="media" class="w-full" aspect="4/3" ground="plain" eager image={{ src: '/images/chester-wm-bus-dual-antenna-right-600.webp', alt: 'CHESTER wM-Bus in its box with two antennas', width: 600, height: 450 }} />
+</HWioHeroSplit>

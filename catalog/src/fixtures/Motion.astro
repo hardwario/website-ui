@@ -1,0 +1,40 @@
+---
+// Motion primitives: fail-safe scroll reveal with a stagger (HWioReveal), the arrow nudge of a call to
+// action, and an isometric scene that builds itself once in view (HWioIsoScene). The VRT runs with
+// reduced motion, so everything shows its final state; the behaviour spec checks the motion itself.
+import HWioReveal from '@hubpav/hwio-ui/components/HWioReveal.astro';
+import HWioButton from '@hubpav/hwio-ui/components/HWioButton.astro';
+import HWioIsoScene from '@hubpav/hwio-ui/components/HWioIsoScene.astro';
+import siteOnline from '../assets/iso-site-online.svg?raw';
+const steps = [
+  { title: 'Bring the use case', text: 'What runs, where, and who needs the data.' },
+  { title: 'Test real hardware', text: 'A pilot on your site with your data destination.' },
+  { title: 'Roll it out', text: 'Series units, each with a test record.' },
+];
+---
+<HWioReveal />
+<section class="bg-base-100 py-12" aria-labelledby="motion-heading" data-catalog-motion>
+  <div class="container">
+    <div class="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-6">
+      <div class="lg:col-span-5" data-hwio-reveal>
+        <h2 id="motion-heading">Tell us what you need to bring online</h2>
+        <p class="hwio-lead mt-5">We answer with what already runs, what you can build or what we would make for you.</p>
+        <div class="mt-8 flex flex-wrap items-center gap-6">
+          <HWioButton href="#book" arrow size="lg" track={{ id: 'book', location: 'catalog' }}>Book meeting</HWioButton>
+          <a href="#applications" class="hwio-link hwio-weight-label text-[0.9375rem]">See all applications <span aria-hidden="true" class="hwio-arrow">→</span></a>
+        </div>
+      </div>
+      <div class="lg:col-span-7 lg:pl-8">
+        <HWioIsoScene svg={siteOnline} label="Isometric drawing of a site coming online: CHESTER on a machine sends its data to HARDWARIO Cloud, and a STICKER sensor on a post reports to an EMBER gateway." class="mx-auto max-w-[44rem]" />
+      </div>
+    </div>
+    <ol class="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
+      {steps.map((step, i) => (
+        <li class="rounded-2xl border border-base-300 p-8" data-hwio-reveal data-hwio-reveal-delay={String(i * 60)}>
+          <p class="hwio-role-title">{step.title}</p>
+          <p class="hwio-muted mt-2">{step.text}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

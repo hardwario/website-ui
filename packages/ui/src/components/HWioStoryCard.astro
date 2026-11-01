@@ -1,0 +1,38 @@
+---
+/**
+ * Customer-story card: a field photograph under the guidelines' scrim (chapter 08), the customer as a
+ * caps kicker and what they built as the title, White type over the dark, calm bottom of the frame;
+ * the whole card links to the case study (its title underlines on hover and focus, the arrow nudges).
+ * Pass the photograph as `image`, or your own picture in the `media` slot. Logos stay out: the card
+ * names the customer in text (the kicker) only when consent or a published case study allows it.
+ */
+import type { HWioAspect, HWioMedia, HWioTrack } from '../types';
+import HWioPhoto from './HWioPhoto.astro';
+interface Props {
+  href: string;
+  kicker: string;
+  title: string;
+  /** The link line under the title ("Read the story"). */
+  linkLabel: string;
+  image?: HWioMedia;
+  aspect?: HWioAspect;
+  focus?: 'center' | 'top' | 'bottom' | 'left' | 'right';
+  headingLevel?: 'h2' | 'h3' | 'h4';
+  track?: HWioTrack;
+  eager?: boolean;
+  class?: string;
+}
+const { href, kicker, title, linkLabel, image, aspect = '4/5', focus = 'center', headingLevel = 'h3', track, eager = false, class: className = '' } = Astro.props;
+const Heading = headingLevel;
+---
+<a href={href} class:list={['hwio-card-link group relative block overflow-hidden rounded-2xl text-white', className]} data-track={track?.id} data-track-location={track?.location}>
+  <slot name="media">
+    {image && <HWioPhoto image={image} aspect={aspect} focus={focus} rounded="2xl" eager={eager} imgClass="transition-transform duration-500 ease-out group-hover:scale-[1.02] motion-reduce:transition-none" />}
+  </slot>
+  <div class="hwio-scrim pointer-events-none absolute inset-0 rounded-2xl"></div>
+  <div class="absolute inset-x-0 bottom-0 p-6 lg:p-7">
+    <p class="hwio-kicker text-[var(--hwio-kicker-on-neutral,#d1d5db)]">{kicker}</p>
+    <Heading class="hwio-role-title hwio-card-title mt-2 text-white">{title}</Heading>
+    <p class="hwio-weight-label mt-3 text-[0.9375rem] text-white">{linkLabel}<span aria-hidden="true" class="hwio-arrow ml-1.5">→</span></p>
+  </div>
+</a>

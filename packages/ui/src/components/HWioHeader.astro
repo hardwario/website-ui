@@ -9,6 +9,11 @@
  * trigger on close, Escape closes). Below `sm` the bar drops the language dropdown (the drawer carries the
  * pills), so logo, theme toggle and the 48 px trigger fit a 320 px viewport without horizontal overflow.
  *
+ * The theme toggle and the language dropdown are quiet utilities (.hwio-utility: the nav's weight, size
+ * and gray, thin icons). The language dropdown, the mega panels and the drawer close each other: one
+ * popup at a time (@hubpav/hwio-web-runtime/popup). A CTA with an icon collapses to the icon alone below
+ * 2xl; an external CTA's arrow shows only beside its full label.
+ *
  * `navDensity="tight"` with `desktopFrom="xl"`: between 1280 and 1535 px, where the container is still
  * 1280 px wide, the nav labels drop from 15 to 14 px and the item padding from 12 to 8 px, so a long nav
  * plus CTAs (SK/PL/CS labels) fits without sideways scroll. From 1536 px the nav is back to default.
@@ -73,13 +78,15 @@ const linkAttrs = (item: HWioLinkItem) => (item.external ? { target: '_blank', r
     </nav>
 
     <div class="ml-auto flex items-center gap-2">
-      {showThemeToggle && <HWioThemeToggle label={labels.theme ?? 'Theme'} />}
-      {languages.length > 1 && <HWioLanguageSwitcher items={languages} label={labels.languages ?? 'Language'} class="max-sm:hidden" />}
+      {showThemeToggle && <HWioThemeToggle label={labels.theme ?? 'Theme'} class="hwio-utility" />}
+      {languages.length > 1 && <HWioLanguageSwitcher items={languages} label={labels.languages ?? 'Language'} class="hwio-utility max-sm:hidden" />}
       <div class={bp.ctas}>
         {ctas.map((cta) => (
-          <HWioButton href={cta.href} external={cta.external} variant={CTA_VARIANT[cta.variant ?? 'primary']} size="sm" track={cta.track ?? { id: 'header-cta', location: 'header' }} class={cta.icon ? '2xl:px-4 px-2.5' : ''} aria-label={cta.icon ? cta.label : undefined} title={cta.icon ? cta.label : undefined}>
+          <HWioButton href={cta.href} external={cta.external} externalIcon={!cta.icon} variant={CTA_VARIANT[cta.variant ?? 'primary']} size="sm" track={cta.track ?? { id: 'header-cta', location: 'header' }} class={cta.icon ? '2xl:px-4 px-2.5' : ''} aria-label={cta.icon ? cta.label : undefined} title={cta.icon ? cta.label : undefined}>
             {cta.icon && <HWioIcon name={cta.icon as 'bag'} size="sm" />}
             {cta.icon ? <span class="hidden 2xl:inline">{cta.label}</span> : cta.label}
+            {/* Collapsed (icon only, below 2xl) the button shows just its icon; the external glyph returns beside the label. */}
+            {cta.icon && cta.external && <HWioIcon name="external" size="sm" class="hidden 2xl:block" />}
           </HWioButton>
         ))}
       </div>
@@ -110,7 +117,7 @@ const linkAttrs = (item: HWioLinkItem) => (item.external ? { target: '_blank', r
                               {/* One grid cell: DaisyUI lays menu items out as a column-flow grid, so the two lines nest in one span. */}
                               <span class="flex flex-col items-start gap-0.5">
                                 <span class="inline-flex items-center gap-1">{child.label}{child.external && <HWioIcon name="external" size="sm" class="opacity-50" />}</span>
-                                {child.description && <span class="text-xs font-normal leading-snug opacity-70">{child.description}</span>}
+                                {child.description && <span class="hwio-menu-desc">{child.description}</span>}
                               </span>
                             </a>
                           </li>

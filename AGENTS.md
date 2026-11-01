@@ -10,7 +10,7 @@ private catalog. The program plan, owner rulings and rollout phases live in the 
 |---|---|---|
 | `packages/brand` | `@hubpav/hwio-brand` | `src/brand.json` is the source of truth: palette, theme roles (DaisyUI slots), shape, fonts, layout presets, sites registry, footer-strip rules. `npm run build` generates `dist/` (tokens.json, vars.css, docusaurus.css, fonts/*.css + woff2, sites.js). Zero dependencies. |
 | `packages/ui` | `@hubpav/hwio-ui` | Astro components `src/components/HWio*.astro`, `styles.css` (Tailwind 4 entry with the DaisyUI plugin and `@source` for the components), `prose.css`, generated `themes/*.css`, `types.ts`, `schemas.ts`, `html.ts`, `integration.mjs` (`hwioUi()`). |
-| `packages/web-runtime` | `@hubpav/hwio-web-runtime` | Framework-free browser modules (consent, forms, turnstile, attribution, theme, track, reveal, counter, nav, accordion) and `inline` (static bootstrap scripts + SHA-256 hashes). Pure logic in `*-core.ts` is unit-tested with `node --test`. |
+| `packages/web-runtime` | `@hubpav/hwio-web-runtime` | Framework-free browser modules (consent, forms, turnstile, attribution, theme, track, reveal, counter, nav, dropdown, popup, iso, accordion) and `inline` (static bootstrap scripts + SHA-256 hashes). Pure logic in `*-core.ts` is unit-tested with `node --test`. |
 | `packages/web-worker` | `@hubpav/hwio-web-worker` | `hwioWorker()` fetch handler and the security-header / `_headers` builder. |
 | `catalog` | private | Every component under every theme (`/<theme>/`, `/<theme>/<fixture>/`), Playwright visual regression, deployed noindex to https://ui.hardwario.com as Worker `website-ui-catalog` (Workers Builds trigger on `design-system`: root `/`, `npm ci && npm run build`, `npx wrangler deploy -c catalog/wrangler.jsonc`; the repo root is the build root because the catalog depends on the workspace packages). |
 
@@ -32,7 +32,13 @@ shows its downstream diff in `packages/ui/src/styles/themes/*.css`.
   `HWioSeoHead` / `HWioFontGate`. Literal class strings selected from `as const` lookup maps,
   never template-literal class names (Tailwind must see them). The lint checks all of this.
 - **Runtime behaviours** register through `hwioMount(name, { bind, cleanup })`, mark bound
-  nodes with `data-hwio-<name>-bound`, and never touch `window` at import time.
+  nodes with `data-hwio-<name>-bound`, and never touch `window` at import time. Anything that floats
+  over the page (a panel, a drawer, a dropdown) announces itself with `hwioAnnouncePopup()` and closes
+  on `hwioOnPopup()` (`popup.ts`), so only one is open at a time.
+- **Motion is fail-safe.** Never hide content before paint for an animation: a runtime hides what it
+  will animate only once it runs (the reveal's `html.hwio-reveal-on`, the scene's `hwio-iso-anim`),
+  so a failed script leaves everything visible; every motion has a `prefers-reduced-motion` final
+  state. Calm and short (Brand Guidelines chapter 10): ease-out, 200 to 400 ms, nothing bounces.
 - **Inline bootstraps** (`packages/web-runtime/scripts/inline-scripts.mjs`) must stay static:
   anything per site is read from `data-hwio-*` attributes on `<html>` (see `hwioHtmlAttrs`).
 - **The Brand Guidelines are the master** (HBG.261028.01 revision 4, issued 2026-10-30, in the private
@@ -61,7 +67,11 @@ shows its downstream diff in `packages/ui/src/styles/themes/*.css`.
   baselines on macOS. The `VRT baselines` dispatch workflow becomes usable once it is on `main`.
 - Add a component: `packages/ui/src/components/HWioName.astro` + a fixture in
   `catalog/src/fixtures/` registered in `catalog/src/fixtures/index.ts`; run `astro check` in
-  the catalog and the VRT before opening a PR.
+  the catalog and the VRT before opening a PR. Behaviour the screenshots cannot see (keyboard,
+  popups, motion) goes into `catalog/tests/behaviour.spec.ts` (`npm run test:behaviour -w catalog`,
+  run in CI). Catalog images are exports from the artwork library (clearance public) in
+  `catalog/public/images/`, named `<artwork slug>-<width>`; give fixtures `eager` images so
+  full-page screenshots are complete.
 - Add or change a token: edit `packages/brand/src/brand.json`, `npm run build`, commit the
   regenerated theme files with it.
 - Release: `npm run changeset` (the four packages are a fixed version group), merge to `main`,

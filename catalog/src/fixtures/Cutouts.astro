@@ -1,0 +1,31 @@
+---
+// HWioCutout: product cut-outs with the one shadow recipe. A family row on a common baseline (each
+// stands on the floor ellipse), then a cut-out on the Panel ground and one in front of an isometric
+// room with its dark-theme drawing. HWioPhoto fills its frame.
+import HWioCutout from '@hubpav/hwio-ui/components/HWioCutout.astro';
+import HWioPhoto from '@hubpav/hwio-ui/components/HWioPhoto.astro';
+const family = [
+  { name: 'CHESTER wM-Bus', line: 'Wireless M-Bus meter reader', image: { src: '/images/chester-wm-bus-dual-antenna-right-600.webp', alt: 'CHESTER wM-Bus in its box with two antennas', width: 600, height: 450 } },
+  { name: 'STICKER', line: 'Small LoRaWAN sensor', image: { src: '/images/sticker-clime-stand-right-300.webp', alt: 'STICKER Clime on its stand', width: 300, height: 375 } },
+  { name: 'EMBER', line: 'IP67 LoRaWAN gateway', image: { src: '/images/ember-right-300.webp', alt: 'EMBER LoRaWAN gateway', width: 300, height: 225 } },
+  { name: 'GAUGER', line: 'Machine pulse counter', image: { src: '/images/gauger-right-300.webp', alt: 'GAUGER pulse counter', width: 300, height: 225 } },
+];
+---
+<section class="bg-base-100 py-12" aria-label="Product cut-outs">
+  <div class="container">
+    <ul class="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4">
+      {family.map((item) => (
+        <li class="min-w-0">
+          <HWioCutout image={item.image} ground="plain" baseline inset="sm" rounded="none" eager />
+          <p class="hwio-weight-label mt-3 text-[0.9375rem] leading-[1.35]">{item.name}</p>
+          <p class="hwio-muted mt-1 text-sm leading-[1.45]">{item.line}</p>
+        </li>
+      ))}
+    </ul>
+    <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
+      <HWioCutout image={family[0].image} aspect="4/3" eager />
+      <HWioCutout image={family[0].image} aspect="4/3" backdrop={{ light: '/images/iso-meter-room-backdrop.svg', dark: '/images/iso-meter-room-backdrop-dark-theme.svg' }} eager />
+      <HWioPhoto image={{ src: '/images/grainlink-chester-grainlink-c3-solar-railing-sky-600.webp', alt: 'CHESTER GrainLink unit and its solar panel on the railing of a grain bin in winter', width: 600, height: 450 }} aspect="4/3" eager />
+    </div>
+  </div>
+</section>
