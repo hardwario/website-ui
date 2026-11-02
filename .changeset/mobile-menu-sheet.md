@@ -1,6 +1,0 @@
----
-"@hubpav/hwio-ui": minor
-"@hubpav/hwio-web-runtime": minor
----
-
-HWioHeader's small-screen menu is rebuilt (owner, 2026-11-02: "the close icon is not in the same position as hamburger icon, and it weirdly flickers when opening / closing, influencing e.g. image size in the main area"). The DaisyUI drawer is replaced by one toggle in the bar that turns from the menu icon into the close icon in place, and a sheet that opens directly under the bar, full width, scrolling inside itself. The nav runtime locks the page where it is: the root's overflow is hidden with the scrollbar's width kept as padding, and the body goes back to `overflow: visible` while locked, so the sticky header stays and nothing reflows (the drawer widened the layout by the scrollbar's width and scrolled the page to the top). Focus moves to the first item without scrolling and back to the toggle on close; the page behind is inert; the toggle, Escape, a followed link, another popup and a resize to the desktop layout close the menu; the toggle's label follows its state (`labels.menu` / `labels.close`). The bar is solid while the sheet is open. The default `id` is now `hwio-nav-menu`. Markup hooks: `[data-hwio-menu-toggle]`, `[data-hwio-menu-panel]`, `.hwio-mobile-menu`, `html.hwio-scroll-lock`; `[data-hwio-drawer-toggle]` and the drawer checkbox are gone.
