@@ -73,6 +73,57 @@ test.describe('header popups', () => {
   });
 });
 
+// The small-screen menu (owner, 2026-11-02: the drawer's close sat elsewhere than the hamburger, and the page
+// jumped sideways and to the top when it opened): one toggle that turns into the close in place, a sheet
+// under the bar, the page locked where it is.
+test.describe('small-screen menu', () => {
+  // A phone-wide window in the desktop project (the one CI runs), so a classic scrollbar is present too.
+  test.use({ viewport: { width: 390, height: 844 } });
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/hwio/header/');
+    await page.evaluate(() => document.fonts.ready);
+  });
+  const toggle = (page: Page) => page.locator('.catalog-stage [data-hwio-menu-toggle]');
+  const panel = (page: Page) => page.locator('.catalog-stage [data-hwio-menu-panel]');
+  const layout = (page: Page) => page.evaluate(() => ({ y: Math.round(scrollY), width: Math.round(document.body.getBoundingClientRect().width) }));
+
+  test('the toggle turns into the close in place, the sheet opens under the bar, the page does not move', async ({ page }) => {
+    await page.evaluate(() => window.scrollTo(0, 120));
+    const before = await layout(page);
+    const box = await toggle(page).boundingBox();
+    await toggle(page).evaluate((el) => (el as HTMLElement).click());
+    await expect(toggle(page)).toHaveAttribute('aria-expanded', 'true');
+    await expect(toggle(page)).toHaveAttribute('aria-label', 'Close menu');
+    await expect(panel(page)).toBeVisible();
+    expect(await toggle(page).boundingBox()).toEqual(box);
+    expect(await layout(page)).toEqual(before);
+    const bar = await page.locator('.catalog-stage header').evaluate((el) => Math.round(el.getBoundingClientRect().bottom));
+    // The sheet starts at the bar's bottom edge (it covers the bar's 1 px border with its own).
+    expect(Math.abs(await panel(page).evaluate((el) => Math.round(el.getBoundingClientRect().top)) - bar)).toBeLessThanOrEqual(1);
+    expect(await page.evaluate(() => document.documentElement.classList.contains('hwio-scroll-lock'))).toBe(true);
+  });
+
+  test('Escape closes the menu, focus returns to the toggle and nothing stays locked or inert', async ({ page }) => {
+    await toggle(page).focus();
+    await page.keyboard.press('Enter');
+    await expect(toggle(page)).toHaveAttribute('aria-expanded', 'true');
+    expect(await page.evaluate(() => !!document.activeElement?.closest('[data-hwio-menu-panel]'))).toBe(true);
+    await page.keyboard.press('Escape');
+    await expect(toggle(page)).toHaveAttribute('aria-expanded', 'false');
+    await expect(toggle(page)).toHaveAttribute('aria-label', 'Open menu');
+    await expect(panel(page)).toBeHidden();
+    expect(await page.evaluate(() => document.activeElement?.hasAttribute('data-hwio-menu-toggle'))).toBe(true);
+    expect(await page.evaluate(() => document.documentElement.classList.contains('hwio-scroll-lock') || !!document.querySelector('[inert]'))).toBe(false);
+  });
+
+  test('a followed link closes the menu', async ({ page }) => {
+    await toggle(page).evaluate((el) => (el as HTMLElement).click());
+    await panel(page).locator('a[href="#why"]').click();
+    await expect(toggle(page)).toHaveAttribute('aria-expanded', 'false');
+    expect(await page.evaluate(() => document.documentElement.classList.contains('hwio-scroll-lock'))).toBe(false);
+  });
+});
+
 test.describe('motion with motion allowed', () => {
   test.use({ reducedMotion: 'no-preference' });
 

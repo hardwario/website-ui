@@ -1,6 +1,6 @@
 /**
  * One popup at a time across runtimes. A runtime that opens something which floats over the page
- * (HWioHeader's mega panel or drawer, a `details[data-hwio-dropdown]`) announces the element it
+ * (HWioHeader's mega panel or small-screen menu, a `details[data-hwio-dropdown]`) announces the element it
  * opened with `hwio:popupopen`; every other runtime closes what it has open unless that element is
  * the announced one or contains it. The runtimes stay independent: neither imports the other.
  */

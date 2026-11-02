@@ -2,21 +2,25 @@ import { hwioMount } from './mount.js';
 import { hwioAnnouncePopup, hwioOnPopup } from './popup.js';
 
 /**
- * Header behaviours: drives the DaisyUI drawer from its [data-hwio-drawer-toggle] buttons (Enter and
- * Space work because they are buttons; aria-expanded follows the checkbox, focus moves to the panel's
- * first control on open and back to the trigger on close, Escape closes, a followed link closes),
- * opens HWioHeader's mega panels
+ * Header behaviours: opens HWioHeader's small-screen menu from its [data-hwio-menu-toggle] button into its
+ * [data-hwio-menu-panel] sheet (aria-expanded and the button's label follow; the page is locked without
+ * moving, its scrollbar's width kept as padding, and made inert behind the sheet; focus moves to the first
+ * item without scrolling and back to the toggle on close; the toggle, Escape, a followed link, another
+ * popup and a resize to the desktop layout close it), opens HWioHeader's mega panels
  * ([data-hwio-mega-trigger] buttons and their [data-hwio-mega-panel]; hover with intent on pointer
  * devices, click, ArrowDown into the panel, Escape / outside click / focus leaving close; one at a
  * time; the click that follows a hover-open keeps the panel open, the next one closes it), and marks the nav link whose section is in view ([data-hwio-scrollspy] nav with same-page
- * anchors) with aria-current="location". Opening a mega panel or the drawer announces it
+ * anchors) with aria-current="location". Opening a mega panel or the small-screen menu announces it
  * (`hwio:popupopen`, popup.ts), so an open dropdown (HWioLanguageSwitcher) closes; a dropdown that
  * opens closes the mega panels the same way.
  */
 export function hwioNavRuntime() {
   let controller: AbortController | null = null;
   let observer: IntersectionObserver | null = null;
+  let closeMenus: (() => void)[] = [];
   function cleanup() {
+    // A page swap with the menu open must not leave the next page locked or inert.
+    closeMenus.forEach((close) => close()); closeMenus = [];
     controller?.abort(); controller = null;
     observer?.disconnect(); observer = null;
   }
@@ -24,39 +28,69 @@ export function hwioNavRuntime() {
     cleanup();
     controller = new AbortController();
     const { signal } = controller;
-    document.querySelectorAll<HTMLInputElement>('input.drawer-toggle').forEach((input) => {
-      const side = input.parentElement?.querySelector<HTMLElement>('.drawer-side') ?? null;
-      const toggles = Array.from(document.querySelectorAll<HTMLElement>(`[data-hwio-drawer-toggle="${input.id}"]`));
-      const trigger = toggles.find((t) => !side?.contains(t)) ?? null;
-      const sync = () => toggles.forEach((t) => t.setAttribute('aria-expanded', String(input.checked)));
-      // DaisyUI reveals .drawer-side after a 100 ms visibility delay; retry per frame until the control takes focus.
-      const focusWhenVisible = (el: HTMLElement, frames = 40) => {
-        if (!input.checked) return;
-        el.focus();
-        if (document.activeElement !== el && frames > 0) requestAnimationFrame(() => focusWhenVisible(el, frames - 1));
+    document.querySelectorAll<HTMLButtonElement>('[data-hwio-menu-toggle]').forEach((toggle) => {
+      const panel = document.querySelector<HTMLElement>(`[data-hwio-menu-panel="${toggle.dataset.hwioMenuToggle}"]`);
+      if (!panel) return;
+      const header = toggle.closest('header');
+      const root = document.documentElement;
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const desktop = toggle.dataset.hwioMenuUntil ? window.matchMedia(`(min-width: ${toggle.dataset.hwioMenuUntil})`) : null;
+      let inerted: HTMLElement[] = [];
+      let hideTimer: ReturnType<typeof setTimeout> | null = null;
+      const isOpen = () => toggle.getAttribute('aria-expanded') === 'true';
+      const label = (open: boolean) => {
+        const text = open ? toggle.dataset.hwioLabelClose : toggle.dataset.hwioLabelOpen;
+        if (text) toggle.setAttribute('aria-label', text);
       };
-      const apply = (restoreFocus: boolean) => {
-        sync();
-        if (input.checked) {
-          if (side) hwioAnnouncePopup(side);
-          const first = side?.querySelector<HTMLElement>('button, a[href], input:not([type="hidden"]), select, textarea, summary, [tabindex]:not([tabindex="-1"])');
-          if (first) focusWhenVisible(first);
-        } else if (restoreFocus) {
-          trigger?.focus();
+      // Lock the page where it is: overflow hidden on the root, its scrollbar's width kept as padding (so
+      // the layout keeps its width), and everything outside the header inert, walking up from the header.
+      const lock = (on: boolean) => {
+        if (on) {
+          root.style.setProperty('--hwio-scrollbar', `${Math.max(0, window.innerWidth - root.clientWidth)}px`);
+          root.classList.add('hwio-scroll-lock');
+          for (let node: HTMLElement | null = header; node && node.parentElement && node !== document.body; node = node.parentElement) {
+            for (const sibling of Array.from(node.parentElement.children)) {
+              if (sibling !== node && sibling instanceof HTMLElement && !sibling.inert && sibling.tagName !== 'SCRIPT') {
+                sibling.inert = true;
+                inerted.push(sibling);
+              }
+            }
+          }
+        } else {
+          root.classList.remove('hwio-scroll-lock');
+          root.style.removeProperty('--hwio-scrollbar');
+          inerted.forEach((el) => { el.inert = false; });
+          inerted = [];
         }
       };
       const setOpen = (open: boolean, restoreFocus = true) => {
-        if (input.checked === open) return;
-        input.checked = open;
-        apply(restoreFocus);
+        if (isOpen() === open) return;
+        toggle.setAttribute('aria-expanded', String(open));
+        label(open);
+        if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+        if (open) {
+          panel.hidden = false;
+          lock(true);
+          // One frame with the closed state rendered, so the sheet fades in instead of appearing.
+          requestAnimationFrame(() => { if (isOpen()) panel.dataset.state = 'open'; });
+          hwioAnnouncePopup(panel);
+          panel.querySelector<HTMLElement>('a[href], button, summary, input:not([type="hidden"])')?.focus({ preventScroll: true });
+        } else {
+          panel.dataset.state = 'closed';
+          lock(false);
+          const hide = () => { if (!isOpen()) panel.hidden = true; };
+          if (reduced.matches) hide(); else hideTimer = setTimeout(hide, 200);
+          if (restoreFocus) toggle.focus({ preventScroll: true });
+        }
       };
-      sync();
-      toggles.forEach((t) => t.addEventListener('click', () => setOpen(!input.checked), { signal }));
-      // Labels (the overlay) still flip the checkbox natively; follow them.
-      input.addEventListener('change', () => apply(true), { signal });
-      // A followed link closes the drawer without stealing focus from the navigation target (same-page anchors).
-      side?.querySelectorAll('a[href]').forEach((a) => a.addEventListener('click', () => setOpen(false, false), { signal }));
-      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && input.checked) setOpen(false); }, { signal });
+      closeMenus.push(() => { if (isOpen()) { setOpen(false, false); panel.hidden = true; } });
+      toggle.addEventListener('click', () => setOpen(!isOpen()), { signal });
+      // A followed link closes the menu without stealing focus from the navigation target (same-page anchors).
+      panel.querySelectorAll('a[href]').forEach((a) => a.addEventListener('click', () => setOpen(false, false), { signal }));
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && isOpen()) setOpen(false); }, { signal });
+      desktop?.addEventListener('change', (e) => { if (e.matches) setOpen(false, false); }, { signal });
+      // Another popup (the language dropdown in the bar) opened: close the menu unless it sits in the sheet.
+      hwioOnPopup((owner) => { if (owner !== panel && !panel.contains(owner)) setOpen(false, false); }, signal);
     });
     const triggers = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-hwio-mega-trigger]'));
     if (triggers.length) {
@@ -107,7 +141,7 @@ export function hwioNavRuntime() {
         const node = e.target as Node;
         if (!pairs.some((p) => p.trigger.contains(node) || p.panel.contains(node))) closeAll();
       }, { signal });
-      // Another popup (a language dropdown, the drawer) opened: close the panels unless it sits in one.
+      // Another popup (a language dropdown, the small-screen menu) opened: close the panels unless it sits in one.
       hwioOnPopup((owner) => {
         if (!pairs.some((p) => p.panel === owner || p.panel.contains(owner))) closeAll();
       }, signal);
