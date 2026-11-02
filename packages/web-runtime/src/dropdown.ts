@@ -10,7 +10,7 @@ import { hwioAnnouncePopup, hwioOnPopup } from './popup.js';
  * - Escape, with focus back on its summary when focus was inside;
  * - focus leaving it (Tab past the last item);
  * - another dropdown opening, or another runtime announcing a popup (HWioHeader's mega panels and
- *   drawer, through `hwio:popupopen`). Opening a dropdown announces it, so an open mega panel closes.
+ *   small-screen menu, through `hwio:popupopen`). Opening a dropdown announces it, so an open mega panel closes.
  */
 export function hwioDropdownRuntime() {
   let controller: AbortController | null = null;

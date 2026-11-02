@@ -459,7 +459,7 @@
   [data-theme$='-dark'] .hwio-backdrop-light { display: none; }
   [data-theme$='-dark'] .hwio-backdrop-dark { display: block; }
 
-  /* Menu panels (HWioMegaLinks) and the drawer's second lines (owner, 2026-10-30): a caps group title
+  /* Menu panels (HWioMegaLinks) and the small-screen menu's second lines (owner, 2026-10-30): a caps group title
      in Gray, link labels that never wrap, descriptions small (13 px), Regular, Gray and balanced. */
   .hwio-mega-title {
     color: var(--hwio-text-secondary, color-mix(in oklab, var(--color-base-content) 72%, transparent));
@@ -528,7 +528,7 @@
 /* Text links: themes whose primary is too light for text on the page ground (er3o teal) set
    --hwio-link to their text-safe hue; the default keeps DaisyUI's primary. */
 .btn-link { color: var(--hwio-link, var(--color-primary)); }
-/* DaisyUI marks a focused menu item (header nav, drawer, the language dropdown's `.menu.dropdown-content`)
+/* DaisyUI marks a focused menu item (header nav, small-screen menu, the language dropdown's `.menu.dropdown-content`)
    with a 10 % tint only and sets outline-style: none, on every `details > summary` unconditionally. That
    fails WCAG 2.4.7; restore the system ring from the base layer. Same selector shape as DaisyUI's rule. */
 .menu :where(li > :not(ul, menu, details, .menu-title), li > details > summary):focus-visible {
@@ -536,12 +536,73 @@
   outline-offset: 2px;
 }
 /* DaisyUI 5.7.30+ paints a menu link carrying aria-current like .menu-active (the neutral fill). The
-   header marks the current page with its own label colour and bar (.hwio-nav-current) and the drawer
+   header marks the current page with its own label colour and bar (.hwio-nav-current) and the small-screen menu
    lists it as a plain row, so those links keep the ground; .menu-active items (the language dropdown)
    keep DaisyUI's fill. currentColor as `color` inherits, so the nav's own colour utilities still win. */
 .menu :where(li) > [aria-current]:not([aria-current='false'], [aria-current=''], .menu-active, .btn) {
   --menu-active-bg: transparent;
   --menu-active-fg: currentColor;
+}
+/* HWioHeader small-screen menu (owner, 2026-11-02). One toggle in the bar: the menu and the close icon share
+   one grid cell and cross-fade, so the close sits exactly where the hamburger was. The sheet opens under the
+   bar (the header is sticky at the top, so top: 100% is the bar's bottom edge), full width, and scrolls
+   inside itself; it fades in and settles 8 px, without motion when the visitor asks for less. While it is
+   open the nav runtime sets html.hwio-scroll-lock: overflow hidden, with the scrollbar's width kept as
+   padding, so nothing on the page moves. The icons stack by position, never by display, so the toggle's
+   lg:hidden / xl:hidden keeps working. */
+.hwio-menu-toggle {
+  position: relative;
+}
+.hwio-menu-toggle > svg {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  transition: opacity 160ms ease-out, rotate 200ms ease-out, scale 200ms ease-out;
+}
+.hwio-menu-toggle[aria-expanded='true'] > .hwio-menu-icon-open,
+.hwio-menu-toggle:not([aria-expanded='true']) > .hwio-menu-icon-close {
+  opacity: 0;
+  rotate: 45deg;
+  scale: 0.7;
+}
+.hwio-mobile-menu {
+  position: absolute;
+  inset-inline: 0;
+  top: 100%;
+  height: calc(100dvh - 4rem - 1px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-top: 1px solid var(--color-base-300);
+  background-color: var(--color-base-100);
+  opacity: 0;
+  translate: 0 -0.5rem;
+  transition: opacity 180ms ease-out, translate 180ms ease-out;
+}
+@media (width >= 64rem) {
+  .hwio-mobile-menu { height: calc(100dvh - 72px - 1px); }
+}
+.hwio-mobile-menu[data-state='open'] {
+  opacity: 1;
+  translate: 0 0;
+}
+/* With the sheet open the bar is solid: its translucent ground would show the page's heading behind the logo. */
+header:has(> .hwio-mobile-menu:not([hidden])) {
+  background-color: var(--color-base-100);
+}
+html.hwio-scroll-lock {
+  overflow: hidden;
+  padding-inline-end: var(--hwio-scrollbar, 0px);
+}
+/* The base body's overflow-x: hidden would make the body its own scroll container once the root stops
+   propagating overflow: the sticky header would then stick to the body's top, off screen, and the page
+   would jump. While locked the root clips, so the body goes back to visible. */
+html.hwio-scroll-lock body {
+  overflow: visible;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hwio-menu-toggle > svg,
+  .hwio-mobile-menu { transition: none; }
+  .hwio-mobile-menu { translate: none; }
 }
 /* HWioHeader navDensity="tight" (desktopFrom="xl"): from 1280 to 1535 px the container is 1280 px wide
    while the full nav and CTAs show, and long SK/PL/CS labels overflowed it. Labels drop from 15 to 14 px

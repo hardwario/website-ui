@@ -1,16 +1,19 @@
 ---
 /**
  * Sticky site header: logo slot, primary nav (flat links, or mega items whose `mega:<key>` slot opens as a
- * full-width panel under the bar), CTAs, language switcher, theme toggle, and a DaisyUI drawer for small
- * screens, where a mega item lists its `children` as a collapsible group instead.
+ * full-width panel under the bar), CTAs, language switcher, theme toggle, and on small screens a menu sheet,
+ * where a mega item lists its `children` as a collapsible group instead.
  *
- * The drawer is opened and closed by real buttons (`data-hwio-drawer-toggle`), so Enter and Space work; the
- * nav runtime keeps the checkbox, `aria-expanded` and focus in sync (into the panel on open, back to the
- * trigger on close, Escape closes). Below `sm` the bar drops the language dropdown (the drawer carries the
- * pills), so logo, theme toggle and the 48 px trigger fit a 320 px viewport without horizontal overflow.
+ * The small-screen menu (owner, 2026-11-02: the drawer's close button sat elsewhere than the hamburger and
+ * the page jumped sideways and to the top when it opened): one toggle button stays in the bar and turns from
+ * the menu icon into the close icon in place; the sheet opens directly under the bar, full width, scrolling
+ * inside itself. The nav runtime locks the page without moving it (the scrollbar's width is kept as padding),
+ * makes the page behind inert, moves focus into the sheet without scrolling, and closes on the toggle,
+ * Escape, a followed link, another popup and a resize to the desktop layout. Below `sm` the bar drops the
+ * language dropdown (the sheet carries the pills), so logo, theme toggle and the 48 px toggle fit 320 px.
  *
  * The theme toggle and the language dropdown are quiet utilities (.hwio-utility: the nav's weight, size
- * and gray, thin icons). The language dropdown, the mega panels and the drawer close each other: one
+ * and gray, thin icons). The language dropdown, the mega panels and the menu close each other: one
  * popup at a time (@hubpav/hwio-web-runtime/popup). A CTA with an icon collapses to the icon alone below
  * 2xl; an external CTA's arrow shows only beside its full label.
  *
@@ -27,7 +30,7 @@ import HWioThemeToggle from './HWioThemeToggle.astro';
 interface NavItem extends HWioLinkItem {
   /** Key of the `mega:<key>` slot; the item becomes a button that opens the panel (hover, click, keyboard). */
   mega?: string;
-  /** Links listed under the item in the drawer (the panel is desktop-only); a description renders as a second, muted line. */
+  /** Links listed under the item in the small-screen menu (the panel is desktop-only); a description renders as a second, muted line. */
   children?: (HWioLinkItem & { description?: string })[];
 }
 interface Props {
@@ -37,17 +40,17 @@ interface Props {
   showThemeToggle?: boolean;
   scrollspy?: boolean;
   labels: { nav: string; menu: string; close: string; theme?: string; languages?: string };
-  /** Viewport from which the inline nav and CTAs replace the drawer (default lg; xl for long navs). */
+  /** Viewport from which the inline nav and CTAs replace the small-screen menu (default lg; xl for long navs). */
   desktopFrom?: 'lg' | 'xl';
   /** 'tight' (with desktopFrom xl only): smaller nav labels and padding from 1280 to 1535 px. Default 'default'. */
   navDensity?: 'default' | 'tight';
   id?: string;
   class?: string;
 }
-const { nav, ctas = [], languages = [], showThemeToggle = true, scrollspy = false, labels, desktopFrom = 'lg', navDensity = 'default', id = 'hwio-nav-drawer', class: className = '' } = Astro.props;
+const { nav, ctas = [], languages = [], showThemeToggle = true, scrollspy = false, labels, desktopFrom = 'lg', navDensity = 'default', id = 'hwio-nav-menu', class: className = '' } = Astro.props;
 const BREAK = {
-  lg: { nav: 'hidden flex-1 self-stretch justify-center lg:flex', ctas: 'hidden items-center gap-2 lg:flex', drawer: 'drawer drawer-end w-auto lg:hidden', panels: 'hidden lg:block', densityTight: '' },
-  xl: { nav: 'hidden flex-1 self-stretch justify-center xl:flex', ctas: 'hidden items-center gap-2 xl:flex', drawer: 'drawer drawer-end w-auto xl:hidden', panels: 'hidden xl:block', densityTight: 'hwio-nav-tight' },
+  lg: { nav: 'hidden flex-1 self-stretch justify-center lg:flex', ctas: 'hidden items-center gap-2 lg:flex', menu: 'lg:hidden', from: '64rem', panels: 'hidden lg:block', densityTight: '' },
+  xl: { nav: 'hidden flex-1 self-stretch justify-center xl:flex', ctas: 'hidden items-center gap-2 xl:flex', menu: 'xl:hidden', from: '80rem', panels: 'hidden xl:block', densityTight: 'hwio-nav-tight' },
 } as const;
 const bp = BREAK[desktopFrom];
 const CTA_VARIANT = { primary: 'primary', secondary: 'secondary', ghost: 'ghost' } as const;
@@ -90,55 +93,48 @@ const linkAttrs = (item: HWioLinkItem) => (item.external ? { target: '_blank', r
           </HWioButton>
         ))}
       </div>
-      <div class={bp.drawer}>
-        {/* The checkbox only drives DaisyUI's CSS; the buttons are the controls, so it leaves the tab order and the a11y tree. */}
-        <input id={id} type="checkbox" class="drawer-toggle" tabindex="-1" aria-hidden="true" />
-        <div class="drawer-content">
-          <button type="button" class="btn btn-ghost btn-square drawer-button" aria-label={labels.menu} aria-controls={`${id}-panel`} aria-expanded="false" data-hwio-drawer-toggle={id}>
-            <HWioIcon name="menu" size="lg" />
-          </button>
+      <button type="button" class:list={['btn btn-ghost btn-square hwio-menu-toggle', bp.menu]} aria-label={labels.menu} aria-controls={`${id}-panel`} aria-expanded="false" data-hwio-menu-toggle={id} data-hwio-menu-until={bp.from} data-hwio-label-open={labels.menu} data-hwio-label-close={labels.close}>
+        <HWioIcon name="menu" size="lg" class="hwio-menu-icon-open" />
+        <HWioIcon name="close" size="lg" class="hwio-menu-icon-close" />
+      </button>
+    </div>
+  </div>
+  <div id={`${id}-panel`} class:list={['hwio-mobile-menu', bp.menu]} data-hwio-menu-panel={id} aria-label={labels.nav} role="region" hidden>
+    <div class="container flex flex-col gap-6 py-4 pb-10">
+      <ul class="menu -mx-3 w-auto max-w-xl p-0 text-base">
+        {nav.map((item) => (
+          <li>
+            {item.children?.length ? (
+              <details>
+                <summary>{item.label}</summary>
+                <ul>
+                  {item.children.map((child) => (
+                    <li>
+                      <a href={child.href} {...linkAttrs(child)} data-track={child.track?.id} data-track-location="mobile-menu">
+                        {/* One grid cell: DaisyUI lays menu items out as a column-flow grid, so the two lines nest in one span. */}
+                        <span class="flex flex-col items-start gap-0.5">
+                          <span class="inline-flex items-center gap-1">{child.label}{child.external && <HWioIcon name="external" size="sm" class="opacity-50" />}</span>
+                          {child.description && <span class="hwio-menu-desc">{child.description}</span>}
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            ) : (
+              <a href={item.href} {...linkAttrs(item)} aria-current={item.current ? 'page' : undefined} data-track={item.track?.id} data-track-location="mobile-menu">{item.label}</a>
+            )}
+          </li>
+        ))}
+      </ul>
+      {ctas.length > 0 && (
+        <div class="flex max-w-xl flex-col gap-2 sm:flex-row">
+          {ctas.map((cta) => (
+            <HWioButton href={cta.href} external={cta.external} variant={CTA_VARIANT[cta.variant ?? 'primary']} track={{ id: cta.track?.id ?? 'header-cta', location: 'mobile-menu' }} class="sm:flex-1">{cta.label}</HWioButton>
+          ))}
         </div>
-        <div class="drawer-side z-[60]">
-          <label for={id} aria-label={labels.close} class="drawer-overlay"></label>
-          <div id={`${id}-panel`} class="menu min-h-full w-80 max-w-[85vw] gap-2 bg-base-100 p-6 text-base-content">
-            <div class="flex justify-end">
-              <button type="button" class="btn btn-ghost btn-square btn-sm" aria-label={labels.close} aria-controls={`${id}-panel`} aria-expanded="false" data-hwio-drawer-toggle={id}><HWioIcon name="close" /></button>
-            </div>
-            <ul class="menu w-full text-base">
-              {nav.map((item) => (
-                <li>
-                  {item.children?.length ? (
-                    <details>
-                      <summary>{item.label}</summary>
-                      <ul>
-                        {item.children.map((child) => (
-                          <li>
-                            <a href={child.href} {...linkAttrs(child)} data-track={child.track?.id} data-track-location="mobile-menu">
-                              {/* One grid cell: DaisyUI lays menu items out as a column-flow grid, so the two lines nest in one span. */}
-                              <span class="flex flex-col items-start gap-0.5">
-                                <span class="inline-flex items-center gap-1">{child.label}{child.external && <HWioIcon name="external" size="sm" class="opacity-50" />}</span>
-                                {child.description && <span class="hwio-menu-desc">{child.description}</span>}
-                              </span>
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    </details>
-                  ) : (
-                    <a href={item.href} {...linkAttrs(item)} aria-current={item.current ? 'page' : undefined} data-track={item.track?.id} data-track-location="mobile-menu">{item.label}</a>
-                  )}
-                </li>
-              ))}
-            </ul>
-            <div class="mt-4 flex flex-col gap-2">
-              {ctas.map((cta) => (
-                <HWioButton href={cta.href} external={cta.external} variant={CTA_VARIANT[cta.variant ?? 'primary']} track={{ id: cta.track?.id ?? 'header-cta', location: 'mobile-menu' }}>{cta.label}</HWioButton>
-              ))}
-            </div>
-            {languages.length > 1 && <div class="mt-4"><HWioLanguageSwitcher items={languages} label={labels.languages ?? 'Language'} variant="pills" /></div>}
-          </div>
-        </div>
-      </div>
+      )}
+      {languages.length > 1 && <HWioLanguageSwitcher items={languages} label={labels.languages ?? 'Language'} variant="pills" />}
     </div>
   </div>
   {megaItems.length > 0 && (
