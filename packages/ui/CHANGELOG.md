@@ -1,5 +1,14 @@
 # @hubpav/hwio-ui
 
+## 0.10.6
+
+### Patch Changes
+
+- d538265: HWioHeader: a CTA with its own icon (the store's bag) no longer shows the external-link arrow beside its full label from 2xl; the icon already says where it goes.
+- @hubpav/hwio-brand@0.10.6
+  - @hubpav/hwio-web-runtime@0.10.6
+  - @hubpav/hwio-web-worker@0.10.6
+
 ## 0.10.5
 
 ### Patch Changes

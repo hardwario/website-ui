@@ -1,5 +1,9 @@
 # @hubpav/hwio-brand
 
+## 0.10.6
+
+No changes in this release.
+
 ## 0.10.5
 
 No changes in this release.
