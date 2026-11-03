@@ -22,7 +22,7 @@ const PER_THEME = {
     title: 'HARDWARIO (forestry.report)',
     description: 'The HARDWARIO system with the forestry green as primary and accent; Inter, hairline borders, the 1 280 px grid.',
     northStar: 'Devices that bring industrial assets online, in the forest',
-    overview: 'forestry.report is a HARDWARIO landing page for forestry managers. It shares every component, neutral and type rule with the family and swaps the primary and accent roles to the forestry green. The guidelines have no forestry colour and D29 retired the green Forestry Report logo, so whether the report keeps its green is an owner question for its relaunch (PLAN 6.3). This file documents the theme as built and is regenerated from brand.json.',
+    overview: 'forestry.report is a HARDWARIO landing page for forestry managers. It shares every component, neutral and type rule with the family and swaps the primary and accent roles to the forestry green. The guidelines have no forestry colour and D29 retired the green Forestry Report logo, so whether the report keeps its green is an owner question (PLAN 6.3). This file documents the theme as built and is regenerated from brand.json.',
     brandRules: '**The Brand Rule.** The HARDWARIO logo, Inter and the Brand Guidelines HBG.261028.01 are the identity. The forestry green is a theme role for this vertical (primary and accent), not a brand colour.',
   },
   er3o: {
