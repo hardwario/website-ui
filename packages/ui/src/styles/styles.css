@@ -585,6 +585,16 @@
   opacity: 1;
   translate: 0 0;
 }
+/* A group's chevron sits right after its label, not at the far edge of the sheet (owner, 2026-11-03: "too
+   distant"); the whole row still opens the group. */
+.hwio-mobile-menu details > summary {
+  grid-template-columns: auto auto;
+  justify-content: start;
+  column-gap: 0.625rem;
+}
+.hwio-mobile-menu details > summary::after {
+  justify-self: start;
+}
 /* With the sheet open the bar is solid: its translucent ground would show the page's heading behind the logo. */
 header:has(> .hwio-mobile-menu:not([hidden])) {
   background-color: var(--color-base-100);
