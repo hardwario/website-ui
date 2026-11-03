@@ -1,5 +1,14 @@
 # @hubpav/hwio-ui
 
+## 0.10.5
+
+### Patch Changes
+
+- 0b93c9a: HWioFooterSites: the middle dots between the HARDWARIO websites show from 640 px; on a phone the names wrap with a wider gap, so no line ends on a dot and no name stands alone after one.
+- @hubpav/hwio-brand@0.10.5
+  - @hubpav/hwio-web-runtime@0.10.5
+  - @hubpav/hwio-web-worker@0.10.5
+
 ## 0.10.4
 
 ### Patch Changes
