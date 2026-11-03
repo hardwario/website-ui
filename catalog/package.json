@@ -15,10 +15,10 @@
     "test:behaviour": "playwright test tests/behaviour.spec.ts --project desktop"
   },
   "dependencies": {
-    "@hubpav/hwio-brand": "0.10.2",
-    "@hubpav/hwio-ui": "0.10.2",
-    "@hubpav/hwio-web-runtime": "0.10.2",
-    "@hubpav/hwio-web-worker": "0.10.2",
+    "@hubpav/hwio-brand": "0.10.3",
+    "@hubpav/hwio-ui": "0.10.3",
+    "@hubpav/hwio-web-runtime": "0.10.3",
+    "@hubpav/hwio-web-worker": "0.10.3",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.5",
     "tailwindcss": "^4.3.3"
