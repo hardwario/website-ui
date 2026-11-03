@@ -1,5 +1,15 @@
 # @hubpav/hwio-ui
 
+## 0.10.1
+
+### Patch Changes
+
+- 467079e: In the small-screen menu a group's chevron sits right after its label instead of at the far edge of the sheet (owner, 2026-11-03: "too distant"); the whole row still opens the group.
+- Updated dependencies [467079e]
+  - @hubpav/hwio-web-runtime@0.10.1
+  - @hubpav/hwio-brand@0.10.1
+  - @hubpav/hwio-web-worker@0.10.1
+
 ## 0.10.0
 
 ### Minor Changes
