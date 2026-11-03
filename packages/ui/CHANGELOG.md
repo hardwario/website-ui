@@ -1,5 +1,14 @@
 # @hubpav/hwio-ui
 
+## 0.10.4
+
+### Patch Changes
+
+- 31131c9: Hover in the header is instant, like a native menu: the bar's items, the language dropdown's rows and everything in a mega panel switch their fill and colour without a fade. DaisyUI's 200 ms fade-out kept the item just passed glowing while the pointer was already on the next one.
+- @hubpav/hwio-brand@0.10.4
+  - @hubpav/hwio-web-runtime@0.10.4
+  - @hubpav/hwio-web-worker@0.10.4
+
 ## 0.10.3
 
 ### Patch Changes
