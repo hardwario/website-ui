@@ -134,7 +134,13 @@ const linkAttrs = (item: HWioLinkItem) => (item.external ? { target: '_blank', r
           ))}
         </div>
       )}
-      {languages.length > 1 && <HWioLanguageSwitcher items={languages} label={labels.languages ?? 'Language'} variant="pills" />}
+      {languages.length > 1 && (
+        <div>
+          {/* The visible group label (owner, 2026-11-03); the pills' nav carries the same accessible name. */}
+          <p class="mb-2 text-sm font-semibold text-[var(--hwio-text-secondary,currentColor)]" aria-hidden="true">{labels.languages ?? 'Language'}</p>
+          <HWioLanguageSwitcher items={languages} label={labels.languages ?? 'Language'} variant="pills" />
+        </div>
+      )}
     </div>
   </div>
   {megaItems.length > 0 && (
