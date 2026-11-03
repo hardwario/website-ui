@@ -1,5 +1,14 @@
 # @hubpav/hwio-ui
 
+## 0.10.2
+
+### Patch Changes
+
+- f0c894e: The small-screen menu labels the language pills with `labels.languages` ("Language", localized by the site) above them (owner, 2026-11-03); the pills' nav keeps the same accessible name.
+- @hubpav/hwio-brand@0.10.2
+  - @hubpav/hwio-web-runtime@0.10.2
+  - @hubpav/hwio-web-worker@0.10.2
+
 ## 0.10.1
 
 ### Patch Changes
