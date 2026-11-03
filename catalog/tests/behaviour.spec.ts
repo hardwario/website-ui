@@ -63,6 +63,59 @@ test.describe('header popups', () => {
     await expect(trigger(page)).toHaveAttribute('aria-expanded', 'false');
   });
 
+  test('a slow move from a trigger down into its panel keeps the panel open', async ({ page }) => {
+    const box = (await trigger(page).boundingBox())!;
+    const x = box.x + box.width / 2;
+    await page.mouse.move(x, box.y + box.height / 2, { steps: 4 });
+    await expect(trigger(page)).toHaveAttribute('aria-expanded', 'true');
+    const panelTop = await page.locator('.catalog-stage [data-hwio-mega-panel="products"]').evaluate((el) => el.getBoundingClientRect().top);
+    // About 30 px down to the panel in 600 ms, slower than any grace period on the empty strip under the label.
+    for (let y = box.y + box.height / 2; y <= panelTop + 12; y += 2) {
+      await page.mouse.move(x, y);
+      await page.waitForTimeout(40);
+    }
+    await page.waitForTimeout(400);
+    await expect(trigger(page)).toHaveAttribute('aria-expanded', 'true');
+  });
+
+  test('moving along the nav from one mega item to the next switches the panel without closing it', async ({ page }) => {
+    // The fixture has one mega item: clone it (and its panel) beside it, then re-bind the nav runtime.
+    await page.evaluate(() => {
+      const li = document.querySelector('.catalog-stage [data-hwio-mega-trigger="products"]')!.closest('li')!;
+      const copy = li.cloneNode(true) as HTMLElement;
+      copy.querySelector('[data-hwio-mega-trigger]')!.setAttribute('data-hwio-mega-trigger', 'second');
+      li.after(copy);
+      const panel = document.querySelector('.catalog-stage [data-hwio-mega-panel="products"]')!;
+      const panelCopy = panel.cloneNode(true) as HTMLElement;
+      panelCopy.setAttribute('data-hwio-mega-panel', 'second');
+      panelCopy.removeAttribute('id');
+      panel.after(panelCopy);
+      document.dispatchEvent(new Event('astro:page-load'));
+    });
+    const next = page.locator('.catalog-stage .hwio-nav > li').nth(1);
+    const second = page.locator('.catalog-stage [data-hwio-mega-trigger="second"]');
+    const box = (await trigger(page).boundingBox())!;
+    const y = box.y + box.height / 2;
+    await page.mouse.move(box.x + box.width / 2, y, { steps: 4 });
+    await expect(trigger(page)).toHaveAttribute('aria-expanded', 'true');
+    // Count the moments no panel is open while the pointer crosses into the next item.
+    await page.evaluate(() => {
+      const w = window as unknown as { __closed: number };
+      w.__closed = 0;
+      const panels = Array.from(document.querySelectorAll<HTMLElement>('.catalog-stage [data-hwio-mega-panel]'));
+      new MutationObserver(() => { if (panels.every((p) => p.hidden)) w.__closed += 1; }).observe(document.querySelector('.catalog-stage header')!, { subtree: true, attributes: true, attributeFilter: ['hidden'] });
+    });
+    const nb = (await next.boundingBox())!;
+    for (let x = box.x + box.width / 2; x <= nb.x + nb.width / 2; x += 3) {
+      await page.mouse.move(x, y);
+      await page.waitForTimeout(15);
+    }
+    await page.waitForTimeout(400);
+    expect(await page.evaluate(() => (window as unknown as { __closed: number }).__closed)).toBe(0);
+    await expect(second).toHaveAttribute('aria-expanded', 'true');
+    await expect(trigger(page)).toHaveAttribute('aria-expanded', 'false');
+  });
+
   test('Escape closes a mega panel and focus returns to its trigger', async ({ page }) => {
     await trigger(page).focus();
     await page.keyboard.press('ArrowDown');

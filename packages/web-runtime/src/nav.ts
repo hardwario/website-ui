@@ -114,7 +114,8 @@ export function hwioNavRuntime() {
         pairs.forEach((p) => set(p, p === pair));
         if (!wasOpen) hwioAnnouncePopup(pair.panel);
       };
-      const scheduleClose = () => { cancelClose(); closeTimer = setTimeout(closeAll, 180); };
+      // 300 ms of grace: a slow or diagonal move from a trigger into its panel arrives before it closes.
+      const scheduleClose = () => { cancelClose(); closeTimer = setTimeout(closeAll, 300); };
       pairs.forEach((pair) => {
         const { trigger, panel } = pair;
         trigger.addEventListener('click', () => {
@@ -126,12 +127,16 @@ export function hwioNavRuntime() {
           e.preventDefault(); openOne(pair); panel.querySelector<HTMLElement>('a[href], button')?.focus();
         }, { signal });
         if (hoverable) {
-          trigger.addEventListener('mouseenter', () => {
+          // Hover follows the trigger's whole nav item (owner, 2026-11-03): it spans the bar's full height, so
+          // the pointer goes from the item straight into the panel under the bar, and neighbouring items meet,
+          // so moving along the nav switches the panel without closing it in between.
+          const zone = trigger.closest('li') ?? trigger;
+          zone.addEventListener('mouseenter', () => {
             const wasOpen = isOpen(pair);
             openOne(pair);
             hoverOpened = wasOpen ? null : trigger;
           }, { signal });
-          trigger.addEventListener('mouseleave', scheduleClose, { signal });
+          zone.addEventListener('mouseleave', scheduleClose, { signal });
           panel.addEventListener('mouseenter', cancelClose, { signal });
           panel.addEventListener('mouseleave', scheduleClose, { signal });
         }
