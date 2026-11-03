@@ -1,14 +1,18 @@
 ---
-/** The "HARDWARIO websites" strip. Pass the entries from hwioFooterSites() in @hubpav/hwio-brand. */
+/**
+ * The "HARDWARIO websites" strip. Pass the entries from hwioFooterSites() in @hubpav/hwio-brand. The middle dots show
+ * from 640 px; on a phone the names wrap with a wider gap instead, so no line ends on a dot or a name stands alone
+ * after one.
+ */
 interface Props { items: { key: string; label: string; href: string }[]; label: string; class?: string }
 const { items, label, class: className = '' } = Astro.props;
 ---
 {items.length > 0 && (
-  <nav class:list={['flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1 text-sm', className]} aria-label={label}>
+  <nav class:list={['flex flex-wrap items-baseline justify-center gap-x-4 gap-y-1 text-sm sm:gap-x-3', className]} aria-label={label}>
     <span class="w-full text-center opacity-70 sm:w-auto sm:text-left">{label}:</span>
     {items.map((site, i) => (
       <>
-        {i > 0 && <span class="opacity-50" aria-hidden="true">&middot;</span>}
+        {i > 0 && <span class="hidden opacity-50 sm:inline" aria-hidden="true">&middot;</span>}
         <a href={site.href} target="_blank" rel="noopener noreferrer" class="text-neutral-content/80 transition-colors hover:text-[var(--hwio-footer-hover,var(--color-accent))]">{site.label}</a>
       </>
     ))}
