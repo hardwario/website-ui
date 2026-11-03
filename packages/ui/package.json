@@ -1,6 +1,6 @@
 {
   "name": "@hubpav/hwio-ui",
-  "version": "0.10.4",
+  "version": "0.10.5",
   "description": "HARDWARIO web design system for Astro: DaisyUI 5 themes generated from the brand tokens, the Tailwind entry stylesheet and the HWio* components.",
   "license": "MIT",
   "type": "module",
@@ -32,9 +32,9 @@
     "test": "node --test \"test/**/*.test.mjs\""
   },
   "dependencies": {
-    "@hubpav/hwio-brand": "0.10.4",
-    "@hubpav/hwio-web-runtime": "0.10.4",
-    "@hubpav/hwio-web-worker": "0.10.4",
+    "@hubpav/hwio-brand": "0.10.5",
+    "@hubpav/hwio-web-runtime": "0.10.5",
+    "@hubpav/hwio-web-worker": "0.10.5",
     "daisyui": "5.7.47"
   },
   "peerDependencies": {
