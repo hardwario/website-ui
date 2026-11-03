@@ -535,6 +535,14 @@
   outline: 2px solid var(--color-secondary);
   outline-offset: 2px;
 }
+/* Hover in the header is instant, like a native menu (owner, 2026-11-03): no fade on the bar's items, the language
+   dropdown's rows or anything in a mega panel. DaisyUI fades a menu item's fill and colour over 200 ms and panel
+   cards fade theirs, so on a quick sweep the item just passed kept glowing with the pointer already further on. */
+.hwio-nav > li > *,
+header .menu.dropdown-content li > *,
+[data-hwio-mega-panel] * {
+  transition-property: none;
+}
 /* DaisyUI 5.7.30+ paints a menu link carrying aria-current like .menu-active (the neutral fill). The
    header marks the current page with its own label colour and bar (.hwio-nav-current) and the small-screen menu
    lists it as a plain row, so those links keep the ground; .menu-active items (the language dropdown)

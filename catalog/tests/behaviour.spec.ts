@@ -116,6 +116,28 @@ test.describe('header popups', () => {
     await expect(trigger(page)).toHaveAttribute('aria-expanded', 'false');
   });
 
+  test('hover in the bar and in a panel ends at once, with no fade left behind the pointer', async ({ page }) => {
+    // A 200 ms fade-out kept the item just passed glowing while the pointer was already on the next one.
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    const bg = (el: Element) => getComputedStyle(el).backgroundColor;
+    const links = page.locator('.catalog-stage [data-hwio-mega-panel="products"] ul a');
+    const centre = async (l: ReturnType<Page['locator']>) => { const b = (await l.boundingBox())!; return [b.x + b.width / 2, b.y + b.height / 2] as const; };
+    const triggerRest = await trigger(page).evaluate(bg);
+    await page.mouse.move(...(await centre(trigger(page))), { steps: 4 });
+    await expect.poll(() => trigger(page).evaluate(bg)).not.toBe(triggerRest);
+    // Fully lit first: a fade that was cut short also ends early, and the test would pass with it.
+    await page.waitForTimeout(250);
+    const linkRest = await links.first().evaluate(bg);
+    await page.mouse.move(...(await centre(links.first())), { steps: 3 });
+    await page.waitForTimeout(50);
+    expect(await trigger(page).evaluate(bg)).toBe(triggerRest);
+    expect(await links.first().evaluate(bg)).not.toBe(linkRest);
+    await page.waitForTimeout(250);
+    await page.mouse.move(...(await centre(links.nth(1))), { steps: 3 });
+    await page.waitForTimeout(50);
+    expect(await links.first().evaluate(bg)).toBe(linkRest);
+  });
+
   test('Escape closes a mega panel and focus returns to its trigger', async ({ page }) => {
     await trigger(page).focus();
     await page.keyboard.press('ArrowDown');
