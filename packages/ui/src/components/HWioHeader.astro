@@ -15,7 +15,7 @@
  * The theme toggle and the language dropdown are quiet utilities (.hwio-utility: the nav's weight, size
  * and gray, thin icons). The language dropdown, the mega panels and the menu close each other: one
  * popup at a time (@hubpav/hwio-web-runtime/popup). A CTA with an icon collapses to the icon alone below
- * 2xl; an external CTA's arrow shows only beside its full label.
+ * 2xl and carries no external arrow: its icon already says where it goes (owner, 2026-11-03, the store's bag).
  *
  * `navDensity="tight"` with `desktopFrom="xl"`: between 1280 and 1535 px, where the container is still
  * 1280 px wide, the nav labels drop from 15 to 14 px and the item padding from 12 to 8 px, so a long nav
@@ -88,8 +88,6 @@ const linkAttrs = (item: HWioLinkItem) => (item.external ? { target: '_blank', r
           <HWioButton href={cta.href} external={cta.external} externalIcon={!cta.icon} variant={CTA_VARIANT[cta.variant ?? 'primary']} size="sm" track={cta.track ?? { id: 'header-cta', location: 'header' }} class={cta.icon ? '2xl:px-4 px-2.5' : ''} aria-label={cta.icon ? cta.label : undefined} title={cta.icon ? cta.label : undefined}>
             {cta.icon && <HWioIcon name={cta.icon as 'bag'} size="sm" />}
             {cta.icon ? <span class="hidden 2xl:inline">{cta.label}</span> : cta.label}
-            {/* Collapsed (icon only, below 2xl) the button shows just its icon; the external glyph returns beside the label. */}
-            {cta.icon && cta.external && <HWioIcon name="external" size="sm" class="hidden 2xl:block" />}
           </HWioButton>
         ))}
       </div>
