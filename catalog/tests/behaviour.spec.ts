@@ -116,6 +116,18 @@ test.describe('small-screen menu', () => {
     expect(await page.evaluate(() => document.documentElement.classList.contains('hwio-scroll-lock') || !!document.querySelector('[inert]'))).toBe(false);
   });
 
+  test('a fixed layer outside the header (a cookie banner) stays clickable while the menu is open', async ({ page }) => {
+    await page.evaluate(() => {
+      document.body.insertAdjacentHTML('beforeend', '<div id="t-layer" style="position:fixed;inset-inline:0;bottom:0;z-index:120;background:#fff;padding:1rem"><button type="button" id="t-accept">Accept all</button></div>');
+      document.getElementById('t-accept')!.addEventListener('click', () => document.getElementById('t-layer')!.remove());
+    });
+    await toggle(page).evaluate((el) => (el as HTMLElement).click());
+    await expect(toggle(page)).toHaveAttribute('aria-expanded', 'true');
+    expect(await page.locator('#t-layer').evaluate((el) => (el as HTMLElement).inert)).toBe(false);
+    await page.locator('#t-accept').click();
+    await expect(page.locator('#t-layer')).toHaveCount(0);
+  });
+
   test('a followed link closes the menu', async ({ page }) => {
     await toggle(page).evaluate((el) => (el as HTMLElement).click());
     await panel(page).locator('a[href="#why"]').click();

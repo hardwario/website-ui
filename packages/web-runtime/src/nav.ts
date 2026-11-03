@@ -43,14 +43,17 @@ export function hwioNavRuntime() {
         if (text) toggle.setAttribute('aria-label', text);
       };
       // Lock the page where it is: overflow hidden on the root, its scrollbar's width kept as padding (so
-      // the layout keeps its width), and everything outside the header inert, walking up from the header.
+      // the layout keeps its width), and the page outside the header inert, walking up from the header.
+      // Fixed layers and dialogs stay live: they sit above the sheet (the cookie banner and its settings,
+      // a chat widget), and an inert one would show but not take a click (owner, 2026-11-03).
+      const staysLive = (el: HTMLElement) => el.tagName === 'DIALOG' || getComputedStyle(el).position === 'fixed';
       const lock = (on: boolean) => {
         if (on) {
           root.style.setProperty('--hwio-scrollbar', `${Math.max(0, window.innerWidth - root.clientWidth)}px`);
           root.classList.add('hwio-scroll-lock');
           for (let node: HTMLElement | null = header; node && node.parentElement && node !== document.body; node = node.parentElement) {
             for (const sibling of Array.from(node.parentElement.children)) {
-              if (sibling !== node && sibling instanceof HTMLElement && !sibling.inert && sibling.tagName !== 'SCRIPT') {
+              if (sibling !== node && sibling instanceof HTMLElement && !sibling.inert && sibling.tagName !== 'SCRIPT' && !staysLive(sibling)) {
                 sibling.inert = true;
                 inerted.push(sibling);
               }
