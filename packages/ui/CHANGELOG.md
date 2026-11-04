@@ -1,5 +1,14 @@
 # @hubpav/hwio-ui
 
+## 0.10.7
+
+### Patch Changes
+
+- d8fe4d6: HWioButton: an external link always shows the external glyph. Before, `arrow` suppressed it, so a primary call to action that opens a new tab (academy's "Book meeting", and HWioCtaBand, HWioHeroSplit or HWioChoiceCards with an external lead button) gave no sign of it. The glyph now takes the arrow's place; `externalIcon={false}` still turns it off.
+- @hubpav/hwio-brand@0.10.7
+  - @hubpav/hwio-web-runtime@0.10.7
+  - @hubpav/hwio-web-worker@0.10.7
+
 ## 0.10.6
 
 ### Patch Changes
