@@ -12,7 +12,7 @@
     "test:vrt": "playwright test tests/themes.spec.ts",
     "test:vrt:update": "playwright test tests/themes.spec.ts --update-snapshots",
     "test:a11y": "playwright test tests/a11y.spec.ts --project desktop",
-    "test:behaviour": "playwright test tests/behaviour.spec.ts --project desktop"
+    "test:behaviour": "playwright test tests/behaviour.spec.ts tests/fonts.spec.ts --project desktop"
   },
   "dependencies": {
     "@hubpav/hwio-brand": "0.10.7",

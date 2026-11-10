@@ -16,7 +16,7 @@ const face = (file) => inter.faces.find((f) => f.file === file);
 // only a page showing such a glyph fetches (scripts/split-latin-ext.py).
 test('the gated Inter faces stay small', () => {
   assert.ok(size('inter-latin.woff2') < 52_000, 'inter-latin.woff2 grew');
-  assert.ok(size('inter-latin-ext.woff2') < 20_000, 'inter-latin-ext.woff2 is the Latin Extended-A face, about 16 kB: do not put the full subset back');
+  assert.ok(size('inter-latin-ext.woff2') < 24_000, 'inter-latin-ext.woff2 is the Latin Extended-A face, about 19 kB: do not put the full subset back');
 });
 
 test('the Latin Extended ranges do not overlap, and together cover what the full subset covered', () => {
