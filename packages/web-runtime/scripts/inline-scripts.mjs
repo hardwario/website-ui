@@ -5,6 +5,16 @@
 export const consentDefaults = `(function(){window.dataLayer=window.dataLayer||[];window.gtag=window.gtag||function(){window.dataLayer.push(arguments)};window.gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',functionality_storage:'denied',personalization_storage:'denied',security_storage:'granted'})})();`;
 
 /**
+ * Shows the consent banner with the page's first paint on a visit that has no stored choice.
+ * HWioCookieConsent renders it right after the banner's markup, so it runs while the document is
+ * still being parsed, before the module scripts: the banner no longer appears late (on a phone it
+ * is the largest block of text, so its paint is the page's LCP). It only lifts `hidden` when neither
+ * consent cookie exists; a stored receipt of an older version is left to the runtime, which asks
+ * again, and everything else (clicks, storage, Consent Mode) stays in @hubpav/hwio-web-runtime/consent.
+ */
+export const consentReveal = `(function(){var s=document.currentScript,r=s&&s.previousElementSibling;if(r&&r.hasAttribute('data-hwio-consent')&&!/(?:^|; )(?:hwio|hw)_cookie_consent=/.test(document.cookie))r.hidden=false})();`;
+
+/**
  * Pre-paint theme restore. Reads <html data-hwio-consent-version data-hwio-theme-light data-hwio-theme-dark>.
  * Applies a stored explicit choice only when it was stored under the current consent version
  * (preferences consent). Legacy keys from the pre-design-system sites are honoured once.
