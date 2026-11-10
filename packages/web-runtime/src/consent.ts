@@ -39,7 +39,9 @@ const ATTRIBUTION_KEYS = ['hwio_attribution', 'hw_attribution']; // legacy-ok
 
 /**
  * Consent runtime. Markup contract (rendered by HWioCookieConsent):
- *   [data-hwio-consent data-version data-gtm? data-locale]  banner root (hidden attr toggles it)
+ *   [data-hwio-consent data-version data-gtm? data-locale]  banner root (hidden attr toggles it; the inline
+ *                                                           consentReveal bootstrap lifts it before paint
+ *                                                           on a visit without a stored choice)
  *   [data-hwio-consent-modal]                               settings dialog wrapper (hidden)
  *   [data-hwio-consent-accept|reject|customize|save|close]  buttons (may appear several times)
  *   [data-hwio-consent-toggle="preferences|statistics|marketing"] checkboxes
@@ -223,6 +225,14 @@ export function hwioConsentRuntime(): HWioConsentApi {
     }
     render();
   }
+
+  // A view-transition swap brings a new banner in its markup state (hidden). Give it the known
+  // state before it is shown, so an undecided visitor's banner does not blink on every navigation.
+  document.addEventListener('astro:before-swap', (event) => {
+    if (!resolved) return;
+    const incoming = (event as Event & { newDocument?: Document }).newDocument?.querySelector<HTMLElement>('[data-hwio-consent]');
+    if (incoming) incoming.hidden = !!current;
+  });
 
   window.hwioConsent = api;
   window.hwConsent = api; // legacy-ok

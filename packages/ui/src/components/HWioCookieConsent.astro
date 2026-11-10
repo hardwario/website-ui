@@ -2,8 +2,12 @@
 /**
  * Consent banner + settings dialog (Consent Mode v2, consent-gated GTM). Two variants:
  * `categories` (the HARDWARIO sites: four purposes, granular save) and `simple` (enerooo today:
- * accept / necessary only). Runtime: @hubpav/hwio-web-runtime/consent.
+ * accept / necessary only). Runtime: @hubpav/hwio-web-runtime/consent. The banner is `hidden` in the
+ * markup; the inline `consentReveal` bootstrap right after it shows it with the first paint when no
+ * choice is stored (the runtime decides everything else), so keep that script directly behind the
+ * banner's root. The banner follows the page's font gate like any other content.
  */
+import { consentReveal } from '@hubpav/hwio-web-runtime/inline';
 interface CategoryCopy { title: string; description: string }
 interface Props {
   version: string;
@@ -20,7 +24,7 @@ interface Props {
 const { version, locale, gtmId = null, policyHref, variant = 'categories', labels } = Astro.props;
 const optional = ['preferences', 'statistics', 'marketing'] as const;
 ---
-<div data-hwio-consent data-version={version} data-gtm={gtmId ?? undefined} data-locale={locale} hidden role="region" aria-label={labels.title} class="fixed inset-x-0 bottom-0 z-[120] px-4 pb-4 sm:px-6 sm:pb-6" data-hwio-font-exempt>
+<div data-hwio-consent data-version={version} data-gtm={gtmId ?? undefined} data-locale={locale} hidden role="region" aria-label={labels.title} class="fixed inset-x-0 bottom-0 z-[120] px-4 pb-4 sm:px-6 sm:pb-6">
   <div class="card card-border mx-auto max-w-5xl bg-base-100 shadow-2xl">
     <div class="card-body gap-4 md:flex-row md:items-center">
       <div class="min-w-0 flex-1">
@@ -38,6 +42,7 @@ const optional = ['preferences', 'statistics', 'marketing'] as const;
     </div>
   </div>
 </div>
+<script is:inline set:html={consentReveal.code} />
 
 {variant === 'categories' && labels.categories && (
   <div data-hwio-consent-modal hidden class="fixed inset-0 z-[130] flex items-center justify-center bg-neutral/60 px-4 py-6" data-hwio-font-exempt>
