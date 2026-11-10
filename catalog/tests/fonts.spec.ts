@@ -21,20 +21,22 @@ const after = [latin, face(file('../../packages/brand/fonts/inter-latin-ext.woff
 
 const LETTERS = 'ąćęłńśźżĄĆĘŁŃŚŹŻěščřžůďťňĚŠČŘŽŮĎŤŇĺľŕĹĽŔőűŐŰ';
 const RARE = 'ǎǐǒǔșțȘȚẞẀẂỲỳệễɛɔʃəǄǅǆ†₽₿ℓ';
-const SIZES = [12, 13, 14, 15, 16, 17, 18, 20, 24, 32];
+// Two sizes per sheet: a full-page capture of all ten at 3x is too large for the CI runner to take.
+const SIZES = [[12, 13], [14, 15], [16, 17], [18, 20], [24, 32]];
 const WEIGHTS = [400, 500, 600, 700];
 const CELL = 40;
+const COLUMNS = 22;
 
-function sheet(faces: string, weight: number) {
+function sheet(faces: string, weight: number, sizes: number[]) {
   const row = (text: string, size: number) => `<div style="font-size:${size}px">${[...text].map((c) => `<span>${c}</span>`).join('')}</div>`;
-  const rows = SIZES.map((size) => row(LETTERS, size) + row(RARE, size) + `<p style="font-size:${size}px">Zażółć gęślą jaźń. Příliš žluťoučký kůň úpěl ďábelské ódy. Vŕba, ľalia, dĺžka. Árvíztűrő tükörfúrógép.</p>`).join('');
-  return `<!doctype html><meta charset="utf-8"><style>${faces}body{margin:0;font-family:'Inter',serif;font-weight:${weight};width:${CELL * LETTERS.length}px}span{display:inline-block;width:${CELL}px;height:${CELL}px;line-height:${CELL}px;text-align:center;vertical-align:top}div{white-space:nowrap}p{margin:0 0 0 3.3px;line-height:1.5;white-space:nowrap}</style>${rows}`;
+  const rows = sizes.map((size) => row(LETTERS, size) + row(RARE, size) + `<p style="font-size:${size}px">Zażółć gęślą jaźń. Příliš žluťoučký kůň úpěl ďábelské ódy. Vŕba, ľalia, dĺžka. Árvíztűrő tükörfúrógép.</p>`).join('');
+  return `<!doctype html><meta charset="utf-8"><style>${faces}body{margin:0;font-family:'Inter',serif;font-weight:${weight};width:${CELL * COLUMNS}px}span{display:inline-block;width:${CELL}px;height:${CELL}px;line-height:${CELL}px;text-align:center;vertical-align:top}p{margin:0 0 0 3.3px;line-height:1.5}</style>${rows}`;
 }
 
-async function render(browser: Browser, deviceScaleFactor: number, faces: string, weight: number) {
-  const context = await browser.newContext({ viewport: { width: CELL * LETTERS.length, height: 600 }, deviceScaleFactor });
+async function render(browser: Browser, deviceScaleFactor: number, faces: string, weight: number, sizes: number[]) {
+  const context = await browser.newContext({ viewport: { width: CELL * COLUMNS, height: 600 }, deviceScaleFactor });
   const page = await context.newPage();
-  await page.setContent(sheet(faces, weight));
+  await page.setContent(sheet(faces, weight, sizes));
   await page.evaluate(() => Promise.all([...document.fonts].map((f) => f.load())));
   const loaded = await page.evaluate(() => [...document.fonts].every((f) => f.status === 'loaded'));
   const shot = await page.screenshot({ fullPage: true });
@@ -45,16 +47,18 @@ async function render(browser: Browser, deviceScaleFactor: number, faces: string
 for (const deviceScaleFactor of [1, 2, 3]) {
   test(`the split Latin Extended faces render like the full subset at ${deviceScaleFactor}x`, async ({ browser }) => {
     for (const weight of WEIGHTS) {
-      const full = await render(browser, deviceScaleFactor, before, weight);
-      const split = await render(browser, deviceScaleFactor, after, weight);
-      expect(full.loaded && split.loaded, 'every face loaded').toBe(true);
-      expect(split.shot.equals(full.shot), `weight ${weight}: ${SIZES.length} sizes of ${LETTERS.length + RARE.length} glyphs and a sentence`).toBe(true);
+      for (const sizes of SIZES) {
+        const full = await render(browser, deviceScaleFactor, before, weight, sizes);
+        const split = await render(browser, deviceScaleFactor, after, weight, sizes);
+        expect(full.loaded && split.loaded, 'every face loaded').toBe(true);
+        expect(split.shot.equals(full.shot), `weight ${weight}, ${sizes.join(' and ')} px: ${LETTERS.length + RARE.length} glyphs and a sentence`).toBe(true);
+      }
     }
   });
 }
 
 test('the comparison can tell a different face apart', async ({ browser }) => {
-  const full = await render(browser, 1, before, 400);
-  const latinOnly = await render(browser, 1, latin, 400);
+  const full = await render(browser, 1, before, 400, SIZES[0]);
+  const latinOnly = await render(browser, 1, latin, 400, SIZES[0]);
   expect(latinOnly.shot.equals(full.shot)).toBe(false);
 });
