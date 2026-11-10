@@ -1,5 +1,12 @@
 # @hubpav/hwio-web-runtime
 
+## 0.10.8
+
+### Patch Changes
+
+- 01efae7: HWioCookieConsent: on a visit without a stored choice the banner is part of the page's first paint. A static inline bootstrap (`consentReveal`, hashed like the others, in `hwioInlineHashes`) right behind the banner's markup lifts `hidden` when neither consent cookie exists; until now the consent runtime did it after its module requests, so the banner (on a phone the page's largest block of text, and with it the LCP) appeared late. The runtime still decides everything else and carries the state across a view-transition swap. The banner is no longer exempt from the font gate, so it never shows before its font is ready.
+- 69d81fd: Font gate: the page stays behind the gate until its faces have really loaded. The bootstrap runs in `<head>` before the page's styles, so it asked `document.fonts` for a family whose `@font-face` rules were not parsed yet; that resolves at once with nothing, and the gate opened about a second before the faces arrived on a slow connection (the page's boxes and pictures painted first, the text appeared later, and a face slower than three seconds would have shown the fallback and then swapped). It now waits until the family is declared (or the document has loaded), then asks for both samples; one timer of five seconds bounds the whole wait and pins the fallback as before. Sites with their own gate (www) are not affected. It also asks for every weight a family ships as a file of its own (enerooo's Poppins 400, 600 and 700), not only for 400, so a heading in a later weight no longer re-wraps the page.
+
 ## 0.10.7
 
 No changes in this release.
