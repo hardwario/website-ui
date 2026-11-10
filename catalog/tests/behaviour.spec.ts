@@ -297,3 +297,42 @@ test.describe('motion under reduced motion', () => {
     await expect(page.locator('[data-hwio-count="7000"]')).toHaveText('7\u00a0000+');
   });
 });
+
+// The consent banner is part of the first paint on a visit without a stored choice: the inline
+// bootstrap behind its markup shows it, not the consent runtime (which would add its module
+// requests to the banner's paint; on a phone the banner is the page's largest text block).
+test.describe('consent banner', () => {
+  const banner = (page: Page) => page.locator('[data-hwio-consent]');
+  // With every script file held back, only the inline bootstrap can have changed the banner.
+  const withoutScriptFiles = (page: Page) => page.route('**/*.js', (route) => route.abort());
+  const receipt = (version: string) => encodeURIComponent(JSON.stringify({ version, method: 'reject_all', locale: 'en', timestamp: '2026-11-10T00:00:00.000Z', categories: { necessary: true, preferences: false, statistics: false, marketing: false } }));
+
+  test('a first visit has the banner before the consent runtime runs', async ({ page }) => {
+    await withoutScriptFiles(page);
+    await page.goto('/hwio/consent/');
+    await expect(banner(page)).toBeVisible();
+    expect(await page.evaluate(() => 'hwioConsent' in window)).toBe(false);
+  });
+
+  test('a stored choice keeps the banner out of the first paint', async ({ page, context, baseURL }) => {
+    await context.addCookies([{ name: 'hwio_cookie_consent', value: receipt('2026-09-05'), url: baseURL! }]);
+    await withoutScriptFiles(page);
+    await page.goto('/hwio/consent/');
+    await expect(banner(page)).toBeHidden();
+  });
+
+  test('a choice stored under an older version is asked again by the runtime', async ({ page, context, baseURL }) => {
+    await context.addCookies([{ name: 'hwio_cookie_consent', value: receipt('2020-01-01'), url: baseURL! }]);
+    await page.goto('/hwio/consent/');
+    await expect(banner(page)).toBeVisible();
+  });
+
+  test('rejecting hides the banner, and the next visit starts without it', async ({ page }) => {
+    await page.goto('/hwio/consent/');
+    await banner(page).locator('[data-hwio-consent-reject]').click();
+    await expect(banner(page)).toBeHidden();
+    await withoutScriptFiles(page);
+    await page.reload();
+    await expect(banner(page)).toBeHidden();
+  });
+});
