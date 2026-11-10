@@ -44,11 +44,11 @@ test('fontGate stays shut until the family is declared and both samples have loa
   await settle();
   assert.equal(gate.loads.length, 0);
 
-  gate.faces.push({ family: '"Inter"' });
+  gate.faces.push({ family: '"Inter"', weight: '100 900' });
   t.mock.timers.tick(16);
   await settle();
   assert.equal(gate.loads.length, 2, 'the Latin and the Latin Extended sample are asked for once the rules are parsed');
-  assert.match(gate.loads[0].font, /"Inter"/);
+  assert.match(gate.loads[0].font, /^400 1em "Inter"$/, 'a variable face is asked for once, at 400');
   assert.ok(gate.classes.has('fonts-loading'), 'still shut while the faces load');
 
   gate.loads.forEach((load) => load.resolve([{}]));
@@ -62,7 +62,7 @@ test('fontGate stays shut until the family is declared and both samples have loa
 test('fontGate pins the fallback when the faces do not arrive in time', async (t) => {
   t.mock.timers.enable({ apis: ['setTimeout'] });
   const gate = gateFixture();
-  gate.faces.push({ family: 'Inter' });
+  gate.faces.push({ family: 'Inter', weight: '100 900' });
   gate.run();
   await settle();
   assert.equal(gate.loads.length, 2);
@@ -94,4 +94,22 @@ test('fontGate also bounds the wait for the rules themselves', async (t) => {
   await settle();
   assert.equal(gate.loads.length, 0);
   assert.ok(gate.classes.has('fonts-failed') && !gate.classes.has('fonts-loading'));
+});
+
+test('fontGate waits for every weight a family ships as its own file', async (t) => {
+  t.mock.timers.enable({ apis: ['setTimeout'] });
+  const gate = gateFixture();
+  for (const weight of ['400', '600', '700']) {
+    gate.faces.push({ family: 'Inter', weight }, { family: 'Inter', weight });   // Latin and Latin Extended of each weight
+  }
+  gate.faces.push({ family: 'Inter Fallback', weight: '400' });
+  gate.run();
+  await settle();
+  assert.deepEqual(gate.loads.map((load) => load.font.split(' ')[0]).sort(), ['400', '400', '600', '600', '700', '700']);
+  gate.loads.slice(0, 5).forEach((load) => load.resolve([{}]));
+  await settle();
+  assert.ok(gate.classes.has('fonts-loading'), 'one weight still loading keeps the gate shut');
+  gate.loads[5].resolve([{}]);
+  await settle();
+  assert.ok(gate.classes.has('fonts-ready') && !gate.classes.has('fonts-loading'));
 });
