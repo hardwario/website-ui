@@ -267,6 +267,24 @@ test.describe('motion with motion allowed', () => {
   });
 });
 
+// Owner ruling R3: nothing of the page paints before its faces have decoded. The gate script runs
+// in <head> before the styles, so it must wait for the @font-face rules instead of asking for a
+// family nobody has declared yet (which resolves at once and opened the gate early).
+test.describe('font gate', () => {
+  test('the page stays behind the gate until its faces have arrived', async ({ page }) => {
+    let release: () => void = () => {};
+    const held = new Promise<void>((resolve) => { release = resolve; });
+    await page.route('**/fonts/inter-*.woff2', async (route) => { await held; await route.continue(); });
+    await page.goto('/hwio/', { waitUntil: 'domcontentloaded' });
+    await page.waitForTimeout(500);
+    await expect(page.locator('html')).toHaveClass(/fonts-loading/);
+    expect(await page.evaluate(() => getComputedStyle(document.querySelector('body > :not([data-hwio-font-exempt])')!).visibility)).toBe('hidden');
+    release();
+    await expect(page.locator('html')).toHaveClass(/fonts-ready/);
+    await expect(page.locator('html')).not.toHaveClass(/fonts-loading|fonts-failed/);
+  });
+});
+
 test.describe('motion under reduced motion', () => {
   test.use({ reducedMotion: 'reduce' });
 
