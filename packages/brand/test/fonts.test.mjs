@@ -30,9 +30,9 @@ test('the Latin Extended ranges do not overlap, and together cover what the full
   assert.ok(css.includes("url('/fonts/inter-latin-ext-rest.woff2')"));
 });
 
-// The Latin face is the Google Fonts subset plus five code points the copy uses (the non-breaking
-// hyphen, two arrows, the subscript two and the Greek mu), cut from the full Inter file of the same
-// build (scripts/extend-latin.py). A browser asks a face only for the code points its range names:
+// The Latin face is the Google Fonts subset plus five code points the copy uses: two arrows, the
+// subscript two and the Greek mu cut from the full Inter file of the same build, and the
+// non-breaking hyphen drawn with the keyboard hyphen's glyph (scripts/extend-latin.py). A browser asks a face only for the code points its range names:
 // with Google's range pasted back, the glyphs would be in the file and never used.
 test('the Latin face names the code points added to the Google subset', () => {
   const parts = face('inter-latin.woff2').unicodeRange.split(', ');

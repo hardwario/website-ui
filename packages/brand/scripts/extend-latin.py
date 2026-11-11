@@ -12,9 +12,17 @@ a browser then sets in a system font in the middle of an Inter line (found 2026-
   U+2082  subscript two         "CO₂"
   U+03BC  Greek small mu        "μA" (the micro sign U+00B5 is in the subset already)
 
-No Google Fonts subset holds the two arrows, the subscript or the hyphen, so they come from the full
-variable file of the same build (google/fonts, ofl/inter/Inter[opsz,wght].ttf; the version string
-must match the current face, the script refuses otherwise). The full file is cut the way the Google
+The non-breaking hyphen is drawn with the glyph of the keyboard hyphen (U+002D), not with Inter's own
+glyph for it (owner ruling 2026-11-11). Inter's true hyphen is a fifth shorter than its keyboard
+hyphen (734 against 942 units at weight 400), and the copy uses both: "RS‑485" would carry a shorter
+stroke than "low-power" on the same line. With the alias a hyphen looks the same wherever it stands,
+kerning included; only the line-breaking differs, which a browser decides by code point. This is the
+one place where the face departs from Inter's own mapping.
+
+No Google Fonts subset holds the two arrows or the subscript, and the mu sits in the Greek subset, so
+the four come from the full variable file of the same build (google/fonts,
+ofl/inter/Inter[opsz,wght].ttf; the version string must match the current face, the script refuses
+otherwise). The full file is cut the way the Google
 subset was cut: the optical-size axis pinned at its default, the subset's own layout features and
 name records, so everything the current face holds comes out the same. The script proves it before it
 writes: outline, advance and side bearing of every glyph of the current face are compared at seven
@@ -29,9 +37,10 @@ the subset's code points at weights 100, 400, 700 and 900 (HarfBuzz: same glyphs
 offsets, so kerning and the contextual rules are the same), and the feature runs for tnum, frac and
 calt.
 
-Run it only to add a code point (and then add it to the face's `unicodeRange` in src/brand.json):
+Run it only to add a code point (and then add it to the face's `unicodeRange` in src/brand.json). The
+current face may be the Google subset or a face this script wrote earlier:
 
-  uv run packages/brand/scripts/extend-latin.py <Inter[opsz,wght].ttf> <current inter-latin.woff2> <out.woff2> [U+2011 U+2192 ...]
+  uv run packages/brand/scripts/extend-latin.py <Inter[opsz,wght].ttf> <current inter-latin.woff2> <out.woff2> [U+2192 U+2197 ...]
 """
 import sys
 from fontTools import subset
@@ -39,7 +48,8 @@ from fontTools.ttLib import TTFont
 from fontTools.varLib import instancer
 
 FULL, CURRENT, OUT = sys.argv[1:4]
-EXTRA = [int(arg.removeprefix("U+"), 16) for arg in sys.argv[4:]] or [0x2011, 0x2192, 0x2197, 0x2082, 0x03BC]
+EXTRA = [int(arg.removeprefix("U+"), 16) for arg in sys.argv[4:]] or [0x2192, 0x2197, 0x2082, 0x03BC]
+ALIASES = {0x2011: 0x002D}  # drawn with another code point's glyph: the non-breaking hyphen is the keyboard hyphen
 WEIGHTS = [100, 250, 400, 500, 600, 700, 900]
 
 
@@ -87,8 +97,12 @@ def build():
     options.legacy_kern = True
     options.recalc_timestamp = False
     subsetter = subset.Subsetter(options)
-    subsetter.populate(unicodes=sorted(set(current.getBestCmap()) | set(EXTRA)))
+    subsetter.populate(unicodes=sorted((set(current.getBestCmap()) - set(ALIASES)) | set(EXTRA)))
     subsetter.subset(full)
+    for table in full["cmap"].tables:
+        if table.isUnicode():
+            for alias, source in ALIASES.items():
+                table.cmap[alias] = table.cmap[source]
     if "prep" not in current and "prep" in full:
         del full["prep"]  # the Google download carries none; a fontsource copy does, and keeps it
     full.flavor = "woff2"
@@ -104,8 +118,9 @@ def prove(current):
     lost = sorted(set(names) - set(new.getGlyphOrder()))
     if lost:
         sys.exit(f"glyphs of the current face missing from the new one: {lost}")
-    problems += [f"U+{c:04X} maps to {new_cmap.get(c)}, was {g}" for c, g in old_cmap.items() if new_cmap.get(c) != g]
+    problems += [f"U+{c:04X} maps to {new_cmap.get(c)}, was {g}" for c, g in old_cmap.items() if new_cmap.get(c) != g and c not in ALIASES]
     problems += [f"U+{c:04X} is not in the new face" for c in EXTRA if c not in new_cmap]
+    problems += [f"U+{a:04X} maps to {new_cmap.get(a)}, not to the glyph of U+{b:04X}" for a, b in ALIASES.items() if new_cmap.get(a) != new_cmap[b]]
     if features(new) != features(current):
         problems.append(f"layout features differ: {features(new)} against {features(current)}")
     for weight in WEIGHTS:

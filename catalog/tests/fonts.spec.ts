@@ -7,7 +7,8 @@ import { fileURLToPath } from 'node:url';
 // The Latin Extended face a page waits for is a regrouping of the full Google Fonts subset
 // (packages/brand/scripts/split-latin-ext.py): Latin Extended-A in the preloaded file, the rest in
 // a file a page fetches on demand. The Latin face is the Google Fonts subset plus five code points
-// the copy uses, cut from the full Inter file of the same build (packages/brand/scripts/extend-latin.py).
+// the copy uses: four cut from the full Inter file of the same build, and the non-breaking hyphen
+// drawn with the keyboard hyphen's glyph (packages/brand/scripts/extend-latin.py).
 // A plain subset does not render the same: without the glyph names and the base glyphs Chrome on
 // macOS anti-aliases small text differently. So each is compared with the Google file, glyph by
 // glyph, in this browser.
@@ -101,16 +102,16 @@ for (const deviceScaleFactor of [1, 2, 3]) {
 // 1024 px, where a pixel is two units: a browser that rounds advances to whole pixels (Chromium on
 // Linux) stays within one unit.
 const ADDED: [string, number, number][] = [
-  ['\u2011', 734, 929], // non-breaking hyphen
+  ['\u2011', 942, 958], // non-breaking hyphen: the keyboard hyphen's glyph and advance, not Inter's own shorter hyphen (734, 929)
   ['\u2192', 1954, 1954], // →
   ['\u2197', 1588, 1603], // ↗
   ['\u2082', 905, 942], // ₂
   ['\u03bc', 1200, 1286], // Greek μ
 ];
 
-async function advances(browser: Browser, faces: string, weight: number) {
+async function advances(browser: Browser, faces: string, weight: number, family = "'Inter',serif") {
   const page = await browser.newPage();
-  await page.setContent(`<!doctype html><meta charset="utf-8"><style>${faces}body{margin:0;font:${weight} 1024px 'Inter',serif;font-kerning:none;white-space:nowrap}span{display:inline-block}</style>${ADDED.map(([c]) => `<span>${c}</span>`).join(' ')}`);
+  await page.setContent(`<!doctype html><meta charset="utf-8"><style>${faces}body{margin:0;font:${weight} 1024px ${family};font-kerning:none;white-space:nowrap}span{display:inline-block}</style>${ADDED.map(([c]) => `<span>${c}</span>`).join(' ')}`);
   await page.evaluate(() => Promise.all([...document.fonts].map((f) => f.load())));
   const widths = await page.evaluate(() => [...document.querySelectorAll('span')].map((s) => s.getBoundingClientRect().width * 2));
   await page.close();
@@ -122,7 +123,9 @@ test('the five added code points are set in Inter', async ({ browser }) => {
     const widths = await advances(browser, latin, weight);
     ADDED.forEach((entry, i) => expect(Math.abs(widths[i] - entry[column]), `U+${entry[0].codePointAt(0)!.toString(16)} at weight ${weight}: ${widths[i]} units, Inter's is ${entry[column]}`).toBeLessThan(2));
   }
-  // The control: the Google subset has none of them, so a fallback font sets them, with other advances.
-  const fallback = await advances(browser, latinGoogle, 400);
-  expect(ADDED.some((entry, i) => Math.abs(fallback[i] - entry[1]) >= 2)).toBe(true);
+  // The control: the measurement tells another font apart. A monospace family gives all five one
+  // advance, which cannot be Inter's five. (Not "the Google subset with a fallback": a machine with
+  // Inter installed, such as a designer's Mac, hands WebKit that Inter as the fallback.)
+  const other = await advances(browser, '', 400, 'monospace');
+  expect(ADDED.some((entry, i) => Math.abs(other[i] - entry[1]) >= 2)).toBe(true);
 });
