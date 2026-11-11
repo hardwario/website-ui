@@ -12,6 +12,10 @@ import { fileURLToPath } from 'node:url';
 // macOS anti-aliases small text differently. So each is compared with the Google file, glyph by
 // glyph, in this browser.
 
+// One test at a time: the sheets are large captures at up to 3x, and the CI runner cannot take two
+// at once ("Unable to capture screenshot").
+test.describe.configure({ mode: 'default' });
+
 const file = (path: string) => readFileSync(fileURLToPath(new URL(path, import.meta.url))).toString('base64');
 const LATIN_GOOGLE = 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD';
 const LATIN = 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+03BC, U+2000-206F, U+2074, U+2082, U+20AC, U+2122, U+2191-2193, U+2197, U+2212, U+2215, U+FEFF, U+FFFD';
@@ -81,18 +85,21 @@ const subset = (size: number) => row(SUBSET, size) + `<p style="font-size:${size
 for (const deviceScaleFactor of [1, 2, 3]) {
   test(`the Latin face renders the Google subset's ${[...SUBSET].length} glyphs like the Google subset at ${deviceScaleFactor}x`, async ({ browser }) => {
     for (const weight of WEIGHTS) {
-      for (const sizes of SIZES) {
-        const google = await render(browser, deviceScaleFactor, latinGoogle, weight, sizes, subset);
-        const ours = await render(browser, deviceScaleFactor, latin, weight, sizes, subset);
+      for (const size of SIZES.flat()) {
+        // One size per sheet: ten rows of glyphs are as tall as two sizes of the sheets above.
+        const google = await render(browser, deviceScaleFactor, latinGoogle, weight, [size], subset);
+        const ours = await render(browser, deviceScaleFactor, latin, weight, [size], subset);
         expect(google.loaded && ours.loaded, 'every face loaded').toBe(true);
-        expect(ours.shot.equals(google.shot), `weight ${weight}, ${sizes.join(' and ')} px`).toBe(true);
+        expect(ours.shot.equals(google.shot), `weight ${weight}, ${size} px`).toBe(true);
       }
     }
   });
 }
 
 // Advances in font units (2048 to the em) of the five added code points, read from the full Inter
-// file: a system font that stood in for a missing glyph would not have all of them.
+// file: a system font that stood in for a missing glyph would not have all of them. Measured at
+// 1024 px, where a pixel is two units: a browser that rounds advances to whole pixels (Chromium on
+// Linux) stays within one unit.
 const ADDED: [string, number, number][] = [
   ['\u2011', 734, 929], // non-breaking hyphen
   ['\u2192', 1954, 1954], // →
@@ -103,9 +110,9 @@ const ADDED: [string, number, number][] = [
 
 async function advances(browser: Browser, faces: string, weight: number) {
   const page = await browser.newPage();
-  await page.setContent(`<!doctype html><meta charset="utf-8"><style>${faces}body{margin:0;font:${weight} 204.8px 'Inter',serif;font-kerning:none}span{display:inline-block}</style>${ADDED.map(([c]) => `<span>${c}</span>`).join(' ')}`);
+  await page.setContent(`<!doctype html><meta charset="utf-8"><style>${faces}body{margin:0;font:${weight} 1024px 'Inter',serif;font-kerning:none;white-space:nowrap}span{display:inline-block}</style>${ADDED.map(([c]) => `<span>${c}</span>`).join(' ')}`);
   await page.evaluate(() => Promise.all([...document.fonts].map((f) => f.load())));
-  const widths = await page.evaluate(() => [...document.querySelectorAll('span')].map((s) => s.getBoundingClientRect().width * 10));
+  const widths = await page.evaluate(() => [...document.querySelectorAll('span')].map((s) => s.getBoundingClientRect().width * 2));
   await page.close();
   return widths;
 }
