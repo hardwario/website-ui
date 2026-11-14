@@ -19,9 +19,9 @@
     "@hubpav/hwio-ui": "0.10.10",
     "@hubpav/hwio-web-runtime": "0.10.10",
     "@hubpav/hwio-web-worker": "0.10.10",
-    "@tailwindcss/vite": "^4.3.3",
+    "@tailwindcss/vite": "^4.3.5",
     "astro": "^7.3.5",
-    "tailwindcss": "^4.3.3"
+    "tailwindcss": "^4.3.5"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
