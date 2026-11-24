@@ -77,30 +77,31 @@ ${extras ? extras + '\n' : ''}  }
 }
 `;
   }
-  if (t.name === 'er3o') {
+  if (t.name.startsWith('er3o')) {
+    const sel = `[data-theme="${t.name}"]`;
     css += `
 /* ENEROOO brand guidelines HBG.261029.01 (owner, 2026-11-24). The signature gradient is the three
    colours of the logo's rings, left to right; it is a picture (an edge strip, a ground for the White
    logo alone, the energy grid) and never stands behind type (chapter 03). Buttons are Modrá pills
    with White SemiBold caps (5.4:1); the outline button is the secondary action in Petrolej. */
 @layer components {
-  [data-theme="er3o"] .er3o-gradient {
+  ${sel} .er3o-gradient {
     background-image: var(--er3o-gradient);
   }
 }
-[data-theme="er3o"] .btn-outline.btn-primary:not(:hover):not(:active) {
+${sel} .btn-outline.btn-primary:not(:hover):not(:active) {
   color: var(--color-accent);
   border-color: var(--color-accent);
 }
 /* Defaults in the base layer, so a site's utilities still win. A plain inline link in copy (an anchor
    without a class) is Petrolej and underlined; emphasis is SemiBold, never a colour (chapter 04). */
 @layer base {
-  [data-theme="er3o"] :where(p, li, dd) a:not([class]) {
+  ${sel} :where(p, li, dd) a:not([class]) {
     color: var(--hwio-link);
     text-decoration: underline;
     text-underline-offset: 0.18em;
   }
-  [data-theme="er3o"] :where(strong, b) {
+  ${sel} :where(strong, b) {
     font-weight: var(--hwio-weight-strong);
   }
 }

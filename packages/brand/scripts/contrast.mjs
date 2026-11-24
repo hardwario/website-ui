@@ -94,6 +94,10 @@ export const ACCEPTED = {
     'warning alert / badge': 'Amber is never a ground for text (chapter 03); status messages sit on the 12 % tint (D34)',
   },
   er3o: {},
+  'er3o-dark': {
+    'outline primary button / primary text on page': 'Modrá is never text on the dark ground: the outline button reads in the accent Tyrkys (theme rule, 5.97:1) and links in --hwio-link Tyrkys; the filled button keeps Modrá with White type (5.4:1)',
+    'primary text on base-200': 'Modrá is never text on the dark ground (see above); links and the current page use Tyrkys',
+  },
 };
 
 export function report(tokens) {
