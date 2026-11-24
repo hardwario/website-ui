@@ -1,5 +1,5 @@
 {
-  "$comment": "Source of truth for HARDWARIO web brand values. Edit here, run `npm run build`; every generated artifact (tokens.json, vars.css, docusaurus.css, the DaisyUI theme files in @hubpav/hwio-ui, DESIGN.md) is committed or rebuilt so a change shows its full downstream diff. Colours are hex; theme roles and extras may reference palette keys. Since 2026-10-30 the HARDWARIO themes follow the Brand Guidelines HBG.261028.01 (revision 4, issued 2026-10-30; the master: nothing on the web contradicts them): chapter 03 colour roles (Blue for buttons and links, Ink text, Panel, Mist and Hairline neutrals, status Green, Amber, Red and Info in Blue), the gradient (D1, D23, D33), dark mode (D35), chapter 04 type (D8, D12, D22), chapter 05 grid and icons, chapter 06 charts (D14). The web-only rules on top (responsive sizes, breakpoints, states, motion) are the web layer in website-admin DESIGN-SYSTEM.md. Owner rulings still in force: R3 font-display block + gate, R4 sentence-case buttons, R7 and R12 (ENEROOO keeps its palette, Poppins, graphite footer and the direction A type ramp on er3o), R11 light default and remembered dark. Replaced by the guidelines on 2026-10-30: R1 (navy primary), R2's palette (now D35), R9's type ramp and sentence-case kickers.",
+  "$comment": "Source of truth for HARDWARIO web brand values. Edit here, run `npm run build`; every generated artifact (tokens.json, vars.css, docusaurus.css, the DaisyUI theme files in @hubpav/hwio-ui, DESIGN.md) is committed or rebuilt so a change shows its full downstream diff. Colours are hex; theme roles and extras may reference palette keys. Since 2026-10-30 the HARDWARIO themes follow the Brand Guidelines HBG.261028.01 (revision 4, issued 2026-10-30; the master: nothing on the web contradicts them): chapter 03 colour roles (Blue for buttons and links, Ink text, Panel, Mist and Hairline neutrals, status Green, Amber, Red and Info in Blue), the gradient (D1, D23, D33), dark mode (D35), chapter 04 type (D8, D12, D22), chapter 05 grid and icons, chapter 06 charts (D14). The web-only rules on top (responsive sizes, breakpoints, states, motion) are the web layer in website-admin DESIGN-SYSTEM.md. Owner rulings still in force: R3 font-display block + gate, R4 sentence-case buttons, R7 (ENEROOO keeps Poppins on its own theme er3o, which since 2026-11-24 follows the ENEROOO brand guidelines HBG.261029.01 and so replaces R12's graphite footer and the direction A type ramp), R11 light default and remembered dark. Replaced by the guidelines on 2026-10-30: R1 (navy primary), R2's palette (now D35), R9's type ramp and sentence-case kickers.",
   "guidelines": {
     "reference": "HBG.261028.01",
     "revision": 4,
@@ -8,7 +8,7 @@
     "source": "company/docs brand/hbg.261028.01-r4-en-hardwario-brand-guidelines.typ; values of record in templates/brandbook.typ (brand-* definitions)"
   },
   "palette": {
-    "$comment": "Guideline colours carry the guideline names, so `brand-<name>` in company/docs templates/brandbook.typ maps to the key <name> here (website-admin scripts/brand-drift.py checks them). dark-* are the dark-mode values of D35. gradient-figure-end is the gradient sampled at 75 % (D23). forestry-* and er3o-* are theme colours outside the guidelines. Panel is #f7f7f7 by the owner's decision of 2026-10-30 (change request CR-1: the Red caps kicker on Panel reaches 4.5:1), the value of record since guidelines revision 4.",
+    "$comment": "Guideline colours carry the guideline names, so `brand-<name>` in company/docs templates/brandbook.typ maps to the key <name> here (website-admin scripts/brand-drift.py checks them). dark-* are the dark-mode values of D35. gradient-figure-end is the gradient sampled at 75 % (D23). forestry-* are theme colours outside the guidelines. er3o-* are the ENEROOO brand guidelines' colours (HBG.261029.01; `eo-<name>` in company/docs templates/enerooo-brandbook.typ maps to the key er3o-<name> here, also checked by brand-drift.py). Panel is #f7f7f7 by the owner's decision of 2026-10-30 (change request CR-1: the Red caps kicker on Panel reaches 4.5:1), the value of record since guidelines revision 4.",
     "white": "#ffffff",
     "red": "#e30427",
     "blue": "#016ad4",
@@ -31,18 +31,19 @@
     "gradient-figure-end": "#3976c5",
     "forestry": "#2B7036",
     "forestry-light": "#5aa864",
-    "er3o-green": "#01CC9B",
+    "er3o-lime": "#7DE314",
+    "er3o-mint": "#01CC9B",
     "er3o-teal": "#14A0C0",
-    "er3o-teal-text": "#0C6678",
-    "er3o-heading": "#19768B",
-    "er3o-ink": "#061920",
-    "er3o-graphite": "#404040",
-    "er3o-text": "#333333",
-    "er3o-gray-50": "#f9fafb",
-    "er3o-gray-100": "#f3f4f6",
-    "er3o-success": "#15803d",
-    "er3o-warning": "#b45309",
-    "er3o-error": "#dc2626"
+    "er3o-blue": "#296EA7",
+    "er3o-night": "#00171F",
+    "er3o-gray": "#999999",
+    "er3o-petrol": "#0C6678",
+    "er3o-graphite": "#5B5B5B",
+    "er3o-panel": "#F4F4F4",
+    "er3o-hairline": "#DDDDDD",
+    "er3o-ok": "#15803D",
+    "er3o-warning": "#B45309",
+    "er3o-error": "#DC2626"
   },
   "gradient": {
     "$comment": "The signature (chapter 03, D1): Red to Sky, horizontal, sRGB, no other stop. It frames (a band, a short rule under a title, the strip on top of a card) and fills the one key figure of a page, 28 pt and up, with its left three quarters (D23, D33). Never behind body text, tables or photographs, never on the logo, icons or isometric faces, never reversed or vertical. On the dark ground the figure runs the full length from the light red to Sky (figureDark, D44): its lowest point is 3.88:1, enough for type of 28 px and up.",
@@ -198,20 +199,20 @@
       "layout": "hub",
       "roles": {
         "base-100": "white",
-        "base-200": "er3o-gray-50",
-        "base-300": "er3o-gray-100",
-        "base-content": "er3o-text",
-        "primary": "er3o-teal",
+        "base-200": "er3o-panel",
+        "base-300": "er3o-hairline",
+        "base-content": "er3o-night",
+        "primary": "er3o-blue",
         "primary-content": "white",
-        "secondary": "er3o-green",
-        "secondary-content": "er3o-ink",
-        "accent": "er3o-teal-text",
+        "secondary": "er3o-teal",
+        "secondary-content": "er3o-night",
+        "accent": "er3o-petrol",
         "accent-content": "white",
-        "neutral": "er3o-graphite",
+        "neutral": "er3o-night",
         "neutral-content": "white",
-        "info": "er3o-heading",
+        "info": "er3o-petrol",
         "info-content": "white",
-        "success": "er3o-success",
+        "success": "er3o-ok",
         "success-content": "white",
         "warning": "er3o-warning",
         "warning-content": "white",
@@ -219,12 +220,18 @@
         "error-content": "white"
       },
       "extras": {
-        "--er3o-gradient-from": "#01CC9B",
-        "--er3o-gradient-to": "#14A0C0",
-        "--hwio-footer-hover": "#ffffff",
-        "--hwio-nav-active": "#296ea7",
-        "--hwio-kicker-on-neutral": "#01CC9B",
-        "--hwio-link": "#0C6678"
+        "--er3o-gradient": "linear-gradient(90deg, #7DE314, #01CC9B, #14A0C0)",
+        "--hwio-text-secondary": "er3o-graphite",
+        "--hwio-text-secondary-on-neutral": "#CCD1D2",
+        "--hwio-kicker-on-neutral": "white",
+        "--hwio-link": "er3o-petrol",
+        "--hwio-link-hover": "er3o-night",
+        "--hwio-nav-hover": "er3o-blue",
+        "--hwio-nav-active": "er3o-blue",
+        "--hwio-footer-hover": "white",
+        "--hwio-icon": "er3o-night",
+        "--hwio-icon-bg": "var(--color-base-200)",
+        "--hwio-note-opacity": "1"
       }
     }
   },
@@ -372,64 +379,69 @@
         }
       },
       "er3o": {
-        "$comment": "Direction A (R9, 2026-09-05) as shipped until 0.7.11, kept for er3o: ENEROOO has its own brand manual (PLAN 4.7) and its look stays unchanged until then.",
+        "$comment": "The web column of the ENEROOO brand guidelines HBG.261029.01 (chapter 04, Hierarchie; owner, 2026-11-24): title Bold 48-70 px, heading Bold 30-48 px, subheading Bold 20-24 px, text Regular 16-18 px at 1.625, caption 14 px, kicker SemiBold caps 14 px; line height at least 1.2 for titles, 1.3 for headings, 1.55 for small text (chapter 04, Sazba). Three weights only, Regular, SemiBold and Bold (no Medium): navigation, labels, emphasis and buttons in SemiBold, buttons and kickers in caps with 0.06 em tracking. Phones step the title down to 40 px so Czech words fit a 320 px column.",
         "roles": {
           "display": {
             "element": "h1",
-            "fontSize": "3.5rem",
+            "fontSize": "4.375rem",
             "responsive": {
               "base": "2.5rem",
-              "md": "3rem"
+              "md": "3.5rem"
             },
             "from": "lg",
             "fontWeight": 700,
-            "lineHeight": 1.05,
-            "letterSpacing": "-0.03em"
+            "lineHeight": 1.2,
+            "letterSpacing": "-0.01em"
           },
           "heading": {
             "element": "h2",
-            "fontSize": "2.5rem",
+            "fontSize": "3rem",
             "responsive": {
-              "base": "2rem"
+              "base": "1.875rem",
+              "md": "2.5rem"
             },
-            "from": "md",
+            "from": "lg",
             "fontWeight": 700,
-            "lineHeight": 1.1,
-            "letterSpacing": "-0.025em"
+            "lineHeight": 1.3,
+            "letterSpacing": "-0.01em"
           },
           "subheading": {
             "element": "h3",
-            "fontSize": "1.375rem",
+            "fontSize": "1.5rem",
+            "responsive": {
+              "base": "1.25rem"
+            },
+            "from": "md",
             "fontWeight": 700,
-            "lineHeight": 1.2,
-            "letterSpacing": "-0.01em"
+            "lineHeight": 1.3,
+            "letterSpacing": "0"
           },
           "title": {
             "element": "h4",
             "fontSize": "1.125rem",
             "fontWeight": 700,
             "lineHeight": 1.3,
-            "letterSpacing": "-0.005em"
+            "letterSpacing": "0"
           },
           "lead": {
             "selector": ".hwio-lead",
-            "fontSize": "1.1875rem",
+            "fontSize": "1.125rem",
             "fontWeight": 400,
-            "lineHeight": 1.55,
+            "lineHeight": 1.625,
             "letterSpacing": "0"
           },
           "body": {
             "element": "body",
             "fontSize": "1.0625rem",
             "fontWeight": 400,
-            "lineHeight": 1.6,
+            "lineHeight": 1.625,
             "letterSpacing": "0"
           },
           "caption": {
             "selector": ".hwio-caption",
             "fontSize": "0.875rem",
             "fontWeight": 400,
-            "lineHeight": 1.4,
+            "lineHeight": 1.55,
             "letterSpacing": "0"
           },
           "kicker": {
@@ -437,45 +449,46 @@
             "fontSize": "0.875rem",
             "fontWeight": 600,
             "lineHeight": 1.4,
-            "letterSpacing": "0",
-            "textTransform": "none"
+            "letterSpacing": "0.06em",
+            "textTransform": "uppercase"
           },
           "chip": {
             "selector": ".hwio-chip",
-            "fontSize": "0.875rem",
-            "fontWeight": 500,
-            "letterSpacing": "0",
-            "textTransform": "none"
+            "fontSize": "0.8125rem",
+            "fontWeight": 600,
+            "letterSpacing": "0.06em",
+            "textTransform": "uppercase"
           },
           "figure": {
             "selector": ".hwio-figure",
-            "fontSize": "2.5rem",
+            "fontSize": "3rem",
             "responsive": {
-              "base": "2.25rem"
+              "base": "2.5rem"
             },
             "from": "lg",
             "fontWeight": 700,
-            "lineHeight": 1,
-            "letterSpacing": "-0.03em"
+            "lineHeight": 1.2,
+            "letterSpacing": "-0.01em"
           },
           "button": {
             "selector": ".btn",
             "fontSize": "0.9375rem",
             "fontWeight": 600,
             "lineHeight": 1,
-            "letterSpacing": "0"
+            "letterSpacing": "0.06em",
+            "textTransform": "uppercase"
           }
         },
         "weights": {
-          "nav": 500,
+          "nav": 600,
           "label": 600,
           "strong": 600,
-          "footerTitle": 500
+          "footerTitle": 600
         },
         "vars": {
           "--hwio-choice-title-size": "1.75rem",
-          "--hwio-choice-title-leading": "1.15",
-          "--hwio-choice-title-tracking": "-0.02em"
+          "--hwio-choice-title-leading": "1.3",
+          "--hwio-choice-title-tracking": "-0.01em"
         }
       }
     }
