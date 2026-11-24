@@ -152,10 +152,11 @@
   color: var(--color-accent);
   border-color: var(--color-accent);
 }
-/* Defaults in the base layer, so a site's utilities still win. A plain inline link in copy (an anchor
-   without a class) is Petrolej and underlined; emphasis is SemiBold, never a colour (chapter 04). */
+/* Defaults in the base layer, so a site's utilities still win. A plain inline link in the page's copy
+   (an anchor without a class inside main) is Petrolej and underlined; navigation menus keep their own
+   look; emphasis is SemiBold, never a colour (chapter 04). */
 @layer base {
-  [data-theme="er3o"] :where(p, li, dd) a:not([class]) {
+  [data-theme="er3o"] :where(main) :where(p, li, dd) a:not([class]) {
     color: var(--hwio-link);
     text-decoration: underline;
     text-underline-offset: 0.18em;
