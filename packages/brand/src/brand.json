@@ -43,7 +43,14 @@
     "er3o-hairline": "#DDDDDD",
     "er3o-ok": "#15803D",
     "er3o-warning": "#B45309",
-    "er3o-error": "#DC2626"
+    "er3o-error": "#DC2626",
+    "er3o-dark-panel": "#0A2530",
+    "er3o-dark-line": "#1E3A45",
+    "er3o-dark-muted": "#AEB8BC",
+    "er3o-dark-footer": "#000D12",
+    "er3o-dark-ok": "#4ADE80",
+    "er3o-dark-warning": "#FBBF24",
+    "er3o-dark-error": "#F87171"
   },
   "gradient": {
     "$comment": "The signature (chapter 03, D1): Red to Sky, horizontal, sRGB, no other stop. It frames (a band, a short rule under a title, the strip on top of a card) and fills the one key figure of a page, 28 pt and up, with its left three quarters (D23, D33). Never behind body text, tables or photographs, never on the logo, icons or isometric faces, never reversed or vertical. On the dark ground the figure runs the full length from the light red to Sky (figureDark, D44): its lowest point is 3.88:1, enough for type of 28 px and up.",
@@ -230,6 +237,48 @@
         "--hwio-nav-active": "er3o-blue",
         "--hwio-footer-hover": "white",
         "--hwio-icon": "er3o-night",
+        "--hwio-icon-bg": "var(--color-base-200)",
+        "--hwio-note-opacity": "1"
+      }
+    },
+    "er3o-dark": {
+      "extends": "er3o",
+      "scheme": "dark",
+      "default": false,
+      "prefersdark": false,
+      "roles": {
+        "base-100": "er3o-night",
+        "base-200": "er3o-dark-panel",
+        "base-300": "er3o-dark-line",
+        "base-content": "er3o-panel",
+        "primary": "er3o-blue",
+        "primary-content": "white",
+        "secondary": "er3o-mint",
+        "secondary-content": "er3o-night",
+        "accent": "er3o-teal",
+        "accent-content": "er3o-night",
+        "neutral": "er3o-dark-footer",
+        "neutral-content": "white",
+        "info": "er3o-teal",
+        "info-content": "er3o-night",
+        "success": "er3o-dark-ok",
+        "success-content": "er3o-night",
+        "warning": "er3o-dark-warning",
+        "warning-content": "er3o-night",
+        "error": "er3o-dark-error",
+        "error-content": "er3o-night"
+      },
+      "extras": {
+        "--er3o-gradient": "linear-gradient(90deg, #7DE314, #01CC9B, #14A0C0)",
+        "--hwio-text-secondary": "er3o-dark-muted",
+        "--hwio-text-secondary-on-neutral": "#CCD1D2",
+        "--hwio-kicker-on-neutral": "white",
+        "--hwio-link": "er3o-teal",
+        "--hwio-link-hover": "white",
+        "--hwio-nav-hover": "er3o-teal",
+        "--hwio-nav-active": "er3o-teal",
+        "--hwio-footer-hover": "white",
+        "--hwio-icon": "er3o-panel",
         "--hwio-icon-bg": "var(--color-base-200)",
         "--hwio-note-opacity": "1"
       }

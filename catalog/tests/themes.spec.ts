@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 
-const THEMES = ['hwio', 'hwio-dark', 'hwio-forestry', 'hwio-forestry-dark', 'er3o'];
+const THEMES = ['hwio', 'hwio-dark', 'hwio-forestry', 'hwio-forestry-dark', 'er3o', 'er3o-dark'];
 
 /** A full-page screenshot must not race image loading: load lazy images now and wait until every
     image has loaded (or failed) and decoded, so two consecutive captures are identical. */

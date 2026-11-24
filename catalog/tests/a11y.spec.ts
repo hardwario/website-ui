@@ -5,7 +5,7 @@ import { AXE_EXCEPTIONS } from './a11y-exceptions';
 // Accessibility gate over the per-theme "all components" pages: WCAG 2.x A/AA rules, failing on
 // serious and critical violations. Moderate and minor findings are attached to the report only, and so
 // are the nodes excused in a11y-exceptions.ts (each tied to an owner decision or change request).
-const THEMES = ['hwio', 'hwio-dark', 'hwio-forestry', 'hwio-forestry-dark', 'er3o'];
+const THEMES = ['hwio', 'hwio-dark', 'hwio-forestry', 'hwio-forestry-dark', 'er3o', 'er3o-dark'];
 
 for (const theme of THEMES) {
   test(`axe: no serious or critical violations under ${theme}`, async ({ page }, testInfo) => {
