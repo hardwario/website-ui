@@ -30,7 +30,7 @@ const PER_THEME = {
     description: 'Mostly white with Noc text, Modrá pill buttons with White caps, Petrolej links and kickers, the three-colour logo gradient (Limetka, Máta, Tyrkys) as a picture only; Poppins in Regular, SemiBold and Bold; Panel cards with a 24 px radius and no shadow; a Noc footer.',
     northStar: 'Energetický management nové generace',
     overview: 'ENEROOO (ENEROOO s.r.o.) is a brand of its own on the shared component system. Its theme follows the ENEROOO brand guidelines HBG.261029.01 (company/docs, values of record in templates/enerooo-brandbook.typ; applied 2026-11-24, PLAN 4.7): Noc `#00171F` for all text and dark grounds, Modrá `#296EA7` for buttons, chips and the current page, Petrolej `#0C6678` for links and kickers, Grafit `#5B5B5B` for secondary text, Panel `#F4F4F4` and Linka `#DDDDDD` for grounds and hairlines. This file is regenerated from brand.json.',
-    brandRules: '**The Own-Brand Rule.** The ENEROOO brand guidelines HBG.261029.01 are the master for www.enerooo.cz, not the HARDWARIO guidelines. No type ever stands on the gradient `linear-gradient(90deg, #7DE314, #01CC9B, #14A0C0)`: it carries the White logo alone, an edge strip and the energy grid; White type stands on Modrá, Petrolej or Noc. Changes need a screenshot sign-off by the owner.',
+    brandRules: '**The Own-Brand Rule.** The ENEROOO brand guidelines HBG.261029.01 are the master for www.enerooo.com, not the HARDWARIO guidelines. No type ever stands on the gradient `linear-gradient(90deg, #7DE314, #01CC9B, #14A0C0)`: it carries the White logo alone, an edge strip and the energy grid; White type stands on Modrá, Petrolej or Noc. Changes need a screenshot sign-off by the owner.',
   },
 };
 
