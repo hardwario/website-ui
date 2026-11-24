@@ -510,6 +510,14 @@
   font-weight: var(--hwio-type-button-weight, 600);
   padding-inline: 1.5rem;
 }
+/* A theme may set its buttons in caps with tracking (er3o). Layered, so a site's case or tracking
+   utility on a button still wins; DaisyUI sets neither property. */
+@layer components {
+  .btn {
+    letter-spacing: var(--hwio-type-button-tracking, normal);
+    text-transform: var(--hwio-type-button-case, none);
+  }
+}
 .btn-sm { --fontsize: 0.875rem; padding-inline: 1rem; }
 .btn-lg { height: var(--size); --fontsize: 0.9375rem; padding-inline: 1.75rem; }
 .btn-square, .btn-circle { padding-inline: 0; }

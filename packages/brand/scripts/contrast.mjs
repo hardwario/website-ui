@@ -93,13 +93,7 @@ export const ACCEPTED = {
   'hwio-forestry': {
     'warning alert / badge': 'Amber is never a ground for text (chapter 03); status messages sit on the 12 % tint (D34)',
   },
-  er3o: {
-    'filled primary button': 'R7: ENEROOO keeps its teal; the filled button carries the er3o gradient (unchanged, PLAN 4.7)',
-    'outline primary button / primary text on page': 'R7: the er3o outline button reads in its AA accent teal (theme rule), unchanged',
-    'primary text on base-200': 'R7: unchanged ENEROOO theme (PLAN 4.7)',
-    'focus ring (secondary) on page': 'R7: unchanged ENEROOO theme (PLAN 4.7)',
-    'link hover on page': 'R7: unchanged ENEROOO theme (PLAN 4.7)',
-  },
+  er3o: {},
 };
 
 export function report(tokens) {

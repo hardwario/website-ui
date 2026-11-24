@@ -41,8 +41,7 @@
   --hwio-grid-columns: 12;
   --hwio-grid-width: 1280px;
   --hwio-grid-gutter: 24px;
-  --er3o-gradient-from: initial;
-  --er3o-gradient-to: initial;
+  --er3o-gradient: initial;
   --hwio-chart-1: #016ad4;
   --hwio-chart-2: #009cfa;
   --hwio-chart-3: #6b6a6a;

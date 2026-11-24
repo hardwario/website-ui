@@ -79,26 +79,30 @@ ${extras ? extras + '\n' : ''}  }
   }
   if (t.name === 'er3o') {
     css += `
-/* ENEROOO carries its gradient as a theme rule: DaisyUI slots are single colours. Only the filled
-   button gets it; outline, ghost and link variants keep their transparent background. */
-[data-theme="er3o"] .btn-primary:not(.btn-outline):not(.btn-ghost):not(.btn-link) {
-  background-image: linear-gradient(90deg, var(--er3o-gradient-from), var(--er3o-gradient-to));
-  border-color: transparent;
+/* ENEROOO brand guidelines HBG.261029.01 (owner, 2026-11-24). The signature gradient is the three
+   colours of the logo's rings, left to right; it is a picture (an edge strip, a ground for the White
+   logo alone, the energy grid) and never stands behind type (chapter 03). Buttons are Modrá pills
+   with White SemiBold caps (5.4:1); the outline button is the secondary action in Petrolej. */
+@layer components {
+  [data-theme="er3o"] .er3o-gradient {
+    background-image: var(--er3o-gradient);
+  }
 }
-/* DaisyUI's hover darkens background-color, which the gradient image covers; dim the gradient instead. */
-[data-theme="er3o"] .btn-primary:not(.btn-outline):not(.btn-ghost):not(.btn-link):hover {
-  filter: brightness(0.92);
-}
-/* The outline button reads in the AA teal (the theme's accent, 6.6:1); the filled primary teal is 2.9:1 as text. */
 [data-theme="er3o"] .btn-outline.btn-primary:not(:hover):not(:active) {
   color: var(--color-accent);
   border-color: var(--color-accent);
 }
-[data-theme="er3o"] .er3o-gradient-text {
-  background-image: linear-gradient(90deg, var(--er3o-gradient-from), var(--er3o-gradient-to));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+/* Defaults in the base layer, so a site's utilities still win. A plain inline link in copy (an anchor
+   without a class) is Petrolej and underlined; emphasis is SemiBold, never a colour (chapter 04). */
+@layer base {
+  [data-theme="er3o"] :where(p, li, dd) a:not([class]) {
+    color: var(--hwio-link);
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+  [data-theme="er3o"] :where(strong, b) {
+    font-weight: var(--hwio-weight-strong);
+  }
 }
 `;
   }
