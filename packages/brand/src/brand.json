@@ -564,7 +564,7 @@
     "slow": "400ms"
   },
   "icons": {
-    "$comment": "Chapter 05, Icons: Lucide only, outline on a 24 px grid with a 2 px stroke, one colour, Navy; White on dark grounds; 16, 24 or 32 px on screen; they label, never decorate. HWioIcon still draws Heroicons outlines: swapping the glyphs changes www.enerooo.cz too, so it follows with PLAN 4.4 or 4.7.",
+    "$comment": "Chapter 05, Icons: Lucide only, outline on a 24 px grid with a 2 px stroke, one colour, Navy; White on dark grounds; 16, 24 or 32 px on screen; they label, never decorate. HWioIcon still draws Heroicons outlines: swapping the glyphs changes www.enerooo.com too, so it follows with PLAN 4.4 or 4.7.",
     "set": "lucide",
     "color": "navy",
     "colorOnDark": "white",
@@ -887,11 +887,15 @@
     {
       "key": "enerooo",
       "label": "ENEROOO",
-      "url": "https://www.enerooo.cz",
+      "url": "https://www.enerooo.com",
       "locales": [
-        "cs"
+        "en",
+        "cs",
+        "de",
+        "sk",
+        "pl"
       ],
-      "defaultLocale": "cs",
+      "defaultLocale": "en",
       "theme": "er3o",
       "layout": "hub",
       "strip": {
